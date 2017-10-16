@@ -1,0 +1,2 @@
+node_modules
+#config.js <-- hide only for prod apps
