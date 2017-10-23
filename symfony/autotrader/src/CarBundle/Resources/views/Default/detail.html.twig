@@ -1,0 +1,22 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }} | {{ car.make.name }} {{ car.name }}
+{% endblock %}
+
+{% block body %}
+	<h1>{{ car.make.name }} {{ car.name }}</h1>
+	<h3>{{ car.description ?? 'No description found.' }}</h3>
+	<table class="table">
+		<tr>
+			<td>Year</td>
+			<td>Price</td>
+		</tr>
+		<tr>
+			<td>{{ car.year }}</td>
+			<td>{{ car.price|number_format(0,',','.') }}$</td>
+		</tr>
+	</table>
+	<a href="{{ url('offer') }}">&LeftArrow; back</a>
+{% endblock %}
+

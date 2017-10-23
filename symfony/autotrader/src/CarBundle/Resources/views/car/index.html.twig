@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Cars list</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Description</th>
+                <th>Price</th>
+                <th>Year</th>
+                <th>Make</th>
+                <th>Promoted</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for car in cars %}
+            <tr>
+                <td><a href="{{ path('car_show', { 'id': car.id }) }}">{{ car.id }}</a></td>
+                <td>{{ car.name }}</td>
+                <td>{{ car.description }}</td>
+                <td>{{ car.price }}</td>
+                <td>{{ car.year }}</td>
+                <td>{{ car.make.name }}</td>
+                <td><span class="">{{ car.promote ? 'yes' : 'nope' }}</span></td>
+                <td>
+                    <ul>
+                        <li>
+                            <a href="{{ path('car_show', { 'id': car.id }) }}">show</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('car_edit', { 'id': car.id }) }}">edit</a>
+                        </li>
+                        <li>
+                            <a href="{{ path('car_promote', { 'id': car.id }) }}">check</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('car_new') }}">Create a new car</a>
+        </li>
+    </ul>
+{% endblock %}

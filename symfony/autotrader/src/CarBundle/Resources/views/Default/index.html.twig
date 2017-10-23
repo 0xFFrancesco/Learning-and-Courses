@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+	{{ parent() }} | Best cars ever
+{% endblock %}
+
+{% block body %}
+	<h1>Our offer</h1>
+	<div>
+		{{ form_start(form, {attr: {class: 'form-inline'}}) }}
+		{{ form_widget(form.search, {attr: {placeholder: 'Search'}}) }}
+		<button type="submit" class="btn">Search</button>
+		{{ form_errors(form.search) }}
+		{{ form_end(form) }}
+		<br>
+	</div>
+	<table class="table">
+		<tr>
+			<td>Make</td>
+			<td>Name</td>
+			<td>Detail</td>
+		</tr>
+		{% for car in cars %}
+			<tr>
+				<td>{{ car.make.name }}</td>
+				<td>{{ car.name }}</td>
+				<td><a href="{{ url('car-detail', {id: car.id}) }}">open</a></td>
+			</tr>
+		{% endfor %}
+	</table>
+{% endblock %}
+
