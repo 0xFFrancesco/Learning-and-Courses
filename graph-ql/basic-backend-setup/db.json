@@ -1,0 +1,34 @@
+{
+  "users": [
+    {
+      "id": "23",
+      "firstName": "Mark",
+      "age": 20,
+      "companyId": "1"
+    },
+    {
+      "id": "47",
+      "firstName": "Samantha",
+      "age": 21,
+      "companyId": "2"
+    },
+    {
+      "id": "55",
+      "firstName": "Luke",
+      "age": 44,
+      "companyId": "2"
+    }
+  ],
+  "companies": [
+    {
+      "id": "1",
+      "name": "Apple",
+      "desc": "iPhones are nice"
+    },
+    {
+      "id": "2",
+      "name": "Google",
+      "age": "gmail is great"
+    }
+  ]
+}
