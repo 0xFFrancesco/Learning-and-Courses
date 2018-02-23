@@ -1,5 +1,5 @@
-const API_KEY = '53f8ac942b1a6b0129d7b5a9b4be775f';
-const API_URL = `http://api.openweathermap.org/data/2.5/forecast`
+const API_KEY = 'API_KEY'; /* 53f8ac942b1a6b0129d7b5a9b4be775f not valid */
+const API_URL = `http://api.openweathermap.org/data/2.5/forecast`;
 
 import axios from 'axios'
 
