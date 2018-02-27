@@ -13,7 +13,6 @@ import SongDetail from './components/songDetail';
 
 const client = new ApolloClient({
 	//dataIdFromObject : o => o.id
-	optimisticUI: true
 });
 
 const Root = () =>{

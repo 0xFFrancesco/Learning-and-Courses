@@ -18,7 +18,7 @@ class LyricList extends Component {
 			{lyrics.map(item =>
 				<li className='collection-item' key={item.id}>{item.content}
 				<div>
-					{item.likes} <i className='material-icons' onClick={e => this.onLike(item.id, song.id)}>thumb_up</i>
+					{item.likes} <i className='material-icons' onClick={e => this.onLike(item, song.id)}>thumb_up</i>
 				</div>
 				</li>
 			)}
@@ -26,9 +26,18 @@ class LyricList extends Component {
 		
 	}
 	
-	onLike(id, songId){
+	onLike(item, songId){
 		this.props.mutate({
-			variables: {id},
+			variables: {id: item.id},
+			/*optimisticResponse: { NOT WORKING BECAUSE THE RENDERING IS DONE BY A DIFFERENT QUERY, NEED TO ENABLE dataIdFromObject AND LINK OBJECTS
+				__typename : 'Mutation',
+				likeLyric  : {
+					id         : item.id,
+					__typename : "LyricType",
+					likes      : item.likes + 1,
+					content    : item.content,
+				}
+			},*/
 			refetchQueries: [{query, variables: {id: songId}}]
 		});
 	}
