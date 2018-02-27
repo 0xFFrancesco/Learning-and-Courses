@@ -15,6 +15,7 @@ class SongList extends Component {
 		const songs = this.props.data.songs;
 		
 		return (<div>
+			<h3>Songs</h3>
 			<ul className='collection'>
 				{songs && songs.map(this.renderSong.bind(this))}
 			</ul>
@@ -25,7 +26,8 @@ class SongList extends Component {
 	}
 	
 	renderSong( item ){
-		return (<li className='collection-item' key={item.id}>{item.title}
+		return (<li className='collection-item' key={item.id}>
+			<Link to={`/songs/${item.id}`}>{item.title}</Link>
 			<i className='material-icons' onClick={() => this.onSongDelete(item.id)}>
 				delete
 			</i>

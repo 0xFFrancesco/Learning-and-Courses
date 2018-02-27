@@ -1,7 +1,7 @@
 import React from 'react';
 
 export default ( {children} ) =>{
-	return <div className='container'><h1>Lyrical React-GraphQL App</h1>
+	return <div className='container'>
 		<div>{children}</div>
 	</div>;
 }
