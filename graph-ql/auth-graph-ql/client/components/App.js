@@ -2,8 +2,10 @@ import React from 'react';
 import Header from "./Header";
 
 export default ( props ) =>{
-	return (<div>
+	return (<div className='container-fluid'>
 		<Header />
-		{props.children}
+		<div className="container">
+			{props.children}
+		</div>
 	</div>);
 }
