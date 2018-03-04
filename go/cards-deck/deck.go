@@ -11,8 +11,7 @@ import (
 	"time"
 )
 
-// Create a new type of deck
-// which is a slice of strings
+// Create a new type of deck, which is a slice of strings
 type deck []string
 
 // receiver function (every type 'deck' can now access this function as a method)

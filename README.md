@@ -20,8 +20,8 @@ Tech stuff 👾, code is related to courses mainly about:
 
 - Back-end:
     - Go (Golang)
-    - PHP
-    - Symfony ♪
-    - Node
+    - PHP 🐘
+    - Symfony 🎼
+    - NodeJS
     - Express
     - Shell scripting
