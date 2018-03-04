@@ -18,7 +18,7 @@ func main() {
 
 	fmt.Println("\n DECK: ")
 	fmt.Println("")
-	
+
 	remainingDeck.print()
 
 }
