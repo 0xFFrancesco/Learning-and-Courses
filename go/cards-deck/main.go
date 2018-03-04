@@ -8,11 +8,12 @@ func main() {
 	//card := "Ace of Spades" //alternative way of declaring a variable
 
 	cards := newDeckFromFile("cards")
+	cards.shuffle()
 	hand, remainingDeck := deal(cards, 5)
 
-	fmt.Println("HAND:")
+	fmt.Println("\n HAND: \n")
 	hand.print()
-	fmt.Println("DECK:")
+	fmt.Println("\n DECK: \n")
 	remainingDeck.print()
 
 }

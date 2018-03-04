@@ -7,6 +7,8 @@ import (
 	"strings"
 	"io/ioutil"
 	"os"
+	"math/rand"
+	"time"
 )
 
 // Create a new type of deck
@@ -20,10 +22,19 @@ func (d deck) print() {
 	}
 }
 
-func (d deck) shuffle() deck {
-	return d
+func (d deck) shuffle() {
 
+	// create and initialize a random generator with current timestamp
+	randomSeed := rand.NewSource(time.Now().UnixNano())
+	randomObj := rand.New(randomSeed)
+
+	for i := range d {
+		r := randomObj.Intn(len(d) - 1)
+		// swap elements
+		d[i], d[r] = d[r], d[i]
+	}
 }
+
 func (d deck) saveToFile(fileName string) error {
 	return ioutil.WriteFile(fileName, []byte(d.toString()), 0666)
 }
@@ -61,7 +72,7 @@ func newDeck() deck {
 func newDeckFromFile(fileName string) deck {
 	byteSlice, error := ioutil.ReadFile(fileName)
 	if error != nil {
-		fmt.Println("Error:",error)
+		fmt.Println("Error:", error)
 		os.Exit(1)
 	}
 	return deck(strings.Split(string(byteSlice), ","))
