@@ -69,9 +69,9 @@ func newDeck() deck {
 }
 
 func newDeckFromFile(fileName string) deck {
-	byteSlice, error := ioutil.ReadFile(fileName)
-	if error != nil {
-		fmt.Println("Error:", error)
+	byteSlice, err := ioutil.ReadFile(fileName)
+	if err != nil {
+		fmt.Println("Error:", err)
 		os.Exit(1)
 	}
 	return deck(strings.Split(string(byteSlice), ","))
