@@ -32,6 +32,6 @@ func main() {
 // making logWriter eligible to be in the Writer interface
 func (l logWriter) Write(bs []byte) (int, error) {
 	fmt.Println(string(bs))
-	fmt.Printf("%v bytes wrote.", len(bs))
+	fmt.Printf("%v bytes written.", len(bs))
 	return len(bs), nil
 }
