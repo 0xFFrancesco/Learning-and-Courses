@@ -1,4 +1,10 @@
 <p>
-	User-detail works for user <b [textContent]="name"></b>!
+	<!--ngClass is a directive (called attribute directive) which takes the content of a property named the same [ngClass]-->
+	User-detail works for user
+	<b [ngClass]="{'text-primary': name==='Francesco'}" [textContent]="name"></b>
+	<span *ngIf="name==='Francesco'" class="text-muted"> (ADMIN)</span>!
+	
 	<app-user-cart [cart]="cart" (onCartUpdate)="cart=$event"></app-user-cart>
 </p>
+
+<!--STRUCTURAL DIRECTIVES ARE PREPENDED WITH A '*', LIKE *ngIf AND *ngFor-->
