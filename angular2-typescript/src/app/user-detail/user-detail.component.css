@@ -1,0 +1,6 @@
+/*STYLES ARE SCOPED TO THE COMPONENT!*/
+P{
+	padding: 30px;
+	border: 1px solid #eee;
+	margin: 50px;
+}
