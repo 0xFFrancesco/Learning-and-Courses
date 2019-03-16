@@ -4,5 +4,5 @@
 		<li class="nav-item" role="presentation"><a (click)="choose('light')" [ngClass]="{active:chosenList==='light'}" class="nav-link" href="#">Light</a></li>
 		<li class="nav-item" role="presentation"><a (click)="choose('dark')" [ngClass]="{active:chosenList==='dark'}" class="nav-link" href="#">Dark</a></li>
 	</ul>
-	<app-list [characters]="getCharacters()" (sideAssigned)="onSideAssigned($event)"></app-list>
+	<app-list [characters]="getCharacters(chosenList)"></app-list>
 </div>
