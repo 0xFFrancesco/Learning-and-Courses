@@ -1,3 +1,10 @@
-<p>
-  item works!
-</p>
+<a href="#" class="list-group-item list-group-item-action flex-column align-items-start">
+	<div class="d-flex w-100 justify-content-between">
+		<h5 class="mb-1">{{character.name}}</h5>
+	</div>
+	<p class="mb-1">{{character.description}}</p>
+	<div class="btn-group">
+		<button class="btn btn-primary" (click)="onAssign('light')" >Light</button>
+		<button class="btn btn-danger" (click)="onAssign('dark')" >Dark</button>
+	</div>
+</a>
