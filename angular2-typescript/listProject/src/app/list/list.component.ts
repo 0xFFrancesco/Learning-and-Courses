@@ -1,4 +1,6 @@
-import {Component, Input, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ActivatedRoute} from '@angular/router'
+import {StarWarsService} from "../star-wars.service";
 
 @Component({
     selector: 'app-list',
@@ -7,12 +9,21 @@ import {Component, Input, OnInit} from '@angular/core';
 })
 export class ListComponent implements OnInit {
 
-    @Input() characters: object[];
+    characters: object[];
+    ActivatedRoute: ActivatedRoute;
+    StarWarsService: StarWarsService;
 
-    constructor() {
+    constructor(ActivatedRoute: ActivatedRoute, StarWarsService: StarWarsService) {
+        this.ActivatedRoute = ActivatedRoute;
+        this.StarWarsService = StarWarsService;
     }
 
     ngOnInit() {
+        console.log('ListComponent OnInit');
+        this.ActivatedRoute.params.subscribe(params => {
+            console.log('ListComponent ActivatedRoute callback');
+            this.characters = this.StarWarsService.getCharacters(params.side)
+        })
     }
 
 }

@@ -6,7 +6,7 @@ interface Character {
 export class StarWarsService {
 
     private characters: Character[] = [
-        {name: 'Like Skywalker', side: ''},
+        {name: 'Luke Skywalker', side: ''},
         {name: 'Dark Vader', side: ''},
     ];
 
@@ -21,6 +21,17 @@ export class StarWarsService {
                     return char.side === 'dark';
             }
         })
+    }
+
+    addCharacter(name: string, side: string) {
+        const pos = this.characters.findIndex(c => {
+            return c.name === name
+        });
+        if(pos != -1){
+            return;
+        }
+        const newChar = {name, side};
+        this.characters.push(newChar);
     }
 
     onSideAssigned(character) {

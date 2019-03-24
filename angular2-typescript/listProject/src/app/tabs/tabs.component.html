@@ -1,8 +1,8 @@
 <div>
 	<ul class="nav nav-tabs">
-		<li class="nav-item" role="presentation"><a (click)="choose('all')" [ngClass]="{active:chosenList==='all'}" class="nav-link active" href="#">All</a></li>
-		<li class="nav-item" role="presentation"><a (click)="choose('light')" [ngClass]="{active:chosenList==='light'}" class="nav-link" href="#">Light</a></li>
-		<li class="nav-item" role="presentation"><a (click)="choose('dark')" [ngClass]="{active:chosenList==='dark'}" class="nav-link" href="#">Dark</a></li>
+		<li class="nav-item" role="presentation"><a routerLink="/characters/all" routerLinkActive="active" class="nav-link" >All</a></li>
+		<li class="nav-item" role="presentation"><a routerLink="/characters/light" routerLinkActive="active" class="nav-link" >Light</a></li>
+		<li class="nav-item" role="presentation"><a routerLink="/characters/dark" routerLinkActive="active" class="nav-link" >Dark</a></li>
 	</ul>
-	<app-list [characters]="getCharacters(chosenList)"></app-list>
+	<router-outlet></router-outlet>
 </div>
