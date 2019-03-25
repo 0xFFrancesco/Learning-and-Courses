@@ -22,7 +22,9 @@ export class ListComponent implements OnInit, OnDestroy {
     }
 
     ngOnInit() {
+
         console.log('ListComponent OnInit');
+
         this.ActivatedRoute.params.subscribe(params => {
             console.log('ListComponent ActivatedRoute callback');
             this.characters = this.StarWarsService.getCharacters(params.side);
@@ -32,6 +34,7 @@ export class ListComponent implements OnInit, OnDestroy {
             console.log('ListComponent charactersChanged callback');
             this.characters = this.StarWarsService.getCharacters(this.currentSide);
         })
+
     }
 
     ngOnDestroy(){

@@ -2,6 +2,7 @@ import {BrowserModule} from '@angular/platform-browser';
 import {NgModule} from '@angular/core';
 import {FormsModule} from '@angular/forms';
 import {RouterModule, Routes} from '@angular/router';
+import {HttpModule} from '@angular/http';
 
 import {AppComponent} from './app.component';
 import {TabsComponent} from './tabs/tabs.component';
@@ -34,7 +35,8 @@ const router: Routes = [
     imports: [
         BrowserModule,
         FormsModule,
-        RouterModule.forRoot(router)
+        RouterModule.forRoot(router),
+        HttpModule
     ],
     providers: [StarWarsService],
     bootstrap: [AppComponent]
