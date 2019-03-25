@@ -1,3 +1,5 @@
+import {Subject} from 'rxjs/Subject'
+
 interface Character {
     name: string,
     side: string
@@ -9,6 +11,7 @@ export class StarWarsService {
         {name: 'Luke Skywalker', side: ''},
         {name: 'Dark Vader', side: ''},
     ];
+    charactersChanged = new Subject<void>();
 
     getCharacters(chosenList) {
         return this.characters.filter((char) => {
@@ -27,7 +30,7 @@ export class StarWarsService {
         const pos = this.characters.findIndex(c => {
             return c.name === name
         });
-        if(pos != -1){
+        if (pos != -1) {
             return;
         }
         const newChar = {name, side};
@@ -38,7 +41,8 @@ export class StarWarsService {
         const pos = this.characters.findIndex(c => {
             return c.name === character.name
         });
-        this.characters[pos].side = character.side
+        this.characters[pos].side = character.side;
+        this.charactersChanged.next();
     }
 
 }
