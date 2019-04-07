@@ -1,5 +1,7 @@
+"use strict";
 //infer types
 ////////////
+Object.defineProperty(exports, "__esModule", { value: true });
 //string
 ////////////
 var myName = 'Francesco';
@@ -128,5 +130,11 @@ var canThisBeAny = null; //inferred of type null
 ////////////
 //
 ////////////
-//
+//import module
 ////////////
+console.log('imports');
+var circle_1 = require("./math/circle");
+var rectangle_1 = require("./math/rectangle");
+console.log(circle_1.PI);
+console.log(circle_1.circumference(20));
+console.log(rectangle_1.area(10, 20));

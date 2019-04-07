@@ -39,20 +39,20 @@ let address: [string, number] = ['Street', 100];
 //enums
 ////////////
 enum Color {
-    Gray,   // 0
-    Green,  // 1
-    Blue    // 2
+	Gray,   // 0
+	Green,  // 1
+	Blue    // 2
 }
 
 let myColor: Color = Color.Green;
 console.log(myColor);
 
 enum ColorOverridden {
-    Gray,         // 0
-    Green = 100,  // 100
-    Blue,         // 101
-    Violet = 3,   // 3
-    Purple        // 4
+	Gray,         // 0
+	Green = 100,  // 100
+	Blue,         // 101
+	Violet = 3,   // 3
+	Purple        // 4
 }
 
 let myColor2: ColorOverridden = ColorOverridden.Blue;
@@ -66,7 +66,7 @@ car = {brand: 'BMW', series: 3};
 //functions
 ////////////
 function getName(): string {
-    return myName;
+	return myName;
 }
 
 console.log(getName());
@@ -74,8 +74,8 @@ console.log(getName());
 //void
 ////////////
 function sayHello(): void { //void - nothing to be returned
-    console.log('Hello');
-    //return 1;
+	console.log('Hello');
+	//return 1;
 }
 
 sayHello();
@@ -83,7 +83,7 @@ sayHello();
 //arguments types
 ////////////
 function multiply(val1: number, val2: number): number {
-    return val1 * val2;
+	return val1 * val2;
 }
 
 console.log(multiply(3, 4));
@@ -98,23 +98,23 @@ console.log(myMultiply(3, 4));
 //objects
 ////////////
 let userData: { name: string, number: number } = {
-    name: 'Francesco',
-    number: 7
+	name: 'Francesco',
+	number: 7
 };
 //userData = {};
 //userData.a = 11;
 userData = {
-    name: 'Luke',
-    number: 2
+	name: 'Luke',
+	number: 2
 };
 
 //complex object
-let complex: {data: number[], output: (all: boolean) => number[]} = {
-    data: [1, 2, 3, 4],
-    output: function (all: boolean): number[] {
-        return this.data;
-    }
-}
+let complex: { data: number[], output: (all: boolean) => number[] } = {
+	data: [1, 2, 3, 4],
+	output: function (all: boolean): number[] {
+		return this.data;
+	}
+};
 
 //type alias
 ////////////
@@ -134,15 +134,16 @@ StringOrNumber = 'Lal';
 //check types
 ////////////
 let final = 3;
-if(typeof final === 'number'){
-    console.log('final is a number');
+if (typeof final === 'number') {
+	console.log('final is a number');
 }
 
 //never type (it never returns)
 ////////////
 function neverReturn(): never {
-    throw new Error('error');
+	throw new Error('error');
 }
+
 //neverReturn();
 
 
@@ -162,5 +163,12 @@ let canThisBeAny = null; //inferred of type null
 //
 ////////////
 
-//
+//import module
 ////////////
+console.log('imports');
+import {circumference, PI} from "./math/circle";
+import {area} from './math/rectangle';
+
+console.log(PI);
+console.log(circumference(20));
+console.log(area(10, 20));
