@@ -157,11 +157,44 @@ let canThisBeAny = null; //inferred of type null
 //
 ////////////
 
-//
+//interfaces
 ////////////
+interface NamedPerson {
+	firstName: string;
+	age?: number; //? defines the property as optional
+	[propName: string]: any; //unknown property with key as string and value of any
+	greet?(lastName: string): void //optional method
+}
 
-//
+function greet(p: NamedPerson) {
+	console.log(`Hello ${p.firstName}`);
+}
+
+greet({firstName: 'test', hobbies: ['h1', 'h2']});
+
+class PersonI implements NamedPerson {
+	firstName: string = 'test';
+}
+
+//function types interfaces
 ////////////
+interface doubleVal {
+	(n1: number, n2: number): number
+}
+
+let doubleVal2: doubleVal = function doubleVal2(n1: number, n2: number): number {
+	return n1 * n2;
+};
+
+//interface inheritance
+////////////
+interface PartialPoint {
+	x: number;
+}
+
+interface Point extends PartialPoint {
+	y: number;
+}
 
 //import module
 ////////////
