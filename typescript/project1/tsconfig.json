@@ -4,9 +4,10 @@
         "target": "es5",
         "noImplicitAny": false,
         "sourceMap": false,
-		"strictNullChecks" : true
+		"strictNullChecks" : true,
+		"experimentalDecorators" : true
 	},
-    "exclude": [
+	"exclude": [
         "node_modules"
     ]
 }
