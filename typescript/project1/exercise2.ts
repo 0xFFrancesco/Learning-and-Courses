@@ -78,10 +78,10 @@ var p = {
 	_firstName: ""
 };
 Object.defineProperty(p, "firstName", {
-	get: function () {
+	get: function (): any {
 		return this._firstName;
 	},
-	set: function (value) {
+	set: function (value: any): any {
 		if (value.length > 3) {
 			this._firstName = value;
 		}
