@@ -15,6 +15,8 @@ Tech stuff 👾, code is related to courses mainly about:
     - Redux
     - GraphQL
     - Angular 2+ (7)
+    - VueJS 2
+    - Vuex
     - Typescript
     - Webpack 📦
     - D3

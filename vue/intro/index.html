@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8">
+    <title>Vue Project 1</title>
+    <script src="vue.js"></script>
+  </head>
+  <body>
+    
+    <style>
+      .block {
+        height: 40px;
+        margin-bottom: 20px;
+      }
+      
+      .red {
+        background: darkred
+      }
+      
+      .green {
+        background: darkgreen
+      }
+    </style>
+    
+    <div id="app" v-on:mousemove="updateCoords">
+      <input type='text' v-on:input="changeTitle">
+      <!-- <p>{{title}} - <a href="{{link}}">google</a></p> //{{}} doesn't work in html properties -->
+      <p>{{title}} - <a v-bind:href="link">google</a></p> <!--CAN BE REPLACED WITH :HREF (SHORTCUT)-->
+      <p v-once>{{sayHello()}}</p> <!--renders just one time (no re-render)-->
+      <p>{{sayHello()}}</p>
+      <hr>
+      <p v-html="linkHTML"></p> <!--render HTML-->
+      <button v-on:click="updateCounter(3)">click me</button> <!--CAN BE REPLACED WITH @CLICK (SHORTCUT)-->
+      <p>count: {{count}}</p>
+      <p>Coordinates: {{x}} {{y}} Computed Sum: {{formattedString}}</p>
+      <hr>
+      Alert:
+      <input v-on:keyup.enter.space="alert"> <!--modifiers-->
+      <hr>
+      <div class="block" @click="attachRed = !attachRed" :class="divClasses"></div>
+      <div class="block" @click="attachRed = !attachRed" :class="divClasses"></div>
+      <div class="block" :style="{backgroundColor: 'darkblue'}"></div>
+      <hr>
+      <div v-if="y>100">Coord y > 100</div>
+      <div v-if="x>100">Coord x > 100</div>
+      <div v-else>Coord x < 100</div> <!-- V-ELSE automatically binds to the previous element (V-IF) -->
+      <hr>
+      <ul>
+        <li v-for="(f,i) in fruits">{{i}} -> {{f}}</li>
+      </ul>
+      <template v-for="(f,i) in fruits">
+        <h3 :key="f">{{f}}</h3>
+        <h4>{{i}}</h4>
+      </template>
+      <button @click="fruits.push('new fruit')">add fruit</button>
+      <hr>
+      <span v-for="(val, key, i) in person">{{key}}:{{val}} </span>
+      <span v-for="n in 5">{{n}}</span>
+      <hr>
+      <div id="mount"></div>
+      <hr>
+      <hello></hello>
+      <hello></hello>
+      <hr>
+      <div v-highlight="'red'">custom directive</div>
+      <div v-highlight:background.delayed="'yellow'">custom directive</div>
+      <!-- DIRECTIVE:ARG.MODIFIER -->
+      <div>{{'CUSTOM FILTER' | lowerc}}</div>
+    </div>
+    
+    <script>
+		
+		Vue.directive('highlight', {
+			bind( el, binding, vnode ){
+				//el.style.backgroundColor = binding.value;
+				var delay = 0;
+				if ( binding.modifiers[ 'delayed' ] ) {
+					delay = 3000;
+				}
+				
+				setTimeout(function(){
+					if ( binding.arg == 'background' ) {
+						el.style.backgroundColor = binding.value;
+					} else {
+						el.style.color = binding.value;
+					}
+				}, delay);
+			}
+		});
+		
+		Vue.filter('lowerc', function( val ){
+			return val.toLowerCase();
+		});
+		
+		const vm = new Vue({
+							   el       : '#app',
+							   data     : {
+								   title     : 'hello!',
+								   link      : 'https://google.com',
+								   linkHTML  : '<a href="https://google.com">link html</a>',
+								   count     : 0,
+								   x         : 0,
+								   y         : 0,
+								   attachRed : false,
+								   fruits    : [ 'banana', 'apple', 'mango', 'strawberry' ],
+								   person    : {
+									   name : 'lel',
+									   age  : 22
+								   }
+							   },
+							   computed : { // RUN ONLY IF ONE OF THE PROPERTIES INSIDE IS CHANGED
+								   formattedString : function(){
+									   return this.x + this.y;
+								   },
+								   divClasses      : function(){
+									   return {
+										   red   : this.attachRed,
+										   green : !this.attachRed
+									   };
+								   }
+							   },
+							   watch    : { // RUN WHEN THE VALUE CHANGE (LIKE A SUBSCRIPTION)
+								   count : function( val ){
+									   console.log(val);
+								   }
+							   },
+							   methods  : { //RUN EVERY TIME IS CALLED
+								   changeTitle   : function( v ){
+									   this.title = v.target.value;
+								   },
+								   sayHello      : function(){
+									   return this.title;
+								   },
+								   updateCounter : function( step, $event ){
+									   this.count += step;
+									   console.log($event);
+								   },
+								   updateCoords  : function( e ){
+									   this.x = e.clientX;
+									   this.y = e.clientY;
+								   },
+								   alert         : function( e ){
+									   alert(e.target.value);
+								   }
+							   }
+						   });
+		
+		
+		vm.title = 'changed from youside';
+		/* VUE PROXIES PROPERTIES, YOU CAN ACCESS THEM FROM THE OUTSIDE, BUT CAN NOT ADD OTHERS TO THE INSTANCE IN THIS WAY*/
+		vm.$data.title = 'changed from youside 2';
+		
+		
+		const vm2 = new Vue({template : '<h1>mounted</h1>'});
+		vm2.$mount('#mount');
+		
+		//COMPONENTS (global component)
+		Vue.component('hello', {
+			template     : '<div><h3>Hello component {{title}}</h3><button @click="event">event</button></div>',
+			data         : function(){ //in components data is a function (to enforce every component gets a new object instead of share a common one)
+				return {title : 'test'};
+			},
+			methods      : {
+				event : function(){ //EVENT GOES TO PARENT ONLY, PARENT CAN COMMUNICATE TO CHILDREN VIA PROPS
+					this.$emit('my-event');
+				}
+			},
+			beforeCreate : function(){
+				console.log('Hello component to be created');
+			},
+			beforeUpdate : function(){
+				console.log('Hello component to be updated');
+			}
+		});
+		
+		//LIFECYCLE
+		//beforeCreate()
+		//created()
+		//beforeMount()
+		//beforeUpdate()
+		//updated()
+		//beforeDestroy()
+		//destroyed()
+		
+		//activated()
+		//deactivated()
+		
+		//GLOBAL EVENT WITH EVENTBUS
+		
+		//RENDERING CHILDREN WITH SLOTS AND NAMED SLOTS (CAN HAVE DEFAULTS AS WELL)
+		
+		//SCOPE STYLES WITH "SCOPED" IN THE STYLE TAG IN THE SINGLE-FILE-COMPONENT
+		
+		//DYNAMIC COMPONENTS WITH <component :is"'componentName'"></component> (the component is always recreated if changed, but you can decide to keep the same instance wrapping the component in a <keep-alive></keep-alive> element)
+		
+		//CUSTOM FORM COMPONENTS THAT CAN BE BIND WITH V-MODEL => THEY NEED TO ACCEPT A PROPERTY VALUE AND EMIT AN 'input' EVENT
+		
+		//CUSTOM FILTERS AND DIRECTIVES LIKE COMPONENTS NEED TO BE IMPORTED
+		
+		//MIXINS TO MERGE DATA/METHODS TO COMPONENTS IN ORDER TO REPLICATE THEM AMONG MULTIPLE COMPONENTS (IT DOESN'T DESTROY ANYTHING, IF THERE IS SOMETHING DUPLICATED, FOR EXAMPLE LIFECYCLE METHODS, THE MIXIN GETS EXECUTED FIRST AND THE COMPONENT LAST)
+		
+		Vue.mixin({ //GLOBAL MIXIN AFFECTS EVERYTHING AND RUN FIRST, USUALLY YOU WILL USE LOCAL ONES
+					  created(){
+						  console.log('Global mixin created hook');
+					  }
+				  });
+		
+		//TRANSITION COMPONENT: <transition></transition> AND <transition-group></transition-group>
+		
+		//HTTP CALLS VIA vue-resource this.$http (NEED TO BE INCLUDED Vue.use(VueResource))
+		//INTERCEPT REQUESTS VIA Vue.http.interceptors.push((request, next) => {})
+		//INTERCEPT RESPONSES USING THE next IN THE INTERCEPTOR next(response => {})
+		
+		
+		////////
+		//ROUTER
+		////////
+		
+		//Vue.use(VueRouter)
+		
+		const userComponent = {/**/}; //USUALLY IMPORTED
+		const homeComponent = {/**/};
+		const userStart     = {/**/};
+		const userDetail    = {/**/};
+		const userEdit      = {/**/};
+		
+		const routes = [ {
+			path        : '',
+			component   : homeComponent,
+			name        : 'home',
+			beforeEnter : ( to, from, next ) =>{ //LOCAL GUARD
+			},
+			beforeLeave : ( to, from, next ) =>{ //LOCAL GUARD
+			}
+		}, {
+			path      : '/user/:id', //ACCESS WITH this.$route.params.id
+			component : userComponent,
+			children  : [ { //NESTED ROUTES
+				paths     : '',
+				component : userStart
+			}, {
+				paths     : ':id',
+				component : userDetail
+			}, {
+				paths     : ':id/edit',
+				component : userEdit
+			}, ]
+		}, {
+			path     : '/redirect',
+			redirect : {name : 'home'}
+		}, {
+			path     : '*', //GET ALL OTHER PATHS NOT HANDLED (ES. 404)
+			redirect : {name : 'home'}
+		}, ];
+		
+		//const router = new VueRouter({routes, mode, scrollBehaviour})
+		//INJECT COMPONENT VIA <router-view></router-view>
+		//YOU CAN NAME THE <router-view name=page-top></router-view> AND FILL IT DEPENDING ON THE VIEW (USING MULTIPLE ON THE PAGE)
+		
+		//LINKS WITH <router-link :to='{name: "home"}' tag='li' active-class='active' exact ><a>Home</a></router-link>
+		
+		//IMPERATIVE NAVIGATION WITH this.$router.push({name: "home"})
+		//WATCH FOR CHANGES watch: { '$route': function(to, from){} }
+		
+		//router.beforeEach((to, from, next) => {}) GLOBAL ENTER GUARD
+		
+		
+		////////////////////
+		//VUEX STATE MANAGER
+		////////////////////
+		
+		//ACCESS STORE WITH this.$store.state.MYVARIABLE
+		
+		//USING GETTERS LIKE: getters: {doubleCounter: state => {return state.counter * 2}}
+		//ACCESS WITH this.$store.getters.doubleCounter
+		//MAP GETTERS computed: {...mapGetters(['doubleCounter'])}
+		
+		//USING MUTATIONS LIKE: mutations: {add: state => {return state.counter + 1}}
+		//ACCESS WITH this.$store.mutations.doubleCounter
+		//MAP MUTATIONS computed: {...mapMutations(['doubleCounter'])}
+		
+		//ALL MUTATIONS MUST BE SYNCHRONOUS, USE ACTIONS FOR ASYNC TASKS
+		//USING ACTIONS LIKE: actions: {increment: (context, payload) => setTimeout(function{context.commit('add')},1000)}
+		//MAP ACTIONS methods: {...mapActions(['increment'])}
+		//ACCESS WITH this.$store.dispatch('increment', 10)
+		
+		
+		/////////////////
+		//FORM VALIDATION
+		/////////////////
+		
+		//USING PACKAGE vuelidate
+    
+    </script>
+  
+  </body>
+</html>

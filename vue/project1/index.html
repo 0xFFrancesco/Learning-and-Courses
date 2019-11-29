@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Monster Slayer</title>
+    <script src="https://npmcdn.com/vue/dist/vue.js"></script>
+    <link rel="stylesheet" href="css/foundation.min.css">
+    <link rel="stylesheet" href="css/app.css">
+  </head>
+  <body>
+    <div id="app">
+      <section class="row">
+        <div class="small-6 columns">
+          <h1 class="text-center">YOU</h1>
+          <div class="healthbar">
+            <div class="healthbar text-center" style="background-color: green; margin: 0; color: white;" :style="{width: you + '%'}">
+              {{you}}
+            </div>
+          </div>
+        </div>
+        <div class="small-6 columns">
+          <h1 class="text-center">MONSTER</h1>
+          <div class="healthbar">
+            <div class="healthbar text-center" style="background-color: green; margin: 0; color: white;" :style="{width: monster + '%'}">
+              {{monster}}
+            </div>
+          </div>
+        </div>
+      </section>
+      <section class="row controls" v-if="!isRunning">
+        <div class="small-12 columns">
+          <button id="start-game" @click="restart">START NEW GAME</button>
+        </div>
+      </section>
+      <section class="row controls" v-else>
+        <div class="small-12 columns">
+          <button id="attack" @click="attack">ATTACK</button>
+          <button id="special-attack" @click="specialAttack">SPECIAL ATTACK</button>
+          <button id="heal" @click="heal">HEAL</button>
+          <button id="give-up" @click="giveup">GIVE UP</button>
+        </div>
+      </section>
+      <section class="row log" v-if="logs.length">
+        <div class="small-12 columns">
+          <ul>
+            <li v-for='l in logs' :class="l.type + '-turn' ">
+              <span v-if="l.val >= 0">attack of </span>
+              <span v-if="l.val < 0">healing of </span>
+              {{Math.abs(l.val)}}
+            </li>
+          </ul>
+        </div>
+      </section>
+    </div>
+    
+    <script>
+		
+		new Vue({
+					el      : '#app',
+					data    : {
+						you       : 100,
+						monster   : 100,
+						logs      : [],
+						isRunning : false
+					},
+					methods : {
+						attack        : function(){
+							this.step(1, 1);
+						},
+						specialAttack : function(){
+							this.step(3, 3);
+						},
+						heal          : function(){
+							this.step(-1, 1);
+						},
+						step          : function( youType, monsterType ){
+					
+							let you     = this.getRandom() * youType;
+							let monster = this.getRandom() * monsterType;
+					
+							if ( youType < 0 ) {
+								this.you -= you + monster;
+							} else {
+								this.you -= monster;
+								this.monster -= you;
+							}
+					
+							this.log({
+										 type : 'player',
+										 val  : you
+									 });
+							this.log({
+										 type : 'monster',
+										 val  : monster
+									 });
+					
+							if ( this.you < 0 ) {
+								alert('you lost');
+								this.restart();
+							}
+							if ( this.monster < 0 ) {
+								alert('you won');
+								this.restart();
+							}
+					
+						},
+						restart       : function(){
+							this.logs     = [];
+							this.you      = 100;
+							this.monster  = 100;
+							this.isRunning = true;
+						},
+						giveup        : function(){
+							this.restart();
+							this.isRunning = false;
+						},
+				
+						log       : function( val ){
+							this.logs.push(val);
+						},
+						getRandom : function(){
+							return Math.round(Math.random() * 10);
+						},
+				
+					}
+			
+				});
+    
+    </script>
+  
+  </body>
+</html>
