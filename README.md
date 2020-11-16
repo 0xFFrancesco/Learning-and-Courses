@@ -19,6 +19,7 @@ Tech stuff 👾, code is related to courses mainly about:
     - Vuex
     - Typescript
     - Webpack 📦
+    - Docker
     - D3
     - Canvas 🖼
 
@@ -29,3 +30,4 @@ Tech stuff 👾, code is related to courses mainly about:
     - NodeJS
     - Express
     - Shell scripting
+    - Kubernets
