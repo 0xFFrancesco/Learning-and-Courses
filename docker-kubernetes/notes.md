@@ -40,3 +40,46 @@
 - Use multiple base images (each defines a phase);
 - You can then take output files from previous phases;
 - When it finishes all images gets destroyed expect for the last, which defines the result.
+
+
+
+# Kubernetes:
+
+### Under the hood
+- Needs a VM adapter to be installed separately (ex. VirtualBox);
+- Expects all the images to be already build (so not as docker-compose than can run builds);
+- Networking needs to be set up manually (so not as docker-compose that automatically sets up the network);
+- The whole process is to tell the master node the desired configuration so that it can recreate it. 
+
+### Nodes
+- Is a physical computer or a VM;
+- A copy of Docker is running in every node; 
+- A node can contain one or more containers;
+- CLI commands using `kubectl`.
+
+### Cluster
+- Sum of every node plus the master node;
+    - The master has programs to control the whole cluster. 
+- CLI commands using `minikube`.
+
+### Objects
+- For every config file you create an object;
+- An object can for example `Pod`, `ReplicaController`, `Service` or `StatefulSet` and many others;
+- The `ApiVersion` of the config file sets what objects are available to use in that file. 
+
+### Pods
+- Smallest single piece to be able to deploy a container;
+- It is meant to run one or more closely related containers.
+
+### Service
+- Set up a network in the cluster.
+
+### Volume
+- Can "save" data at the pod level;
+- Not useful for long lasting data, it gets destroyed with the pod.
+
+### Persistent Volume, Persistent Volume Claim
+- Useful to save long lasting data, ex. DB data.
+
+### Secret
+- Useful to save sensisitive data ex. a DB password and make it available as an environment variable to a pod. 
