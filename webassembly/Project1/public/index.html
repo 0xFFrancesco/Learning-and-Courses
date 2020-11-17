@@ -1,18 +1,68 @@
 <!doctype html>
 
 <html lang="en">
+
 <head>
-  <meta charset="utf-8">
+    <meta charset="utf-8">
 
-  <title>WebAssembly!</title>
-  <meta name="description" content="WebAssembly">
-  <meta name="author" content="Francesco Rizzi">
+    <title>WebAssembly!</title>
+    <meta name="description" content="WebAssembly">
+    <meta name="author" content="Francesco Rizzi">
 
-  <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="styles.css">
+
 
 </head>
 
 <body>
-  <script src="scripts.js"></script>
+
+    <script>
+
+        //LOAD A WASM FILE
+        WebAssembly.instantiateStreaming( fetch('program.wasm')).then(res => {
+            console.log('WASM file ready!');
+        });
+
+
+        //IMPORT A JS FN THAT AND LOG AN INT FROM WASM
+        const imports = {
+            env: {
+                consoleLog: console.log
+            }
+        }
+        WebAssembly.instantiateStreaming(
+            fetch('doubleNumber.wasm'), 
+            imports //IMPORT JS FUNCTION TO THE WEBASSEMBLY FILE
+        ).then(res => {
+
+            //GET THE EXPORTED WEBASSEMBLY FUNCTION TO THE JAVASCRIPT RUNTIME
+            const MyDoubleWasmFn = res.instance.exports.getDoubleNumber;
+            for(let i=1; i<11; i++) {
+                MyDoubleWasmFn(i);
+            }
+
+        })
+
+        //IMPORT A JS FN THAT AND LOG AN INT AND A STRING FROM WASM
+        const imports2 = {
+            env: {
+                integerLog: console.log,
+                stringLog: console.log
+            }
+        }
+        WebAssembly.instantiateStreaming(
+            fetch('doubleNumberString.wasm'), 
+            imports2
+        ).then(res => {
+            const MyDoubleWasmFn = res.instance.exports.getDoubleNumber;
+            for(let i=1; i<11; i++) {
+                MyDoubleWasmFn(i);
+            }
+
+        })
+    </script>
+
+    <script src="scripts.js"></script>
 </body>
+
 </html>
