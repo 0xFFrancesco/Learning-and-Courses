@@ -10,8 +10,9 @@
     - For that it needs to use some "glue-code" that can converts data back and forth from JavaScript to WebAssembly and vice versa.
 - You can import JavaScript functions into WebAssebly, and you can call them from inside the WebAssembly engine;
 - As vice versa the WebAssembly file exports functions that can be called by the JavaScript runtime;
+- All the WebAssembly APIs in the browser are found in the `WebAssembly` global object;
 - To load a compiled `.wasm` file you can use the browser API `WebAssembly.instantiateStreaming(source, importObject);`;
     - `source`: the path to the file;
-    - `importObject`: an JavaScript object than you can import to the `.wasm` file to call its functions;
+    - `importObject`: a JavaScript object than you can import to the `.wasm` file to call its functions;
     - It returns a promise that gets resolved with the instance of the WebAssembly code where you can call the WebAssembly exported functions.
     
