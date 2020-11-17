@@ -8,7 +8,7 @@ I think that learning is an **always-ongoing** process. Reading, studying and in
 
 This is a **BIGGG** repo with all the code related to the courses I attended, this code is not intended to go live.
 
-Tech stuff 👾, code is related to courses mainly about:
+Now techy stuff 👾. The code is related to courses mainly about:
 
 - Front-end
     - React ⚛️
@@ -18,16 +18,19 @@ Tech stuff 👾, code is related to courses mainly about:
     - VueJS 2
     - Vuex
     - Typescript
+    - WebAssembly/Emscripten 🏎
     - Webpack 📦
-    - Docker
     - D3
-    - Canvas 🖼
+    - Canvas
 
 - Back-end:
     - Go (Golang)
     - PHP 🐘
     - Symfony 🎼
-    - NodeJS
     - Express
+
+- Mixed:
+    - NodeJS
     - Shell scripting
-    - Kubernets
+    - Docker/Kubernetes 🐳
+
