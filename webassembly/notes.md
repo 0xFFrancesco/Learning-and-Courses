@@ -33,3 +33,18 @@
     - Provides CLI commands to compile from another low level language to `wasm`;
     - Generates a JavaScript and a WebAssembly file;
     - They alreay contain the "glue code" needed to easily communicate between the JavaScript runtime and WebAssembly;
+    - You just need to import the JavaScript file in the project;
+    - You need to specify at compile time the functions that you want Emscripten to export and make callable from JavaScript;
+    - Example: `emcc my_c_code.c -s WASM=1 -s EXPORTED_FUNCTIONS="['_myFuncName']" -o ./myAssetsFolder/my_compiled_code.js`;
+    - You need to prepend an underscore `_` at every exported function name;
+    - If you don't provide an `EXPORTED_FUNCTIONS` argument, it will automatically export and execute the `main()` function of the `.c` file;
+    - The exported functions are available in the `window` object as global variables;
+    - The `ccode()` function allows you to call a `c` function without the need to export it or prepend an underscore (ex. `ccode('myFuncName')`);
+    - It also allows you to easily get strings arount, ex. `ccode('myFuncName', 'string')`;
+    - The full `ccall` function is: `ccall('functionName', 'returnType', ['inputArg1Type', 'inputArgNType'], [inputArg1, inputArgN])`;
+    - Instead of using `ccall` every time, you can just `cwrap` a function to always be callable with that set of input types, ex. `cwrap('functionName', 'returnType', ['inputArg1Type', 'inputArgNType'])` and then just `functionName(inputArg1, inputArgN)`;
+    - Emscripten doesn't let you import JavaScript function inside `c`, instead it provides some helper functions via `#include <emscripten.h>`;
+    - One of the being `emscripten_run_script` that behaves like `eval`, executing arbitrary JavaScript from inside `c`;
+    - We can call and get the result of a JavaScript function return value in `c` code using for example `int res = emscripten_run_script_int("myJSFunction()")`;
+    - That was valid for a JavaScript function returnin an integer, but we have of course a version for a string: `char *res = emscripten_run_script_string("myJSFunctionString()")`;
+    - We have yet another way that is using `EM_JS` to create a function decoration callable in `c`, example: `EM_JS(void, myJSFuncInC, (int x), {console.log(x) //javascript code here!})`;

@@ -660,13 +660,6 @@ function cwrap(ident, returnType, argTypes, opts) {
 
 // We used to include malloc/free by default in the past. Show a helpful error in
 // builds with assertions.
-function _malloc() {
-  abort("malloc() called but not included in the build - add '_malloc' to EXPORTED_FUNCTIONS");
-}
-function _free() {
-  // Show a helpful error since we used to include free by default in the past.
-  abort("free() called but not included in the build - add '_free' to EXPORTED_FUNCTIONS");
-}
 
 var ALLOC_NORMAL = 0; // Tries to use _malloc()
 var ALLOC_STACK = 1; // Lives for the duration of the current function call
@@ -687,7 +680,7 @@ function allocate(slab, allocator) {
   if (allocator == ALLOC_STACK) {
     ret = stackAlloc(slab.length);
   } else {
-    ret = abort('malloc was not included, but is needed in allocate. Adding "_malloc" to EXPORTED_FUNCTIONS should fix that. This may be a bug in the compiler, please file an issue.');;
+    ret = _malloc(slab.length);
   }
 
   if (slab.subarray || slab.slice) {
@@ -1032,7 +1025,7 @@ function lengthBytesUTF32(str) {
 // It is the responsibility of the caller to free() that memory.
 function allocateUTF8(str) {
   var size = lengthBytesUTF8(str) + 1;
-  var ret = abort('malloc was not included, but is needed in allocateUTF8. Adding "_malloc" to EXPORTED_FUNCTIONS should fix that. This may be a bug in the compiler, please file an issue.');;
+  var ret = _malloc(size);
   if (ret) stringToUTF8Array(str, HEAP8, ret, size);
   return ret;
 }
@@ -1620,7 +1613,7 @@ var tempI64;
 var ASM_CONSTS = {
   
 };
-
+function myJSFunc1(x){ console.log('test JS from C using EM_JS! - ' + x + '.'); }
 
 
 
@@ -1716,6 +1709,44 @@ var ASM_CONSTS = {
       HEAPU8.copyWithin(dest, src, src + num);
     }
 
+  function _emscripten_get_heap_size() {
+      return HEAPU8.length;
+    }
+  
+  function abortOnCannotGrowMemory(requestedSize) {
+      abort('Cannot enlarge memory arrays to size ' + requestedSize + ' bytes (OOM). Either (1) compile with  -s INITIAL_MEMORY=X  with X higher than the current value ' + HEAP8.length + ', (2) compile with  -s ALLOW_MEMORY_GROWTH=1  which allows increasing the size at runtime, or (3) if you want malloc to return NULL (0) instead of this abort, compile with  -s ABORTING_MALLOC=0 ');
+    }
+  function _emscripten_resize_heap(requestedSize) {
+      requestedSize = requestedSize >>> 0;
+      abortOnCannotGrowMemory(requestedSize);
+    }
+
+  function _emscripten_run_script(ptr) {
+      eval(UTF8ToString(ptr));
+    }
+
+  /** @suppress{checkTypes} */
+  function _emscripten_run_script_int(ptr) {
+      return eval(UTF8ToString(ptr))|0;
+    }
+
+  function _emscripten_run_script_string(ptr) {
+      var s = eval(UTF8ToString(ptr));
+      if (s == null) {
+        return 0;
+      }
+      s += '';
+      var me = _emscripten_run_script_string;
+      var len = lengthBytesUTF8(s);
+      if (!me.bufferSize || me.bufferSize < len+1) {
+        if (me.bufferSize) _free(me.buffer);
+        me.bufferSize = len+1;
+        me.buffer = _malloc(me.bufferSize);
+      }
+      stringToUTF8(s, me.buffer, me.bufferSize);
+      return me.buffer;
+    }
+
   function flush_NO_FILESYSTEM() {
       // flush anything remaining in the buffers during shutdown
       if (typeof _fflush !== 'undefined') _fflush(0);
@@ -1797,13 +1828,24 @@ function intArrayToString(array) {
 __ATINIT__.push({ func: function() { ___wasm_call_ctors() } });
 var asmLibraryArg = {
   "emscripten_memcpy_big": _emscripten_memcpy_big,
+  "emscripten_resize_heap": _emscripten_resize_heap,
+  "emscripten_run_script": _emscripten_run_script,
+  "emscripten_run_script_int": _emscripten_run_script_int,
+  "emscripten_run_script_string": _emscripten_run_script_string,
   "fd_write": _fd_write,
   "memory": wasmMemory,
+  "myJSFunc1": myJSFunc1,
   "setTempRet0": _setTempRet0
 };
 var asm = createWasm();
 /** @type {function(...*):?} */
 var ___wasm_call_ctors = Module["___wasm_call_ctors"] = createExportWrapper("__wasm_call_ctors");
+
+/** @type {function(...*):?} */
+var ___em_js__myJSFunc1 = Module["___em_js__myJSFunc1"] = createExportWrapper("__em_js__myJSFunc1");
+
+/** @type {function(...*):?} */
+var _greet = Module["_greet"] = createExportWrapper("greet");
 
 /** @type {function(...*):?} */
 var _main = Module["_main"] = createExportWrapper("main");
@@ -1837,6 +1879,12 @@ var _emscripten_stack_get_free = Module["_emscripten_stack_get_free"] = function
 var _emscripten_stack_get_end = Module["_emscripten_stack_get_end"] = function() {
   return (_emscripten_stack_get_end = Module["_emscripten_stack_get_end"] = Module["asm"]["emscripten_stack_get_end"]).apply(null, arguments);
 };
+
+/** @type {function(...*):?} */
+var _malloc = Module["_malloc"] = createExportWrapper("malloc");
+
+/** @type {function(...*):?} */
+var _free = Module["_free"] = createExportWrapper("free");
 
 /** @type {function(...*):?} */
 var dynCall_jiji = Module["dynCall_jiji"] = createExportWrapper("dynCall_jiji");

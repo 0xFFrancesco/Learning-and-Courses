@@ -18,8 +18,17 @@
 
     <div class="title">Emscripten!</div>
 
-    <script src="demo.js"/>
+    <script src="demo.js"/></script>
     <script>
+
+        // CWRAPPING A FUNCTION TO BE EASILY EXECUTED AS A JS FUNCTION
+        const greet = cwrap('greet', 'string', ['string']);
+        //greet('Francesco');
+        //greet('Lukas');
+        //greet('Julian');
+
+        const getValueJS = () => 42;
+        const getValueJSString = () => 'Hey There!';
 
     </script>
 
