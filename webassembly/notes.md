@@ -30,4 +30,6 @@
         - There are tools like `Emscripten` that simplify this process.
 
 ### Emscripten
-
+    - Provides CLI commands to compile from another low level language to `wasm`;
+    - Generates a JavaScript and a WebAssembly file;
+    - They alreay contain the "glue code" needed to easily communicate between the JavaScript runtime and WebAssembly;
