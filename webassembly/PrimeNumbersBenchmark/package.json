@@ -1,0 +1,17 @@
+{
+  "name": "prime-numbers-benchmark",
+  "version": "1.0.0",
+  "description": "prime-numbers-benchmark",
+  "main": "index.html",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "compile": "emcc lib/demo.c -s WASM=1 -O3 -s EXPORTED_FUNCTIONS=\"['_main', '_WASMIsPrimeNumber', '_WASMCheckPrimes']\" -o ./public/demo.js",
+    "compileNoOptimized": "emcc lib/demo.c -s WASM=1 -O0 -s EXPORTED_FUNCTIONS=\"['_main', '_WASMIsPrimeNumber', '_WASMCheckPrimes']\" -o ./public/demo.js",
+    "start": "node server.js"
+  },
+  "author": "Francesco Rizzi",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}

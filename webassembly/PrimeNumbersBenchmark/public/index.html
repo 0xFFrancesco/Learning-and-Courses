@@ -1,0 +1,82 @@
+<!doctype html>
+
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+
+    <title>WebAssembly/Emscripten - Prime Numbers Benchmark!</title>
+    <meta name="description" content="WebAssembly/Emscripten - Prime Numbers Benchmark!">
+    <meta name="author" content="Francesco Rizzi">
+
+    <link rel="stylesheet" href="styles.css">
+
+
+</head>
+
+<body>
+
+    <div class="title">WebAssembly/Emscripten - Prime Numbers Benchmark!!</div>
+
+    <script src="demo.js"/></script>
+    <script>
+
+        const primesToCheck = 150000;
+
+        const JSIsPrimeNumber = deoptimize => num => {
+            if (deoptimize) {
+                eval(''); //PREVENT V8 TO COMPILE THIS FN TO NATIVE CODE
+            }
+            for (let i = 2; i<(num/2+1); i++) {
+                if (num % i === 0){
+                    return false;
+                }
+            }
+            return num !== 1 && num !== 0;
+        }
+
+        const checkPrimes = (iterations, fn) => {
+            let count = 0;
+            for (let i=0; i<iterations; i++) {
+                if (fn(i)) {
+                    count++;
+                }
+            }
+            return count;
+        }
+
+        Module['onRuntimeInitialized'] = () => {
+
+            console.log('WASM Ready!');
+
+            //Check JS
+            const JSStart = performance.now();
+            const JSPrimes = checkPrimes(primesToCheck, JSIsPrimeNumber(false));
+            console.log(`JS - Number of prime number found in 0..${primesToCheck}: ${JSPrimes}.`);
+            console.log(`JS - Executed in: ${Math.round(performance.now() - JSStart)}ms.`);
+
+            //Check JS DEOPTIMIZED
+            // const JSStartDeoptimized = performance.now();
+            // const JSPrimesDeoptimized = checkPrimes(primesToCheck, JSIsPrimeNumber(true));
+            // console.log(`JS Deoptimized - Number of prime number found in 0..${primesToCheck}: ${JSPrimesDeoptimized}.`);
+            // console.log(`JS Deoptimized - Executed in: ${Math.round(performance.now() - JSStartDeoptimized)}ms.`);
+
+            //Check WASM
+            const WASMStart = performance.now();
+            const WASMPrimes = checkPrimes(primesToCheck, _WASMIsPrimeNumber);
+            console.log(`WASM - Number of prime number found in 0..${primesToCheck}: ${WASMPrimes}.`);
+            console.log(`WASM - Executed in: ${Math.round(performance.now() - WASMStart)}ms.`);
+
+            //Check WASM [with loop inside c]
+            const WASMWithLoopStart = performance.now();
+            const WASMWithLoopPrimes = _WASMCheckPrimes(primesToCheck);
+            console.log(`WASM with loop inside c - Number of prime number found in 0..${primesToCheck}: ${WASMWithLoopPrimes}.`);
+            console.log(`WASM with loop inside c - Executed in: ${Math.round(performance.now() - WASMWithLoopStart)}ms.`);
+
+        }
+
+    </script>
+
+</body>
+
+</html>
