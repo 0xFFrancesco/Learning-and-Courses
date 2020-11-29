@@ -30,7 +30,7 @@
 - There is no easy way though to access that memory from the WebAssembly code, meaning that we have to manually add an import statement editing directly the compiled `.wasm` file;
 - There are tools like `Emscripten` that simplify this process.
 
-### Entering Emscripten
+### Emscripten
 - It provides CLI commands to compile from another low-level language to a `.wasm` file;
 - It generates a JavaScript and a WebAssembly file;
 - They alreay contain the "glue-code" needed to easily communicate between the JavaScript runtime and WebAssembly;
