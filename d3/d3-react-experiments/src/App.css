@@ -29,6 +29,11 @@ h1 {
     border-radius: 24px;
     background: #eeeeee;
     padding: 24px;
+    cursor: pointer;
+}
+
+.experiment-row.modOpen {
+    cursor: auto;
 }
 
 .experiment-row-title {
