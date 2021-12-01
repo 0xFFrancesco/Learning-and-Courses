@@ -1,5 +1,6 @@
 import React from 'react';
 
+import RandomLetters from './components/d3/RandomLetters';
 import ExperimentRow from './components/ExperimentRow';
 
 import './App.css';
@@ -12,7 +13,7 @@ function App() {
             </header>
             <div className="app-body">
                 <ExperimentRow title="Random letters">
-                    <span>test</span>
+                    <RandomLetters />
                 </ExperimentRow>
                 <ExperimentRow title="Scatter plot">
                     <span>test</span>
