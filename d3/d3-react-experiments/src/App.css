@@ -1,0 +1,51 @@
+html, body, .app {
+  font-size: 16px;
+  background: white;
+  color: #333333;
+  font-family: sans-serif;
+}
+
+h1 {
+    margin: 0;
+}
+
+.app-header {
+  background-color: #333333;
+  color: white;
+  padding: 64px 16px;
+  text-align: center;
+}
+
+.app-body {
+  padding: 64px 16px;
+  max-width: 1024px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.experiment-row {
+    border-radius: 24px;
+    background: #eeeeee;
+    padding: 24px;
+}
+
+.experiment-row-title {
+    font-size: 24px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.experiment-row-title.modOpen {
+    margin-bottom: 32px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid #c7c7c7;
+}
+
+.experiment-row-title-icon {
+    font-size: 16px;
+}
