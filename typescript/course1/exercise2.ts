@@ -20,18 +20,15 @@ console.log(c.acceleration);
 
 //SOLUTION
 class Car2 {
-
-	constructor(public name: string, public acceleration: number = 0) {
-	}
+	constructor(public name: string, public acceleration: number = 0) {}
 
 	honk(): void {
-		console.log('tot');
+		console.log("tot");
 	}
 
 	accelerate(speed: number): void {
 		this.acceleration += speed;
 	}
-
 }
 
 c = new Car2("BMW");
@@ -43,7 +40,7 @@ console.log(c.acceleration);
 // Exercise 2 - Two objects, based on each other ...
 var baseObject = {
 	width: 0,
-	length: 0
+	length: 0,
 };
 var rectangle = Object.create(baseObject);
 rectangle.width = 5;
@@ -75,7 +72,7 @@ console.log(new Rectangle(5, 2).calcSize());
 
 // Exercise 3 - Make sure to compile to ES5 (set the target in tsconfig.json)
 var p = {
-	_firstName: ""
+	_firstName: "",
 };
 Object.defineProperty(p, "firstName", {
 	get: function (): any {
@@ -84,13 +81,12 @@ Object.defineProperty(p, "firstName", {
 	set: function (value: any): any {
 		if (value.length > 3) {
 			this._firstName = value;
-		}
-		else {
+		} else {
 			this._firstName = "";
 		}
 	},
 	enumerable: true,
-	configurable: true
+	configurable: true,
 });
 console.log(p.firstName);
 p.firstName = "Ma";
@@ -100,21 +96,20 @@ console.log(p.firstName);
 
 //SOLUTION
 class P {
-	private _firstName: string = '';
-	get firstName(): string{
+	private _firstName: string = "";
+	get firstName(): string {
 		return this._firstName;
 	}
-	set firstName(val: string){
+	set firstName(val: string) {
 		if (val.length > 3) {
 			this._firstName = val;
-		}
-		else {
+		} else {
 			this._firstName = "";
 		}
 	}
 }
 
-let p2= new P();
+let p2 = new P();
 console.log(p2.firstName);
 p2.firstName = "Ma";
 console.log(p2.firstName);
