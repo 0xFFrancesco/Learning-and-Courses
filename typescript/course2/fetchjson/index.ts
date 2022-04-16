@@ -2,13 +2,20 @@ import axios from "axios";
 
 const url = "https://jsonplaceholder.typicode.com/todos/1;";
 
-axios.get(url).then((res) => {
-	const todo = res.data;
-	const { ID, Title, finished } = todo;
+interface ITodo {
+	id: number;
+	title: string;
+	completed: boolean;
+}
 
-	console.log(`
-        The todo with ID: ${ID}
-        Has a title of: ${Title}
-        Is it finished? ${finished}    
-    `);
+axios.get<ITodo>(url).then((res) => {
+	logTodo(res.data);
 });
+
+const logTodo = (todo: ITodo) => {
+	console.log(`
+        The todo with ID: ${todo.id}
+        Has a title of: ${todo.title}
+        Is it finished? ${todo.completed ? "yes" : "no"}    
+    `);
+};
