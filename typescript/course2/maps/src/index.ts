@@ -6,4 +6,7 @@ import { User } from "./User";
 const user = new User();
 const company = new Company();
 
-console.log(user, company);
+const map = new google.maps.Map(document.getElementById("MAP"), {
+	zoom: 1,
+	center: user.location,
+});
