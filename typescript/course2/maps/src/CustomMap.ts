@@ -5,6 +5,7 @@ export interface Mappable {
 		lat: number;
 		lng: number;
 	};
+	getInfo(): string;
 }
 
 export class CustomMap {
@@ -25,5 +26,15 @@ export class CustomMap {
 			map: this.googleMap,
 			position: object.location,
 		});
+
+		if (object.getInfo()) {
+			const infoWindow = new google.maps.InfoWindow({
+				content: object.getInfo(),
+			});
+
+			marker.addListener("click", () => {
+				infoWindow.open(this.googleMap, marker);
+			});
+		}
 	}
 }
