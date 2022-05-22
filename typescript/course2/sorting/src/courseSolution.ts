@@ -1,24 +1,17 @@
-class Sorter {
-	constructor(public collection: number[] | string) {}
-
-	sort(): void {
-		const { length } = this.collection;
-
-		for (let i = 0; i < length; i++) {
-			for (let j = 0; j < length - i - 1; j++) {
-				if (this.collection[j] > this.collection[j + 1]) {
-					const leftHand = this.collection[j];
-					this.collection[j] = this.collection[j + 1];
-					this.collection[j + 1] = leftHand;
-				}
-			}
-		}
-	}
-}
-
-const sorter = new Sorter([10, 3, -5, 0]);
+import { NumbersCollection } from "./NumbersCollection";
+import { Sortable, Sorter } from "./Sorter";
+import { CharactersCollection } from "./CharactersCollection";
 
 export const runCourseSolution = () => {
+	sortAndLog(new NumbersCollection([10, 3, -5, 0]));
+	sortAndLog(new CharactersCollection("abCXsakwVDAlmssvA"));
+};
+
+const sortAndLog = (input: Sortable) => {
+	const sorter = new Sorter(input);
+	console.log(`------------
+Input: ${input.getData()}`);
 	sorter.sort();
-	console.log(sorter.collection);
+	console.log(`Output: ${sorter.getResult()}
+------------`);
 };
