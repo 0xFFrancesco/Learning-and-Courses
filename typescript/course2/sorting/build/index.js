@@ -1,12 +1,12 @@
-import { runCourseSolution } from "./courseSolution";
-import { runMySolution } from "./mySolution";
-
+"use strict";
+Object.defineProperty(exports, "__esModule", { value: true });
+var courseSolution_1 = require("./courseSolution");
+var mySolution_1 = require("./mySolution");
 console.log("My Solution:");
 console.log("----------------------------------");
-runMySolution();
+(0, mySolution_1.runMySolution)();
 console.log("----------------------------------");
-
 console.log("Course Solution:");
 console.log("----------------------------------");
-runCourseSolution();
+(0, courseSolution_1.runCourseSolution)();
 console.log("----------------------------------");
