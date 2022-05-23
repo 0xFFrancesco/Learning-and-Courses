@@ -13,12 +13,20 @@ var CharactersCollection = /** @class */ (function () {
         configurable: true
     });
     CharactersCollection.prototype.compare = function (i, j) {
-        return this.data[i] > this.data[j];
+        var diff = this.data[i].charCodeAt(0) - this.data[j].charCodeAt(0);
+        var lowerI = this.data[i].toLocaleLowerCase();
+        var lowerJ = this.data[j].toLocaleLowerCase();
+        if (lowerI === lowerJ) {
+            return diff < 0;
+        }
+        return lowerI > lowerJ;
     };
     CharactersCollection.prototype.swap = function (i, j) {
-        var leftHand = this.data[i];
-        //this.data[i] = this.data[j];
-        //this.data[j] = leftHand;
+        var characters = this.data.split("");
+        var leftHand = characters[i];
+        characters[i] = characters[j];
+        characters[j] = leftHand;
+        this.data = characters.join("");
     };
     CharactersCollection.prototype.getData = function () {
         return this.data;
