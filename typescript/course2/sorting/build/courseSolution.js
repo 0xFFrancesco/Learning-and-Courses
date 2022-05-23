@@ -12,6 +12,7 @@ var runCourseSolution = function () {
     linkedList.add(3);
     linkedList.add(-1);
     linkedList.add(-3);
+    linkedList.add(0);
     sortAndLog(linkedList);
 };
 exports.runCourseSolution = runCourseSolution;
