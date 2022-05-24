@@ -1,7 +1,7 @@
 import { NumbersCollection } from "./NumbersCollection";
-import { Sortable, Sorter } from "./Sorter";
 import { CharactersCollection } from "./CharactersCollection";
 import { LinkedList } from "./LinkedList";
+import { Sortable } from "./Sorter";
 
 export const runCourseSolution = () => {
 	sortAndLog(new NumbersCollection([10, 3, -5, 0]));
@@ -13,15 +13,13 @@ export const runCourseSolution = () => {
 	linkedList.add(-1);
 	linkedList.add(-3);
 	linkedList.add(0);
-
 	sortAndLog(linkedList);
 };
 
-const sortAndLog = (input: Sortable) => {
-	const sorter = new Sorter(input);
+const sortAndLog = (sortableData: Sortable) => {
 	console.log(`------------
-Input: ${input.getData()}`);
-	sorter.sort();
-	console.log(`Output: ${sorter.getResult()}
+Input: ${sortableData.getResult()}`);
+	sortableData.sort();
+	console.log(`Output: ${sortableData.getResult()}
 ------------`);
 };

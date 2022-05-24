@@ -21,10 +21,12 @@ class ListNode {
 	}
 }
 
-export class LinkedList implements Sortable {
+export class LinkedList extends Sortable {
 	private head: ListNode | null = null;
 
-	constructor() {}
+	constructor() {
+		super();
+	}
 
 	add(value: number): void {
 		const node = new ListNode(value);
