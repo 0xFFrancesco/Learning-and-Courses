@@ -1,25 +1,9 @@
-import fs from "fs";
+import { CsvFileReader } from "./CsvFileReader";
+import { MatchRowParser, MatchResult, MatchTuple } from "./MatchResult";
 
-enum MatchResult {
-	HomeWin = "H",
-	AwayWin = "A",
-	Draw = "D",
-}
-
-const getData = () => {
-	const matches = fs.readFileSync("football.csv", {
-		encoding: "utf-8",
-	});
-
-	const matchesData = matches
-		.split("\n")
-		.map((row: string): string[] => row.split(","));
-
-	return matchesData;
-};
-
-const analyse = (matchesData: string[][]) => {
+const analyseFootballCsv = (matchesData: MatchTuple[]) => {
 	let manUnitedWins = 0;
+
 	for (let match of matchesData) {
 		if (match[1] === "Man United" && match[5] === MatchResult.HomeWin) {
 			manUnitedWins++;
@@ -30,10 +14,15 @@ const analyse = (matchesData: string[][]) => {
 			manUnitedWins++;
 		}
 	}
+
 	return manUnitedWins;
 };
 
 (() => {
-	const results = analyse(getData());
+	const fileData =
+		new CsvFileReader<MatchTuple>("football.csv", MatchRowParser)
+			.read()
+			.getData() || [];
+	const results = analyseFootballCsv(fileData);
 	console.log(`Man. United won ${results} games.`);
 })();
