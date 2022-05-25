@@ -1,4 +1,4 @@
-import { Sortable } from "./Sorter";
+import { Sortable } from "./Sortable";
 
 class ListNode {
 	private _next: ListNode | null = null;

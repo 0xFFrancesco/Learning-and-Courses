@@ -1,4 +1,4 @@
-import { Sortable } from "./Sorter";
+import { Sortable } from "./Sortable";
 
 export class NumbersCollection extends Sortable {
 	constructor(private data: number[]) {

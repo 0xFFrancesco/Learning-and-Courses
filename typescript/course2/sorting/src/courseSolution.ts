@@ -1,7 +1,7 @@
 import { NumbersCollection } from "./NumbersCollection";
 import { CharactersCollection } from "./CharactersCollection";
 import { LinkedList } from "./LinkedList";
-import { Sortable } from "./Sorter";
+import { Sortable } from "./Sortable";
 
 export const runCourseSolution = () => {
 	sortAndLog(new NumbersCollection([10, 3, -5, 0]));
