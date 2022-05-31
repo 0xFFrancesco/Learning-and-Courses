@@ -1,5 +1,5 @@
 import { CsvFileReader } from "./CsvFileReader";
-import { MatchRowParser, MatchResult, MatchTuple } from "./MatchResult";
+import { MatchRowParser, MatchResult, MatchTuple } from "./MatchData";
 
 const analyseFootballCsv = (matchesData: MatchTuple[]) => {
 	let manUnitedWins = 0;
