@@ -1,25 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+var WinsAnalysis_1 = require("./analyzers/WinsAnalysis");
 var CsvFileReader_1 = require("./CsvFileReader");
-var MatchResult_1 = require("./MatchResult");
-var analyseFootballCsv = function (matchesData) {
-    var manUnitedWins = 0;
-    for (var _i = 0, matchesData_1 = matchesData; _i < matchesData_1.length; _i++) {
-        var match = matchesData_1[_i];
-        if (match[1] === "Man United" && match[5] === MatchResult_1.MatchResult.HomeWin) {
-            manUnitedWins++;
-        }
-        else if (match[2] === "Man United" &&
-            match[5] === MatchResult_1.MatchResult.AwayWin) {
-            manUnitedWins++;
-        }
-    }
-    return manUnitedWins;
-};
+var MatchData_1 = require("./MatchData");
+var ConsoleReport_1 = require("./reportTargets/ConsoleReport");
+var Summary_1 = require("./Summary");
 (function () {
-    var fileData = new CsvFileReader_1.CsvFileReader("football.csv", MatchResult_1.MatchRowParser)
+    var fileData = new CsvFileReader_1.CsvFileReader("football.csv", MatchData_1.MatchRowParser)
         .read()
         .getData() || [];
-    var results = analyseFootballCsv(fileData);
-    console.log("Man. United won ".concat(results, " games."));
+    var summary = new Summary_1.Summary(new WinsAnalysis_1.WinsAnalysis("Man City"), new ConsoleReport_1.ConsoleReport());
+    summary.buildAndPrintReport(fileData);
 })();

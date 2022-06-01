@@ -1,28 +1,18 @@
+import { WinsAnalysis } from "./analyzers/WinsAnalysis";
 import { CsvFileReader } from "./CsvFileReader";
-import { MatchRowParser, MatchResult, MatchTuple } from "./MatchData";
-
-const analyseFootballCsv = (matchesData: MatchTuple[]) => {
-	let manUnitedWins = 0;
-
-	for (let match of matchesData) {
-		if (match[1] === "Man United" && match[5] === MatchResult.HomeWin) {
-			manUnitedWins++;
-		} else if (
-			match[2] === "Man United" &&
-			match[5] === MatchResult.AwayWin
-		) {
-			manUnitedWins++;
-		}
-	}
-
-	return manUnitedWins;
-};
+import { MatchRowParser, MatchTuple } from "./MatchData";
+import { ConsoleReport } from "./reportTargets/ConsoleReport";
+import { Summary } from "./Summary";
 
 (() => {
 	const fileData =
 		new CsvFileReader<MatchTuple>("football.csv", MatchRowParser)
 			.read()
 			.getData() || [];
-	const results = analyseFootballCsv(fileData);
-	console.log(`Man. United won ${results} games.`);
+	const summary = new Summary(
+		new WinsAnalysis("Man City"),
+		new ConsoleReport()
+	);
+
+	summary.buildAndPrintReport(fileData);
 })();
