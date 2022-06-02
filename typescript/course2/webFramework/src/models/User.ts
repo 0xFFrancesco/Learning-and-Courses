@@ -1,12 +1,16 @@
+import axios from "axios";
+import { Eventing } from "./Eventing";
+
+const API_URL = "http://localhost:3000";
+
 interface UserProps {
+	id?: number;
 	name?: string;
 	age?: number;
 }
 
-type VoidFn = () => void;
-
 export class User {
-	private subscribers: { [key: string]: VoidFn[] } = {};
+	public events: Eventing = new Eventing();
 
 	constructor(private data: UserProps) {}
 
@@ -18,13 +22,18 @@ export class User {
 		Object.assign(this.data, update);
 	}
 
-	on(eventName: string, callback: VoidFn): void {
-		const handlers = this.subscribers[eventName] || [];
-		handlers.push(callback);
-		this.subscribers[eventName] = handlers;
+	fetch(): void {
+		axios.get(`${API_URL}/users/${this.get("id")}`).then((res): void => {
+			this.set(res.data);
+		});
 	}
 
-	trigger(eventName: string): void {
-		this.subscribers[eventName]?.forEach((callback) => callback());
+	save(): void {
+		const id = this.get("id");
+		if (id) {
+			axios.put(`${API_URL}/users/${id}`, this.data);
+		} else {
+			axios.post(`${API_URL}/users`, this.data);
+		}
 	}
 }
