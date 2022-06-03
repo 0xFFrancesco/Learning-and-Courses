@@ -1,7 +1,7 @@
-import axios from "axios";
+import { Attributes } from "./Attributes";
 import { Eventing } from "./Eventing";
-
-const API_URL = "http://localhost:3000";
+import { Sync } from "./Sync";
+import { API_URL } from "./utils";
 
 interface UserProps {
 	id?: number;
@@ -10,30 +10,15 @@ interface UserProps {
 }
 
 export class User {
-	public events: Eventing = new Eventing();
+	private events: Eventing = new Eventing();
+	private sync: Sync<UserProps> = new Sync<UserProps>(`${API_URL}/users`);
+	private attributes: Attributes<UserProps>;
 
-	constructor(private data: UserProps) {}
-
-	get(propName: string): string | number {
-		return this.data[propName];
+	constructor(attrs: UserProps) {
+		this.attributes = new Attributes<UserProps>(attrs);
 	}
 
-	set(update: UserProps): void {
-		Object.assign(this.data, update);
-	}
-
-	fetch(): void {
-		axios.get(`${API_URL}/users/${this.get("id")}`).then((res): void => {
-			this.set(res.data);
-		});
-	}
-
-	save(): void {
-		const id = this.get("id");
-		if (id) {
-			axios.put(`${API_URL}/users/${id}`, this.data);
-		} else {
-			axios.post(`${API_URL}/users`, this.data);
-		}
+	get() {
+		return this.attributes.get();
 	}
 }
