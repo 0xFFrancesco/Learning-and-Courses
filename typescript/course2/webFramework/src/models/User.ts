@@ -1,6 +1,7 @@
+import { ApiSync } from "./ApiSync";
 import { Attributes } from "./Attributes";
 import { Eventing } from "./Eventing";
-import { Sync } from "./Sync";
+import { Model } from "./Model";
 import { API_URL } from "./utils";
 
 interface UserProps {
@@ -9,16 +10,16 @@ interface UserProps {
 	age?: number;
 }
 
-export class User {
-	private events: Eventing = new Eventing();
-	private sync: Sync<UserProps> = new Sync<UserProps>(`${API_URL}/users`);
-	private attributes: Attributes<UserProps>;
-
-	constructor(attrs: UserProps) {
-		this.attributes = new Attributes<UserProps>(attrs);
+export class User extends Model<UserProps> {
+	static buildUser(attrs: UserProps) {
+		return new User(
+			new Attributes<UserProps>(attrs),
+			new Eventing(),
+			new ApiSync<UserProps>(`${API_URL}/users`)
+		);
 	}
 
-	get() {
-		return this.attributes.get();
+	isAdminUser(): boolean {
+		return this.get("id") === 1;
 	}
 }
