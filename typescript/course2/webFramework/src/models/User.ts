@@ -1,10 +1,11 @@
 import { ApiSync } from "./ApiSync";
 import { Attributes } from "./Attributes";
+import { Collection } from "./Collection";
 import { Eventing } from "./Eventing";
 import { Model } from "./Model";
 import { API_URL } from "./utils";
 
-interface UserProps {
+export interface UserProps {
 	id?: number;
 	name?: string;
 	age?: number;
@@ -19,7 +20,14 @@ export class User extends Model<UserProps> {
 		);
 	}
 
-	isAdminUser(): boolean {
-		return this.get("id") === 1;
+	static buildUserCollection(): Collection<User, UserProps> {
+		return new Collection<User, UserProps>(
+			`${API_URL}/users`,
+			User.buildUser
+		);
+	}
+
+	setRandomAge(): void {
+		this.set({ age: Math.round(Math.random() * 100) });
 	}
 }

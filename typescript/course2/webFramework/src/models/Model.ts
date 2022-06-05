@@ -12,7 +12,7 @@ interface Sync<T> {
 	save(data: T): AxiosPromise<T>;
 }
 
-interface Events {
+export interface Events {
 	on(eventName: string, callback: VoidFn): void;
 	trigger(eventName: string): void;
 }
