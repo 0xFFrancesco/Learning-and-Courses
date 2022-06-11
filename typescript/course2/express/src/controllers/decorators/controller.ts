@@ -5,9 +5,9 @@ export const router = express.Router();
 
 export function controller(routePrefix: string) {
 	return function (target: Function) {
-		for (let key of Object.getOwnPropertyNames(target.prototype)) {
-			const routeHandler = target.prototype[key];
-			const path = Reflect.getMetadata("path", target.prototype, key);
+		for (let value of Object.getOwnPropertyNames(target.prototype)) {
+			const routeHandler = target.prototype[value];
+			const path = Reflect.getMetadata("path", target.prototype, value);
 
 			if (path) {
 				router.get(`${routePrefix}${path}`, routeHandler);
