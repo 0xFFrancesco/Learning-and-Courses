@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Web Components</title>
+    <style>
+        div {
+            border: 2px solid orange;
+        }
+    </style>
+    <script src="./tooltip.js"></script>
+    <script src="./confirm-link.js"></script>
+</head>
+<body>
+    Hey there, custom HTML components here!
+    <hr />
+    <uc-tooltip text="Tooltip text!">Hover me.</uc-tooltip>
+    <uc-tooltip></uc-tooltip>
+    <div>This normal DIV doesn't get the shadow-DOM styles!</div>
+    <hr/>
+    <a href="https://google.com">Normal link</a>    
+    <br/>
+    <!-- When the web component is extending another HTML element (like <a>), then you have to still use the <a> tag, and to specify that that is your new custom element you have to define the attribute "is" to be your custom element name. -->
+    <a is="uc-confirm-link" href="https://google.com">My custom confirmation link</a>
+</body>
+</html>
