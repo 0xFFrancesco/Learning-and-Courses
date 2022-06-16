@@ -6,6 +6,16 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Web Components</title>
     <style>
+        :root {
+            --color-primary: lightblue;
+        }
+
+        * {
+            box-sizing: border-box;
+            font-family: sans-serif;
+            font-size: 16px;
+        }
+
         div {
             border: 2px solid orange;
         }
@@ -26,7 +36,8 @@
 
     <hr />
     
-    <uc-tooltip text="Tooltip text!">Hover <span class="highlight">me (the slot content is not actually part of the shadow-DOM, so this, even "inside" the web component, is still styled via the normal-DOM. You can still try to apply styles from the shadow-DOM using the "::slotted()" CSS keyword)</span>.</uc-tooltip>
+    <p><uc-tooltip class="myClass" text="Tooltip text!">Hover <span class="highlight">me (the slot content is not actually part of the shadow-DOM, so this, even "inside" the web component, is still styled via the normal-DOM. You can still try to apply styles from the shadow-DOM using the "::slotted()" CSS keyword)</span>.</uc-tooltip>
+    </p>
     <br/>
     <uc-tooltip></uc-tooltip>
     <div>This normal DIV doesn't get the shadow-DOM styles!</div>

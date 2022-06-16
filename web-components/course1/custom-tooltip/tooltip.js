@@ -1,7 +1,9 @@
 class Tooltip extends HTMLElement {
 	constructor() {
 		super();
+		this._tooltipIcon;
 		this._tooltipContainer;
+		this._tooltipVisible = false;
 		this._tooltipText = "Default tooltip content.";
 		this.attachShadow({ mode: "open" });
 
@@ -13,6 +15,9 @@ class Tooltip extends HTMLElement {
                     color: white;
                     position: absolute;
                     z-index: 10;
+                    padding: 3px;
+                    border-radius: 5px;
+                    box-shadow: 1px 1px 6px rgba(0, 0, 0, 0.25);
                 }
                 
                 span {
@@ -38,8 +43,13 @@ class Tooltip extends HTMLElement {
                 }
 
                 /* :host is used to target the whole custom web component from the inside. */
-                :host:hover {
-                    border-bottom: 1px solid red;
+                :host(.myClass:hover) {
+                    border: 2px solid var(--color-primary, yellow);
+                }
+
+                /* Apply a style aware of the parent component. */
+                :host-context(p) {
+                    font-weight: bold;
                 }
             </style>
             <slot>Default hover me.</slot>
@@ -51,26 +61,53 @@ class Tooltip extends HTMLElement {
 		if (this.hasAttribute("text")) {
 			this._tooltipText = this.getAttribute("text");
 		}
-
-		const tooltipIcon = this.shadowRoot.querySelector("span");
-		tooltipIcon.addEventListener(
+		this._tooltipIcon = this.shadowRoot.querySelector("span");
+		this._tooltipIcon.addEventListener(
 			"mouseenter",
 			this._showTooltip.bind(this)
 		);
-		tooltipIcon.addEventListener(
+		this._tooltipIcon.addEventListener(
 			"mouseleave",
 			this._hideTooltip.bind(this)
 		);
 	}
 
+	static get observedAttributes() {
+		return ["text"];
+	}
+
+	attributeChangedCallback(name, oldValue, newValue) {
+		if (name === "text" && oldValue !== newValue) {
+			this._tooltipText = newValue;
+		}
+	}
+
+	disconnectedCallback() {
+		console.log("disconnect");
+		this._tooltipIcon.removeEventListener("mouseenter", this._showTooltip);
+		this._tooltipIcon.removeEventListener("mouseleave", this._hideTooltip);
+	}
+
 	_showTooltip() {
-		this._tooltipContainer = document.createElement("div");
-		this._tooltipContainer.textContent = this._tooltipText;
-		this.shadowRoot.appendChild(this._tooltipContainer);
+		this._tooltipVisible = true;
+		this._render();
 	}
 
 	_hideTooltip() {
-		this.shadowRoot.removeChild(this._tooltipContainer);
+		this._tooltipVisible = false;
+		this._render();
+	}
+
+	_render() {
+		if (this._tooltipVisible) {
+			this._tooltipContainer = document.createElement("div");
+			this._tooltipContainer.textContent = this._tooltipText;
+			this.shadowRoot.appendChild(this._tooltipContainer);
+		} else {
+			if (this._tooltipContainer) {
+				this.shadowRoot.removeChild(this._tooltipContainer);
+			}
+		}
 	}
 }
 
