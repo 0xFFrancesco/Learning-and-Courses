@@ -36,6 +36,11 @@ class Tooltip extends HTMLElement {
                     text-align: center;
                     border-radius: 50%;
                 }
+
+                /* :host is used to target the whole custom web component from the inside. */
+                :host:hover {
+                    border-bottom: 1px solid red;
+                }
             </style>
             <slot>Default hover me.</slot>
             <span class='icon'>?</span>
