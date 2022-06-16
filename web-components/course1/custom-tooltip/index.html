@@ -9,17 +9,30 @@
         div {
             border: 2px solid orange;
         }
+
+        .highlight {
+            color: red;
+        }
+
+        uc-tooltip {
+            background: #eee;
+        }
     </style>
     <script src="./tooltip.js"></script>
     <script src="./confirm-link.js"></script>
 </head>
 <body>
-    Hey there, custom HTML components here!
+    <h1>Hey there, custom HTML components here!</h1>
+
     <hr />
-    <uc-tooltip text="Tooltip text!">Hover me.</uc-tooltip>
+    
+    <uc-tooltip text="Tooltip text!">Hover <span class="highlight">me (the slot content is not actually part of the shadow-DOM, so this, even "inside" the web component, is still styled via the normal-DOM. You can still try to apply styles from the shadow-DOM using the "::slotted()" CSS keyword)</span>.</uc-tooltip>
+    <br/>
     <uc-tooltip></uc-tooltip>
     <div>This normal DIV doesn't get the shadow-DOM styles!</div>
+    
     <hr/>
+    
     <a href="https://google.com">Normal link</a>    
     <br/>
     <!-- When the web component is extending another HTML element (like <a>), then you have to still use the <a> tag, and to specify that that is your new custom element you have to define the attribute "is" to be your custom element name. -->

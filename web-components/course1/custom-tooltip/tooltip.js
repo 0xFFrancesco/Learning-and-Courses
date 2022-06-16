@@ -18,9 +18,27 @@ class Tooltip extends HTMLElement {
                 span {
                     position: relative;
                 }
+
+                .highlight {
+                    color: green;
+                }
+
+                /* Style things inside a slot (coming from normal-DOM) */
+                ::slotted(.highlight) {
+                    /* Using !important as the normal-DOM style takes precedence */
+                    color: blue !important;
+                }
+
+                .icon {
+                    background: black;
+                    color: white;
+                    padding: 2px 8px;
+                    text-align: center;
+                    border-radius: 50%;
+                }
             </style>
             <slot>Default hover me.</slot>
-            <span> (?)</span>
+            <span class='icon'>?</span>
         `;
 	}
 
