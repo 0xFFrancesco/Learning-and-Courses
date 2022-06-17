@@ -1,25 +1,48 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Web Components</title>
-    <style>
-        * {
-            box-sizing: border-box;
-        } 
-        
-        body {
-            margin: 2rem;
-            font-family: sans-serif;
-        }
-    </style>
-    <script src="./modal.js"></script>
-</head>
-<body>
-    <uc-modal>Lorem ipsum, dolor sit amet consectetur adipisicing elit. Necessitatibus enim at sequi, atque et quos in qui quibusdam aperiam velit rerum quae perspiciatis expedita maiores sunt facilis omnis illum corporis.</uc-modal>
-    <p>Please confirm your choiche</p>
-    <button>Show details</button>
-</body>
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Web Components</title>
+		<style>
+			* {
+				box-sizing: border-box;
+			}
+
+			body {
+				margin: 2rem;
+				font-family: sans-serif;
+			}
+		</style>
+		<script src="./modal.js"></script>
+	</head>
+	<body>
+		<uc-modal>
+			<h2 slot="title">Please confirm</h2>
+			Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+			Necessitatibus enim at sequi, atque et quos in qui quibusdam aperiam
+			velit rerum quae perspiciatis expedita maiores sunt facilis omnis
+			illum corporis.
+		</uc-modal>
+		<p>Please confirm your choiche</p>
+		<button>Show details</button>
+		<script>
+			const confirmButton = document.querySelector("button");
+			const modal = document.querySelector("uc-modal");
+
+			confirmButton.addEventListener("click", () => {
+				modal.open();
+				console.log(`Is opened: ${modal.isOpen}.`);
+			});
+
+			modal.addEventListener("confirm", () => {
+				console.log("Confirmed.");
+			});
+
+			modal.addEventListener("cancel", () => {
+				console.log("Cancelled.");
+			});
+		</script>
+	</body>
 </html>

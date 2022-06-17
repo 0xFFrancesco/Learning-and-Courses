@@ -12,11 +12,14 @@ class Modal extends HTMLElement {
                     height: 100vh;
                     background: rgba(0,0,0,0.75);
                     z-index: 10;
+                    opacity: 0;
+                    pointer-events: none;
+                    transition: all .3s;
                 }
 
                 #modal {
                     position: fixed;
-                    top: 15vh;
+                    top: 10vh;
                     left: 25%;
                     width: 50%;
                     background: white;
@@ -25,14 +28,29 @@ class Modal extends HTMLElement {
                     display: flex;
                     flex-direction: column;
                     justify-content: space-between;
+                    opacity: 0;
+                    pointer-events: none;
+                    transition: all .3s;
+                }
+
+                :host([opened]) #backdrop, 
+                :host([opened]) #modal {
+                    opacity: 1;
+                    pointer-events: all;
+                }
+
+                :host([opened]) #modal {
+                    top: 15vh;
                 }
 
                 header {
                     padding: 1rem;
+                    border-bottom: 1px solid #ccc;
                 }
 
-                header h2 {
+                ::slotted(h2) {
                     font-size: 1.25rem;
+                    margin: 0;
                 }
 
                 #main {
@@ -50,20 +68,63 @@ class Modal extends HTMLElement {
                     margin: 0 0.25rem;
                 }
             </style>
+
             <div id='backdrop'></div>
             <div id='modal'>
                 <header>
-                    <h2>Please confirm.</h2>
+                    <slot name="title">Default slot title</slot>
                 </header>
                 <section id="main">
-                    <slot></slot>
+                    <slot>Default slot content</slot>
                 </section>
                 <section id="actions">
-                    <button>Cancel</button>
-                    <button>Okay</button>
+                    <button id="cancel">Cancel</button>
+                    <button id="confirm">Okay</button>
                 </section>
             </div>
         `;
+
+		const slots = this.shadowRoot.querySelectorAll("slot");
+		slots[1].addEventListener("slotchange", (ev) => {
+			console.dir(slots[1].assignedNodes());
+		});
+
+		const backdrop = this.shadowRoot.getElementById("backdrop");
+		backdrop.addEventListener("click", this._cancel.bind(this));
+
+		const cancelButton = this.shadowRoot.getElementById("cancel");
+		cancelButton.addEventListener("click", this._cancel.bind(this));
+
+		const confirmButton = this.shadowRoot.getElementById("confirm");
+		confirmButton.addEventListener("click", this._confirm.bind(this));
+	}
+
+	open() {
+		this.setAttribute("opened", "");
+	}
+
+	get isOpen() {
+		return this.hasAttribute("opened");
+	}
+
+	hide() {
+		this.removeAttribute("opened");
+	}
+
+	_cancel(ev) {
+		this.hide();
+		//Carry events to the outside of the shadow-DOM using "composed: true".
+		const cancelEvent = new Event("cancel", {
+			composed: true,
+		});
+		ev.target.dispatchEvent(cancelEvent);
+	}
+
+	_confirm(ev) {
+		this.hide();
+		const confirmEvent = new Event("confirm");
+		//Carry events to the outside of the shadow-DOM dispatching the event directly from "this". It doesn't bubble up though.
+		this.dispatchEvent(confirmEvent);
 	}
 }
 
