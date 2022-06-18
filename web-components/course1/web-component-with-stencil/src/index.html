@@ -5,17 +5,60 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
     <title>Stencil Component Starter</title>
 
+    <style>
+      body {
+        font-family: sans-serif;
+      }
+
+      .side-nav ul {
+        list-style: none;
+      }
+
+      .side-nav li {
+        margin: 1rem 0;
+      }
+
+      .side-nav a {
+        text-decoration: none;
+        color: black;
+      }
+    </style>
+
     <script type="module" src="/build/web-component-with-stencil.esm.js"></script>
     <script nomodule src="/build/web-component-with-stencil.js"></script>
   </head>
+  <button id="openDrawer">Open side menu</button>
   <body>
-    <uc-side-drawer title="Main menu"></uc-side-drawer>
+    <uc-side-drawer title="Main menu">
+      <nav class="side-nav">
+        <ul>
+          <li>
+            <a href="/">1 Link</a>
+          </li>
+          <li>
+            <a href="/">2 Link</a>
+          </li>
+          <li>
+            <a href="/">3 Link</a>
+          </li>
+        </ul>
+      </nav>
+    </uc-side-drawer>
 
     <script>
+      const sideDrawerButton = document.getElementById('openDrawer');
       const sideDrawer = document.querySelector('uc-side-drawer');
-      setTimeout(() => {
-        sideDrawer.title = 'It changed!';
-      }, 3000);
+
+      sideDrawerButton.addEventListener('click', () => {
+        if (!sideDrawer.open) {
+          console.log('Opening side drawer...');
+          sideDrawer.openDrawer();
+        }
+      });
+
+      //setTimeout(() => {
+      //sideDrawer.title = 'It changed!';
+      //}, 3000);
     </script>
   </body>
 </html>

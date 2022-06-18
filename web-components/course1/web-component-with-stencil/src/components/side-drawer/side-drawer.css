@@ -1,6 +1,6 @@
 h1 {
-    color: red;
-    background-color: black;
+    margin: 0;
+    font-size: 1.5rem;
 }
 
 aside {
@@ -12,4 +12,78 @@ aside {
     height: 100vh;
     background: #eee;
     box-shadow: 0 2px 8px rgba(0,0,0,0.25);
+    left: -100%;
+    transition: all 0.3s;
+    z-index: 100;
+}
+
+header {
+    padding: 1rem;
+    background-color: black;
+    color: white;
+    position: relative;
+}
+
+header button {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 1rem;
+    color: white;
+    font-size: 1.5rem;
+    background: transparent;
+    border: none;
+}
+
+header button:focus {
+    outline: none;
+}
+
+:host([open]) aside {
+    left: 0;
+}
+
+:host([open]) .backdrop {
+    opacity: 1;
+    pointer-events: all;
+}
+
+#tabs {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+    margin: 1rem 0;
+}
+
+#tabs button {
+    width: 30%;
+    background-color: white;
+    color: black;
+    text-align: center;
+    border: 1px solid black;
+    font: inherit;
+    padding: 0.15rem 0;
+}
+
+#tabs button.active {
+    background-color: black;
+    color: white;
+    outline: none;
+}
+
+#contact-information {
+    padding: 0 1rem;
+}
+
+.backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.75);
+    z-index: 10;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s;
 }
