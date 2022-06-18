@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=5.0" />
+    <title>Stencil Component Starter</title>
+
+    <script type="module" src="/build/web-component-with-stencil.esm.js"></script>
+    <script nomodule src="/build/web-component-with-stencil.js"></script>
+  </head>
+  <body>
+    <uc-side-drawer title="Main menu"></uc-side-drawer>
+
+    <script>
+      const sideDrawer = document.querySelector('uc-side-drawer');
+      setTimeout(() => {
+        sideDrawer.title = 'It changed!';
+      }, 3000);
+    </script>
+  </body>
+</html>
