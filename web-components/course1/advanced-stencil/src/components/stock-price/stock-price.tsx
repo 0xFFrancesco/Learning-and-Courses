@@ -1,4 +1,4 @@
-import { Component, Element, h, Prop, State, Watch } from '@stencil/core';
+import { Component, h, Host, Listen, Prop, State, Watch } from '@stencil/core';
 import { AV_API_KEY } from '../../utils/utils';
 
 @Component({
@@ -12,6 +12,7 @@ export class StockPrice {
   @State() price: number;
   @State() userInput: string;
   @State() userInputValid = false;
+  @State() loading = false;
 
   @Prop({ reflect: true, mutable: true }) symbol: string;
 
@@ -32,16 +33,28 @@ export class StockPrice {
     }
   }
 
+  @Listen('ucSymbolSelected', { target: 'body' })
+  onStockSymbolSelected(event: CustomEvent) {
+    if (event.detail && event.detail !== this.symbol) {
+      this.fetchStockPrice(event.detail);
+      this.userInput = event.detail;
+      this.userInputValid = true;
+    }
+  }
+
   fetchStockPrice(ticker) {
+    this.loading = true;
     fetch(`https://www.alphavantage.co/query?function=GLOBAL_QUOTE&symbol=${ticker}&apikey=${AV_API_KEY}`)
       .then(res => res.json())
       .then(data => {
         const price = parseInt(data['Global Quote']['05. price']);
         this.price = price ? price : null;
+        this.loading = false;
       })
       .catch(err => {
         console.log(err);
         this.price = null;
+        this.loading = false;
       });
   }
 
@@ -77,16 +90,16 @@ export class StockPrice {
   }
 
   render() {
-    return [
-      <form onSubmit={this.onFetchStockPrice.bind(this)}>
-        <input ref={el => (this.tickerInput = el)} type="text" id="stock-symbol" value={this.userInput} onInput={this.onUserInput.bind(this)} />
-        <button type="submit" disabled={!this.userInputValid}>
-          Fetch
-        </button>
-      </form>,
-      <div>
-        <p>Price: {this.price ? this.price.toFixed(2) : 'invalid symbol'}.</p>
-      </div>,
-    ];
+    return (
+      <Host class={!this.price && !this.loading ? 'error' : ''}>
+        <form onSubmit={this.onFetchStockPrice.bind(this)}>
+          <input ref={el => (this.tickerInput = el)} type="text" id="stock-symbol" value={this.userInput} onInput={this.onUserInput.bind(this)} />
+          <button type="submit" disabled={!this.userInputValid || this.loading}>
+            Fetch
+          </button>
+        </form>
+        <div>{this.loading ? <p>Loading</p> : <p>Price: {this.price ? this.price.toFixed(2) : 'invalid symbol'}.</p>}</div>
+      </Host>
+    );
   }
 }

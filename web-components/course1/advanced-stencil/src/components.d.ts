@@ -12,6 +12,10 @@ export namespace Components {
         "symbol": string;
     }
 }
+export interface UcStockFinderCustomEvent<T> extends CustomEvent<T> {
+    detail: T;
+    target: HTMLUcStockFinderElement;
+}
 declare global {
     interface HTMLUcStockFinderElement extends Components.UcStockFinder, HTMLStencilElement {
     }
@@ -32,6 +36,7 @@ declare global {
 }
 declare namespace LocalJSX {
     interface UcStockFinder {
+        "onUcSymbolSelected"?: (event: UcStockFinderCustomEvent<string>) => void;
     }
     interface UcStockPrice {
         "symbol"?: string;
