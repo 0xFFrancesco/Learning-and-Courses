@@ -8,10 +8,10 @@ module.exports = {
 	},
 	plugins: [
 		new ModuleFederationPlugin({
-			name: "cart",
+			name: "cart", //There must not be an element in the DOM with an ID equal to this name
 			filename: "remoteEntry.js",
 			exposes: {
-				"./CartShow": "./src/index.js",
+				"./CartShow": "./src/bootstrap.js",
 			},
 			shared: ["faker"],
 		}),

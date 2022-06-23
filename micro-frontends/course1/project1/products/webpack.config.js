@@ -8,10 +8,10 @@ module.exports = {
 	},
 	plugins: [
 		new ModuleFederationPlugin({
-			name: "products",
+			name: "products", //There must not be an element in the DOM with an ID equal to this name
 			filename: "remoteEntry.js",
 			exposes: {
-				"./ProductsIndex": "./src/index.js",
+				"./ProductsIndex": "./src/bootstrap.js",
 			},
 			shared: ["faker"],
 		}),
