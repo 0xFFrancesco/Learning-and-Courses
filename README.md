@@ -17,11 +17,13 @@ Now techy stuff 👾. The code is related to courses mainly about:
     - Angular 2+ (7)
     - VueJS 2
     - Vuex
-    - Typescript
+    - TypeScript
     - WebAssembly/Emscripten 🏎
     - Webpack 📦
+    - WebComponents/Stencil.js
     - D3
     - Canvas
+    - Micro-frontends/Webpack Module Federation
 
 - Back-end:
     - Go (Golang)
