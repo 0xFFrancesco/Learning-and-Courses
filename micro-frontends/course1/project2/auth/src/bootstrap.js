@@ -24,7 +24,7 @@ const mount = (el, opts) => {
 };
 
 if (process.env.NODE_ENV === "development") {
-	const devRoot = document.getElementById("_marketing-dev-root");
+	const devRoot = document.getElementById("_auth-dev-root");
 	if (devRoot) {
 		mount(devRoot, { defaultHistory: createBrowserHistory() });
 	}
