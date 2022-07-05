@@ -106,3 +106,9 @@
     -   \_camelCase: private fields;
     -   PascalCase: classes, structures, namespaces, fields, methods and properties;
     -   IPascalCase: interfaces;
+-   Must provide a static "Main" method that starts the execution of the program;
+-   Every method creates its own stack in which all its local variables are stored;
+-   Types:
+    -   Primitive: sbyte, byte, short, ushort, int, uint, long, ulong, float, double, decimal, char, bool;
+        -   The "decimal" type compensates automatically for floating-point errors, it is very useful in financial and "numbers-exact" domains;
+    -   Non-primitive: string, class, interface, structure, enumeration;
