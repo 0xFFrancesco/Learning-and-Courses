@@ -30,6 +30,7 @@ Now techy stuff 👾. The code is related to courses mainly about:
     - PHP 🐘
     - Symfony 🎼
     - Express
+    - C#/.NET
 
 - Mixed:
     - NodeJS
