@@ -112,3 +112,8 @@
     -   Primitive: sbyte, byte, short, ushort, int, uint, long, ulong, float, double, decimal, char, bool;
         -   The "decimal" type compensates automatically for floating-point errors, it is very useful in financial and "numbers-exact" domains;
     -   Non-primitive: string, class, interface, structure, enumeration;
+-   Logical AND (&): evaluates always both operands (even if the first is already false);
+-   Conditional AND (&&): evaluates both operands only if the first one is true (like JavaScript);
+-   Logical OR (|): evaluates always both operands (even if the first is already true);
+-   Conditional OR (||): evaluates both operands only if the first one is false (like JavaScript);
+-   Logical XOR (^): evaluates always both operands;

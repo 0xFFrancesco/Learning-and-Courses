@@ -1,25 +1,28 @@
-﻿class Sample
+﻿using System;
+
+class Sample
 {
     static void Main()
     {
         ConsoleClass();
         Variables();
+        CircleArea();
+        PersonHeight();
     }
 
     static void ConsoleClass()
     {
+        Introduction("The Console Class");
+
         System.Console.WriteLine("Welcome");
         System.Console.WriteLine("to");
         System.Console.WriteLine("C# programming");
         System.Console.ReadKey();
-        System.Console.Clear();
 
+        System.Console.WriteLine();
         System.Console.Write("Welcome ");
         System.Console.Write("to ");
         System.Console.Write("C# programming ");
-        System.Console.ReadKey();
-        System.Console.Clear();
-
         System.Console.ReadKey();
     }
 
@@ -34,22 +37,22 @@
         ushort uShortVal = 3;
 
         int intVal = 4;
-        uint uIntVal = 5;
+        uint uIntVal = 5U;
 
-        long longVal = 6;
-        ulong uLongVal = 7;
+        long longVal = 6L;
+        ulong uLongVal = 7UL;
 
-        float floatVal = 8;
+        float floatVal = 8F;
 
-        double doubleVal = 9;
+        double doubleVal = 9D;
 
-        decimal decimalVal = 0.1m + 0.2m;
+        decimal decimalVal = 0.1M + 0.2M;
 
         char charVal = 'C';
         string stringVal = "String";
         bool booleanVal = false;
-        
-        System.Console.WriteLine("Variables!");
+
+        Introduction("Variables");
         System.Console.WriteLine(maxSByteVal);
         System.Console.WriteLine(mySByteVal);
         System.Console.WriteLine(defaultSByteVal);
@@ -67,5 +70,35 @@
         System.Console.WriteLine(stringVal);
         System.Console.WriteLine(booleanVal);
         System.Console.ReadKey();
+    }
+
+    static void CircleArea()
+    {
+        Introduction("Circle Area");
+        byte r = 12;
+        double area = Math.PI * Math.Pow(r, 2);
+
+        System.Console.WriteLine("The area of a circle with r=" + r + " is equal to " + area.ToString("N2") + ".");
+        System.Console.ReadKey();
+    }
+
+    static void PersonHeight()
+    {
+        Introduction("Feet and Inches to Centimeters");
+        byte feet = 10;
+        byte inches = 7;
+
+        double centimeters = (12 * feet + inches) * 2.54;
+
+        System.Console.WriteLine("The conversion of " + feet + " feet and " + inches + " inches is equal to " + centimeters + " centimeters.");
+        System.Console.ReadKey();
+    }
+
+    static void Introduction(string text)
+    {
+        System.Console.Clear();
+        System.Console.WriteLine(text);
+        System.Console.ReadKey();
+        System.Console.Clear();
     }
 }
