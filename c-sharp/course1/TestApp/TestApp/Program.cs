@@ -4,14 +4,14 @@ class Sample
 {
     static void Main()
     {
-        //ConsoleClass();
-        //Variables();
-        //CircleArea();
-        //PersonHeight();
-        //NearestThousand();
-        //SecondsToTime();
-        //HeightCategory();
-        //LargerAmong3();
+        ConsoleClass();
+        Variables();
+        CircleArea();
+        PersonHeight();
+        NearestThousand();
+        SecondsToTime();
+        HeightCategory();
+        LargerAmong3();
         Loops();
     }
 
@@ -115,6 +115,8 @@ class Sample
             }
             System.Console.WriteLine("The nearest thousand of " + number + " is " + nearestThousand + ".");
         }
+
+        System.Console.ReadKey();
     }
 
     static void SecondsToTime()
@@ -123,6 +125,7 @@ class Sample
 
 
         System.Console.WriteLine("Type an integer number representing seconds.");
+
         int seconds = System.Convert.ToInt32(Console.ReadLine());
 
         int displayS = seconds % 60;
@@ -133,7 +136,7 @@ class Sample
         int days = (hours - displayH) / 24;
 
         System.Console.WriteLine(days + " Days, " + displayH + " Hours, " + displayM + " Minutes, " + displayS + " Seconds.");
-
+        System.Console.ReadKey();
     }
 
     static void HeightCategory()
@@ -165,6 +168,7 @@ class Sample
         }
 
         System.Console.WriteLine("You are " + category + ".");
+        System.Console.ReadKey();
     }
 
     static void LargerAmong3()
@@ -182,6 +186,7 @@ class Sample
             }
         }
         System.Console.WriteLine("The larger number is: " + max + ".");
+        System.Console.ReadKey();
     }
 
     static void Loops()

@@ -117,4 +117,13 @@
 -   Logical OR (|): evaluates always both operands (even if the first is already true);
 -   Conditional OR (||): evaluates both operands only if the first one is false (like JavaScript);
 -   Logical XOR (^): evaluates always both operands;
--   goto: jump to another position (labelled) inside the same method;
+-   GoTo (goto): jumps to another position (labelled) inside the same method;
+-   Classes can be either internal (default - accessible only within the same project) or public (accessible also in different projects - you have to create a reference in the consumer project);
+    -   Optional sub-types are:
+        -   Static (contains only static members);
+        -   Abstract (can contain abstract methods, to be implemented in child classes);
+        -   Sealed (con't be inherited);
+        -   Partial (multiple partial classes with the same name can be combined into a single class);
+-   Objects are stored in the Heap, methods' variables are stored in the Stack;
+    -   A new Stack is created for every method call;
+    -   To access an object (that is nameless), you need a reference variable that "points" to the Heap's memory location of that object;
