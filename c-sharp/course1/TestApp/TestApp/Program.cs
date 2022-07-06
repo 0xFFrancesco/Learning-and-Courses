@@ -4,10 +4,15 @@ class Sample
 {
     static void Main()
     {
-        ConsoleClass();
-        Variables();
-        CircleArea();
-        PersonHeight();
+        //ConsoleClass();
+        //Variables();
+        //CircleArea();
+        //PersonHeight();
+        //NearestThousand();
+        //SecondsToTime();
+        //HeightCategory();
+        //LargerAmong3();
+        Loops();
     }
 
     static void ConsoleClass()
@@ -92,6 +97,118 @@ class Sample
 
         System.Console.WriteLine("The conversion of " + feet + " feet and " + inches + " inches is equal to " + centimeters + " centimeters.");
         System.Console.ReadKey();
+    }
+
+    static void NearestThousand()
+    {
+        Introduction("Nearest Thousand");
+
+        for (byte x = 0; x < 3; x++)
+        {
+            System.Console.WriteLine("Type an integer number.");
+            int number = System.Convert.ToInt32(Console.ReadLine());
+            int nearestThousand = 1000;
+            if (number > 1499)
+            {
+                int remainder = number % 1000;
+                nearestThousand = ((number - remainder) / 1000 + (remainder > 499 ? 1 : 0)) * 1000;
+            }
+            System.Console.WriteLine("The nearest thousand of " + number + " is " + nearestThousand + ".");
+        }
+    }
+
+    static void SecondsToTime()
+    {
+        Introduction("Seconds to Time");
+
+
+        System.Console.WriteLine("Type an integer number representing seconds.");
+        int seconds = System.Convert.ToInt32(Console.ReadLine());
+
+        int displayS = seconds % 60;
+        int minutes = (seconds - displayS) / 60;
+        int displayM = minutes % 60;
+        int hours = (minutes - displayM) / 60;
+        int displayH = hours % 24;
+        int days = (hours - displayH) / 24;
+
+        System.Console.WriteLine(days + " Days, " + displayH + " Hours, " + displayM + " Minutes, " + displayS + " Seconds.");
+
+    }
+
+    static void HeightCategory()
+    {
+        Introduction("Height Category");
+
+
+        System.Console.WriteLine("Type an integer number representing the height in inches.");
+        byte inches = System.Convert.ToByte(Console.ReadLine());
+        double cms = inches * 2.54;
+
+        string category;
+
+        if (cms <= 150)
+        {
+            category = "a dwarf";
+        }
+        else if (cms > 150 & cms <= 165)
+        {
+            category = "average";
+        }
+        else if (cms > 165 & cms <= 195)
+        {
+            category = "tall";
+        }
+        else
+        {
+            category = "abnormal tall";
+        }
+
+        System.Console.WriteLine("You are " + category + ".");
+    }
+
+    static void LargerAmong3()
+    {
+        Introduction("Larger Among 3");
+
+        int max = 0;
+        for (byte x = 0; x < 3; x++)
+        {
+            System.Console.WriteLine("Type an integer number.");
+            int number = System.Convert.ToInt32(Console.ReadLine());
+            if (number > max)
+            {
+                max = number;
+            }
+        }
+        System.Console.WriteLine("The larger number is: " + max + ".");
+    }
+
+    static void Loops()
+    {
+        Introduction("Loops");
+
+        for (byte j = 1; j < 7; j++)
+        {
+            for (byte x = 1; x < 11; x++)
+            {
+                int n = x;
+                if (j < 4 && (x == 5 || x == 6))
+                {
+                    continue;
+                }
+                if (j > 3)
+                {
+                    n = 11 - x;
+                    if (j == 6 && n < 3)
+                    {
+                        continue;
+                    }
+                }
+                System.Console.Write(n + " ");
+            }
+            System.Console.WriteLine();
+        }
     }
 
     static void Introduction(string text)

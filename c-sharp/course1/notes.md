@@ -117,3 +117,4 @@
 -   Logical OR (|): evaluates always both operands (even if the first is already true);
 -   Conditional OR (||): evaluates both operands only if the first one is false (like JavaScript);
 -   Logical XOR (^): evaluates always both operands;
+-   goto: jump to another position (labelled) inside the same method;
