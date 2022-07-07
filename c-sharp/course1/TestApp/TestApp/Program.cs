@@ -1,18 +1,20 @@
 ﻿using System;
+using MyLibraryClasses;
 
 class Sample
 {
     static void Main()
     {
-        ConsoleClass();
-        Variables();
-        CircleArea();
-        PersonHeight();
-        NearestThousand();
-        SecondsToTime();
-        HeightCategory();
-        LargerAmong3();
-        Loops();
+        //ConsoleClass();
+        //Variables();
+        //CircleArea();
+        //PersonHeight();
+        //NearestThousand();
+        //SecondsToTime();
+        //HeightCategory();
+        //LargerAmong3();
+        //Loops();
+        ExternalClass();
     }
 
     static void ConsoleClass()
@@ -214,6 +216,48 @@ class Sample
             }
             System.Console.WriteLine();
         }
+    }
+
+    static void ExternalClass()
+    {
+
+        Introduction("External Class");
+
+        Employee.OrgName = "Francesco Rizzi Inc.";
+
+        sbyte choice;
+        byte i = 0;
+        do
+        {
+            i++;
+
+            System.Console.WriteLine("\nType 1 to generate a new employee, 0 to exit.");
+            System.Console.Write("Enter choice:");
+            choice = System.Convert.ToSByte(System.Console.ReadLine());
+
+            if (choice == 1)
+            {
+                Employee employee = new Employee(i, "Finance");
+                employee.Name = "Name";
+                employee.SalaryPerHour = 30.5;
+                employee.WorkingHours = 8 * 5 * 4 * 12;
+                employee.NetSalary = employee.WorkingHours * employee.SalaryPerHour;
+
+                System.Console.WriteLine("--------------------");
+                System.Console.WriteLine("Id: " + employee.Id);
+                System.Console.WriteLine("Name: " + employee.Name);
+                System.Console.WriteLine("Salary/h: " + employee.SalaryPerHour);
+                System.Console.WriteLine("Working hours: " + employee.WorkingHours);
+                System.Console.WriteLine("Net salary: " + employee.NetSalary);
+                System.Console.WriteLine("Organization name: " + Employee.OrgName);
+                System.Console.WriteLine("Type: " + Employee.EmployeeType);
+                System.Console.WriteLine("Department: " + employee.Department);
+                System.Console.WriteLine("--------------------");
+
+            }
+        } while (choice != 0);
+
+        System.Console.ReadKey();
     }
 
     static void Introduction(string text)

@@ -117,28 +117,43 @@
 -   Logical OR (|): evaluates always both operands (even if the first is already true);
 -   Conditional OR (||): evaluates both operands only if the first one is false (like JavaScript);
 -   Logical XOR (^): evaluates always both operands;
--   GoTo (goto): jumps to another position (labelled) inside the same method;
+-   goto: jumps to another position (labelled) inside the same method;
 -   A project can be "normal" (will produce an executable IR file) or "library" (will produce a DLL - Dynamic Link Library - that can be used in other projects, you have to create a reference in the consumer project);
 -   Classes can be either internal (default - accessible only within the same project) or public (accessible also in different projects):
     -   Optional sub-types are:
-        -   Static: contains only static members;
-        -   Abstract: can contain abstract methods, to be implemented in child classes;
-        -   Sealed: can't be inherited;
-        -   Partial: multiple partial classes with the same name can be combined into a single class;
+        -   static: contains only static members;
+        -   abstract: can contain abstract methods, to be implemented in child classes;
+        -   sealed: can't be inherited;
+        -   partial: multiple partial classes with the same name can be combined into a single class;
 -   Objects are stored in the Heap, methods' variables are stored in the Stack;
     -   A new Stack is created for every method call;
     -   To access an object (that is nameless), you need a reference variable that "points" to the Heap's memory location of that object (`Person person = new Person();`);
     -   An object (in Heap memory) only stores fields, the methods remain attacched to the class and are called against the object;
 -   Fields:
     -   Variables stored inside the object (declared in the class);
-    -   Available access modifiers:
+    -   Access modifiers:
         -   private: default, accessible only in the same class;
         -   protected: accessible in the same class and in the child classes;
         -   private protected: accessible in the same class and in the child classes, but only if they are in the same project;
         -   internal: accessible everywhere (same class, child class, other class) in the same project;
         -   protected internal: accessible everywhere (same class, child class, other class) in the same project, and also in child classed of other projects;
         -   public: accessible everywhere (same class, child class, other class) both in the same project and in other projects;
-    -   Available modifiers:
+    -   Modifiers (optional):
         -   static: accessible without instantiating the object, common to all the objects of the same class, can be modified, stored in the class memory;
-        -   const: the value can't be modified, static by default;
-        -   readonly: the value can't be modified, restriction only on compile-time;
+        -   const: like a static field, but its value can't be modified, must be initialized on declaration, it is not stored in memory as at compile time its occurences are substituted with the value itself;
+        -   readonly: is initialized with an inline declaration or in the constructor, it is stored in the object memory itself, may be different for every object (depending on the initialization), can't be modified after being initialized;
+-   Methods:
+    -   Access modifiers are the exact same of fields;
+    -   Modifiers (optional):
+        -   static:
+        -   virtual:
+        -   abstract:
+        -   override:
+        -   new:
+        -   partial:
+        -   sealed:
+    -   Overloading:
+    -   Parameter modifiers:
+    -   Ref return;
+    -   Local function:
+    -   Static local function:
