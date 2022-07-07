@@ -118,12 +118,27 @@
 -   Conditional OR (||): evaluates both operands only if the first one is false (like JavaScript);
 -   Logical XOR (^): evaluates always both operands;
 -   GoTo (goto): jumps to another position (labelled) inside the same method;
--   Classes can be either internal (default - accessible only within the same project) or public (accessible also in different projects - you have to create a reference in the consumer project);
+-   A project can be "normal" (will produce an executable IR file) or "library" (will produce a DLL - Dynamic Link Library - that can be used in other projects, you have to create a reference in the consumer project);
+-   Classes can be either internal (default - accessible only within the same project) or public (accessible also in different projects):
     -   Optional sub-types are:
-        -   Static (contains only static members);
-        -   Abstract (can contain abstract methods, to be implemented in child classes);
-        -   Sealed (con't be inherited);
-        -   Partial (multiple partial classes with the same name can be combined into a single class);
+        -   Static: contains only static members;
+        -   Abstract: can contain abstract methods, to be implemented in child classes;
+        -   Sealed: can't be inherited;
+        -   Partial: multiple partial classes with the same name can be combined into a single class;
 -   Objects are stored in the Heap, methods' variables are stored in the Stack;
     -   A new Stack is created for every method call;
-    -   To access an object (that is nameless), you need a reference variable that "points" to the Heap's memory location of that object;
+    -   To access an object (that is nameless), you need a reference variable that "points" to the Heap's memory location of that object (`Person person = new Person();`);
+    -   An object (in Heap memory) only stores fields, the methods remain attacched to the class and are called against the object;
+-   Fields:
+    -   Variables stored inside the object (declared in the class);
+    -   Available access modifiers:
+        -   private: default, accessible only in the same class;
+        -   protected: accessible in the same class and in the child classes;
+        -   private protected: accessible in the same class and in the child classes, but only if they are in the same project;
+        -   internal: accessible everywhere (same class, child class, other class) in the same project;
+        -   protected internal: accessible everywhere (same class, child class, other class) in the same project, and also in child classed of other projects;
+        -   public: accessible everywhere (same class, child class, other class) both in the same project and in other projects;
+    -   Available modifiers:
+        -   static: accessible without instantiating the object, common to all the objects of the same class, can be modified, stored in the class memory;
+        -   const: the value can't be modified, static by default;
+        -   readonly: the value can't be modified, restriction only on compile-time;
