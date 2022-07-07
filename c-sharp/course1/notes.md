@@ -143,16 +143,19 @@
         -   const: like a static field, but its value can't be modified, must be initialized on declaration, it is not stored in memory as at compile time its occurences are substituted with the value itself;
         -   readonly: is initialized with an inline declaration or in the constructor, it is stored in the object memory itself, may be different for every object (depending on the initialization), can't be modified after being initialized;
 -   Methods:
+    -   Getters and Setters: it is better to declare fields private and access them through Set and Get methods (instead of directly via public fields), better encapsulation;
+    -   this: refers to the "current object" on which the method is called against (only available in "non-static" methods), useful when a parameter has the same exact name of a field;
+    -   Named arguments: when you call a method, you can pass the argumens by their name insted of by their order (ex `Person.SetData(name: "Mark", age: 30);`);
+    -   Overloading: defining multiple methods with the same name and within the same class but with different arguments' types (you can call the same method name with different arguments' types, and based on the arguments' types the "right one" will be executed);
     -   Access modifiers are the exact same of fields;
     -   Modifiers (optional):
-        -   static:
-        -   virtual:
-        -   abstract:
-        -   override:
-        -   new:
-        -   partial:
-        -   sealed:
-    -   Overloading:
+        -   static:;
+        -   virtual:;
+        -   abstract:;
+        -   override:;
+        -   new:;
+        -   partial:;
+        -   sealed:;
     -   Parameter modifiers:
     -   Ref return;
     -   Local function:
