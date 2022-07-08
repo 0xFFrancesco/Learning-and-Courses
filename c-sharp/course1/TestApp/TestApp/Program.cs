@@ -1,5 +1,6 @@
 ﻿using System;
 using MyLibraryClasses;
+using TestApp;
 
 class Sample
 {
@@ -15,7 +16,8 @@ class Sample
         //LargerAmong3();
         //Loops();
         //ExternalClass();
-        RefReturn();
+        //RefReturn();
+        Numbers();
     }
 
     static void ConsoleClass()
@@ -270,6 +272,16 @@ class Sample
         ref int studentGradeRef = ref student.RefMethod();
         studentGradeRef = 8;
         student.Print();
+
+        System.Console.ReadKey();
+    }
+
+    static void Numbers()
+    {
+        Introduction("Numbers");
+
+        Number numberClass = new(371);
+        numberClass.Test();
 
         System.Console.ReadKey();
     }
