@@ -14,7 +14,8 @@ class Sample
         //HeightCategory();
         //LargerAmong3();
         //Loops();
-        ExternalClass();
+        //ExternalClass();
+        RefReturn();
     }
 
     static void ConsoleClass()
@@ -260,11 +261,41 @@ class Sample
         System.Console.ReadKey();
     }
 
+    static void RefReturn()
+    {
+        Introduction("Ref Return");
+
+        Student student = new Student();
+        student.Print();
+        ref int studentGradeRef = ref student.RefMethod();
+        studentGradeRef = 8;
+        student.Print();
+
+        System.Console.ReadKey();
+    }
+
     static void Introduction(string text)
     {
         System.Console.Clear();
         System.Console.WriteLine(text);
         System.Console.ReadKey();
         System.Console.Clear();
+    }
+}
+
+/// UTILITIES
+
+class Student
+{
+    private int _grade = 5;
+
+    public void Print()
+    {
+        System.Console.WriteLine("The grade is: " + _grade + ".");
+    }
+
+    public ref int RefMethod()
+    {
+        return ref _grade;
     }
 }

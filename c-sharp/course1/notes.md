@@ -143,6 +143,7 @@
         -   const: like a static field, but its value can't be modified, must be initialized on declaration, it is not stored in memory as at compile time its occurences are substituted with the value itself;
         -   readonly: is initialized with an inline declaration or in the constructor, it is stored in the object memory itself, may be different for every object (depending on the initialization), can't be modified after being initialized;
 -   Methods:
+
     -   Getters and Setters: it is better to declare fields private and access them through Set and Get methods (instead of directly via public fields), better encapsulation;
     -   this: refers to the "current object" on which the method is called against (only available in "non-static" methods), useful when a parameter has the same exact name of a field;
     -   Named arguments: when you call a method, you can pass the argumens by their name insted of by their order (ex `Person.SetData(name: "Mark", age: 30);`);
@@ -156,7 +157,93 @@
         -   new:;
         -   partial:;
         -   sealed:;
-    -   Parameter modifiers:
-    -   Ref return;
+    -   Parameter modifiers (optional):
+
+        -   ref: the parameter (even if it is a primitive type) is treated like a reference, and every change made inside the method is reflected outside. It must be pre-initialized and stored in a variable (no literals). Example:
+
+        ```cs
+            public void CalcData(ref int x) {
+                System.Console.PrintLine(x); /// -> 5
+                x = 12;
+            }
+
+            [...]
+
+            int myData = 5;
+            CalcData(ref myData);
+            System.Console.WriteLine(myData); /// -> 12
+        ```
+
+        -   out: the parameter is not passed to the method, but if the method modifies it, it is passed outside. Useful for returning multiple values. It may not be already initialized, in that case you must assign it a value inside the method. Example:
+
+        ```cs
+            public void CalcData(out int x) {
+                System.Console.PrintLine(x); /// -> 0
+                x = 12;
+            }
+
+            [...]
+
+            int myData = 5;
+            CalcData(out myData);
+            System.Console.WriteLine(myData); /// -> 12
+
+            ///The "out" variable can be even declared inline:
+            CalcData(out int myNewVar);
+            System.Console.WriteLine(myNewVar); /// -> 12
+        ```
+
+        -   in: the parameter is treated as read-only inside the method, and thus can't be modified. Example:
+
+        ```cs
+            public void CalcData(in int x) {
+                x = 12; /// Error!
+            }
+
+            [...]
+
+            int myData = 5;
+            CalcData(in myData);
+        ```
+
+        -   params: the method can receive multiple arguments of the same type, they will be stored in a single parameter as an array. It can only be the last parameter of the method. Example:
+
+        ```cs
+            public void CalcData(int first, params int[] data) {
+                /// first == 2
+                /// data == [5, 3, 5, 2]
+            }
+
+            [...]
+
+            CalcData(2, 5, 3, 5, 2);
+        ```
+
+    -   Ref return: the method can return a variable as a reference. Example:
+
+        ```cs
+            class Student {
+                private int _grade = 5;
+
+                public void Print() {
+                    System.Console.WriteLine(_grade);
+                }
+
+                public ref int RefMethod() {
+                    return ref _grade;
+                }
+            }
+
+            class Program {
+                public void Main() {
+                    Student student = new Student();
+                    student.Print(); /// -> 5
+                    ref int studentGradeRef = ref student.RefMethod();
+                    studentGradeRef = 8;
+                    student.Print(); /// -> 8
+                }
+            }
+        ```
+
     -   Local function:
     -   Static local function:
