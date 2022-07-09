@@ -185,3 +185,55 @@
         }
     }
 ```
+
+## Type conversion
+
+-   Implicit casting: from lower numerical type to higher numerical type (ex. int -> long, float -> double, char -> int - here the ASCII value is used). Automatically done by the compiler, no syntax required. Signed types can't be implicitely converted to unsigned types. Double, decimal, bool and string can't be implicitely converted;
+-   Explicit casting: from higher numerical type to lower numerical type (ex. int -> short, float -> byte, char -> sbyte, childClass -> parentClass). Done specifying the data type to the left hand side. The casted value may differ from the original (loosy conversion). String and bool can't be explicitely casted. Example:
+
+```cs
+    long y = 300;
+    int x = (int)y; /// -> 300 (same value)
+    byte z = (byte)y; /// -> 255 (max byte value, loosy conversion)
+
+    Parent parent = (Parent)child; /// -> childClass to parentClass conversion
+```
+
+-   Parse and TryParse: from string type to numerical type (ex. string -> int, string -> float, string -> byte). The source value can only contain numerical characters, otherwise it will throw a run-time error (Parse) or return false and skip the conversion (TryParse - uses an out parameter for the conversion itself, returns wheter it was successfull). Example:
+
+```cs
+    string s = "100";
+
+    int numInt = int.Parse(s); /// 100
+    byte numByte = byte.Parse(s); /// 100
+
+    int result; /// 100
+    bool converted = int.TryParse(s, out result); /// True
+
+    string s2 = "10.20.30";
+
+    int numInt2 = int.Parse(s2); /// Error! Invalid string.
+
+    int result2; /// 0
+    bool converted2 = int.TryParse(s2, out result2); /// False
+```
+
+-   Conversion methods: from any primitive type to any primitive type (ex. string -> bool, string -> int, int -> byte). `System.Convert` is a predefined class that provides conversion (static) methods. If the value can't be converted, it raises a run-time exception;
+
+## Constructor
+
+-   Is automatically called on a new object creation, it initializes the class fields into a new object and stores it in the Heap memory. Can also contain additional logic. Gives back the object's reference;
+-   Must have the same name of the class name;
+-   Supports overloading;
+-   Instance constructor: the "normal" constructor, executes every time a new object is created;
+-   Static constructor: executes only once during the application, either when the first object of the class is created or when the class is accessed for the first time. It can initialize the static fields and run some logic required only once per class. Can't access the instance fields, must be public, can't have parameters and doesn't return any value;
+-   Implicit constructor: if a class has no constructor method, then the compiler automatically creates an empty constructor for the class;
+-   Object initializer: special syntax to initialize the fields (some or all) of the object along with creating the object (executes after the constructor). Example:
+
+```cs
+    Person person = new Person(){
+        name: "Annette";
+        age: 31;
+        location: "Prague";
+    }
+```

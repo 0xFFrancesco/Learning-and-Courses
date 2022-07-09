@@ -17,7 +17,9 @@ class Sample
         //Loops();
         //ExternalClass();
         //RefReturn();
-        Numbers();
+        //Numbers();
+        //Conversions();
+        ConstructorOverloading();
     }
 
     static void ConsoleClass()
@@ -280,10 +282,40 @@ class Sample
     {
         Introduction("Numbers");
 
-        Number numberClass = new(371);
-        numberClass.Test();
+        Number.Test();
 
         System.Console.ReadKey();
+    }
+
+    static void Conversions()
+    {
+        Introduction("Conversions");
+
+        byte a = 10;
+        short aShort = a;
+
+        int b = 10;
+        short bShort = (short)b;
+
+        string c = "10.34";
+        double cDouble = double.Parse(c);
+        bool success = decimal.TryParse(c, out decimal cDecimal);
+
+        decimal d = 11.56M;
+        string dString = System.Convert.ToString(d);
+
+        System.Console.WriteLine("Parsed values: " + aShort + ", " + bShort + ", " + cDouble + ", " + cDecimal + " (" + success + ")" + ", " + dString + ".");
+
+        System.Console.ReadLine();
+    }
+
+    static void ConstructorOverloading()
+    {
+        Introduction("Constructor Overloading");
+
+        MCQuestion.Test();
+
+        System.Console.ReadLine();
     }
 
     static void Introduction(string text)

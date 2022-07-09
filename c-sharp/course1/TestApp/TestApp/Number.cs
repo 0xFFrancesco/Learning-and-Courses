@@ -7,9 +7,8 @@ namespace TestApp
 
         private int value;
 
-        public Number(int value)
+        public Number()
         {
-            this.value = value;
         }
 
         public void SetValue(int newValue)
@@ -80,7 +79,7 @@ namespace TestApp
             }
             else
             {
-                for (int i = 1; i <= exp; i++)
+                for (int i = 1; i < exp; i++)
                 {
                     result *= n;
                 }
@@ -88,9 +87,15 @@ namespace TestApp
             return result;
         }
 
-        private char[] GetNumberDigits()
+        private int[] GetNumberDigits()
         {
-            return System.Convert.ToString(value).ToCharArray();
+            char[] digits = System.Convert.ToString(value).ToCharArray();
+            int[] res = new int[digits.Length];
+            for (int i = 0; i < digits.Length; i++)
+            {
+                res[i] = System.Convert.ToInt32(char.GetNumericValue(digits[i]));
+            }
+            return res;
         }
 
         public int GetCountOfDigits()
@@ -100,19 +105,18 @@ namespace TestApp
 
         public int GetSumOfDigits()
         {
-            char[] n = GetNumberDigits();
+            int[] n = GetNumberDigits();
             int sum = 0;
             for (int i = 0; i < n.Length; i++)
             {
-                int digit = System.Convert.ToInt32(n[i]);
-                sum += digit;
+                sum += n[i];
             }
             return sum;
         }
 
         public int GetReverse()
         {
-            char[] n = GetNumberDigits();
+            int[] n = GetNumberDigits();
             string res = "";
             for (int i = n.Length; i > 0; i--)
             {
@@ -122,9 +126,94 @@ namespace TestApp
             return System.Convert.ToInt32(res);
         }
 
-        public void Test()
+        public string ToWords()
         {
+            int[] n = GetNumberDigits();
+            string res = "";
+            for (int i = 0; i < n.Length; i++)
+            {
+                res += GetWord(n[i]);
+                if (i < n.Length - 1)
+                {
+                    res += " ";
+                }
+            }
+            return res;
 
+        }
+
+        public static string GetWord(int digit)
+        {
+            string[] words = { "Zero", "One", "Two", "Three", "Four", "Five", "Six", "Seven", "Eight", "Nine" };
+            return words[digit];
+        }
+
+        public bool IsArmstrong()
+        {
+            int[] n = GetNumberDigits();
+            int len = n.Length;
+            int sum = 0;
+
+            for (int i = 0; i < len; i++)
+            {
+                sum += Power(n[i], len);
+            }
+
+            return sum == value;
+        }
+
+        public string GetFibonacci()
+        {
+            int prev = 0;
+            int current = 1;
+            int tmp;
+            string res = "0";
+
+            do
+            {
+
+                if (current > value)
+                {
+                    break;
+                }
+                else
+                {
+                    res += " " + current;
+                }
+
+                tmp = current;
+                current += prev;
+                prev = tmp;
+
+            } while (true);
+
+            return res;
+        }
+
+        public bool isPalindrome()
+        {
+            return value == GetReverse();
+        }
+
+        public static void Test()
+        {
+            Number number = new Number();
+            number.SetValue(371); //you can set any integer value
+            System.Console.WriteLine("Value: " + number.GetValue()); //Output: 371
+            System.Console.WriteLine("IsZero: " + number.IsZero()); //Output: False
+            System.Console.WriteLine("IsPositive: " + number.IsPositive()); //Output: True
+            System.Console.WriteLine("IsNegative: " + number.IsNegative()); //Output: False
+            System.Console.WriteLine("IsOdd: " + number.IsOdd()); //Output: True
+            System.Console.WriteLine("IsEven: " + number.IsEven()); //Output: False
+            System.Console.WriteLine("IsPrime: " + number.IsPrime()); //Output: False
+            System.Console.WriteLine("GetCountOfDigits: " + number.GetCountOfDigits()); //Output: 3
+            System.Console.WriteLine("GetSumOfDigits: " + number.GetSumOfDigits()); //Output: 11
+            System.Console.WriteLine("GetReverse: " + number.GetReverse()); //Output: 173
+            System.Console.WriteLine("ToWords: " + number.ToWords()); //Output: Three Seven One
+            System.Console.WriteLine("IsArmstrong: " + number.IsArmstrong()); //Output: True
+            System.Console.WriteLine("GetFibonacci: " + number.GetFibonacci()); //Output: 0, 1, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233
+            System.Console.WriteLine("isPalindrome: " + number.isPalindrome()); //Output: False
+            System.Console.ReadKey();
         }
     }
 }
