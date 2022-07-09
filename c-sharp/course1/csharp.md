@@ -59,7 +59,6 @@
 
 ## Methods
 
--   Getters and Setters: it is better to declare fields private and access them through Set and Get methods (instead of directly via public fields), better encapsulation;
 -   this: refers to the "current object" on which the method is called against (only available in "non-static" methods), useful when a parameter has the same exact name of a field;
 -   Named arguments: when you call a method, you can pass the argumens by their name insted of by their order (ex `Person.SetData(name: "Lukas", age: 37);`);
 -   Overloading: defining multiple methods with the same name and within the same class but with different arguments' types (you can call the same method name with different arguments' types, and based on the arguments' types the "right one" will be executed);
@@ -77,7 +76,8 @@
     -   ref: the parameter (even if it is a primitive type) is treated like a reference, and every change made inside the method is reflected outside. It must be pre-initialized and stored in a variable (no literals). Example:
 
     ```cs
-        public void CalcData(ref int x) {
+        public void CalcData(ref int x)
+        {
             System.Console.PrintLine(x); /// -> 5
             x = 12;
         }
@@ -92,7 +92,8 @@
     -   out: the parameter is not passed to the method, but if the method modifies it, it is passed outside. Useful for returning multiple values. It may not be already initialized, in that case you must assign it a value inside the method. Example:
 
     ```cs
-        public void CalcData(out int x) {
+        public void CalcData(out int x)
+        {
             System.Console.PrintLine(x); /// -> 0
             x = 12;
         }
@@ -111,7 +112,8 @@
     -   in: the parameter is treated as read-only inside the method, and thus can't be modified. Example:
 
     ```cs
-        public void CalcData(in int x) {
+        public void CalcData(in int x)
+        {
             x = 12; /// Error! Can't assign a new value to x.
         }
 
@@ -124,7 +126,8 @@
     -   params: the method can receive multiple arguments of the same type, they will be stored in a single parameter as an array. It can only be the last parameter of the method. Example:
 
     ```cs
-        public void CalcData(int first, params int[] data) {
+        public void CalcData(int first, params int[] data)
+        {
             /// first == 2
             /// data == [5, 3, 5, 2]
         }
@@ -137,20 +140,25 @@
 -   Ref return: the method can return a variable as a reference. Example:
 
     ```cs
-        class Student {
+        class Student
+        {
             private int _grade = 5;
 
-            public void Print() {
+            public void Print()
+            {
                 System.Console.WriteLine(_grade);
             }
 
-            public ref int RefMethod() {
+            public ref int RefMethod()
+            {
                 return ref _grade;
             }
         }
 
-        class Program {
-            public void Main() {
+        class Program
+        {
+            public void Main()
+            {
                 Student student = new Student();
                 student.Print(); /// -> 5
                 ref int studentGradeRef = ref student.RefMethod();
@@ -163,11 +171,13 @@
 -   Local functions: functions written directly inside a method, without the need to create another method. Functions can't be written outside methods. Access modifiers and modifiers are not applicable to local functions. Example:
 
 ```cs
-    public void MyMethod() {
+    public void MyMethod()
+    {
         int y = 15;
         int x = myLocalFn(5); /// x == 20
 
-        int myLocalFn(int addValue) {
+        int myLocalFn(int addValue)
+        {
             return y + 5;
         }
     }
@@ -176,11 +186,13 @@
 -   Static local functions: same as a local function, but can't access the variables or parameters of the containing method. Example:
 
 ```cs
-    public void MyMethod() {
+    public void MyMethod()
+    {
         int y = 15;
         int x = myLocalFn(5);
 
-        static int myLocalFn(int addValue) {
+        static int myLocalFn(int addValue)
+        {
             return y + 5; /// Error! Can't read y.
         }
     }
@@ -231,9 +243,46 @@
 -   Object initializer: special syntax to initialize the fields (some or all) of the object along with creating the object (executes after the constructor). Example:
 
 ```cs
-    Person person = new Person(){
+    Person person = new Person()
+    {
         name: "Annette";
         age: 31;
         location: "Prague";
     }
 ```
+
+## Properties
+
+-   Properties expose fields: fields should be kept private and exposed only through the Set and Get accessor methods (instead of directly via public fields) for better encapsulation and abstraction level:
+    -   The Set accessor can for example do some validation checks before assigning the value to the internal private field;
+    -   The Get accessor can for example do some data manipulation before returning the value straight;
+    -   The accessors methods are called automatically when trying to read or assign a property (just like a normal field);
+    -   In the Set accessor the new value is automatically passed as an implicit parameter named "value";
+    -   Both accessors can't have additional parameters;
+    -   Set can't return anything, Get should return the value of the field;
+-   Access modifiers for properties are the exact same of methods;
+-   Modifiers for properties are the exact same of methods;
+-   Read-only: exposes only the Get accessor;
+-   Write-only: exposes only the Set accessor;
+-   Auto-implemented: syntax-sugar for automatically creating a private field and a simple Get and Set accessor methods that just return the field or assign a new value to it respectively. Example:
+
+```cs
+    /// This (syntax-sugar):
+    public int Age { get; set; }
+
+    /// Instead of this (regular, extended syntax):
+    private int _age;
+    public int Age
+    {
+        get
+        {
+            return _age;
+        }
+        set
+        {
+            _age = value;
+        }
+    }
+```
+
+-   Auto-implemented property initializer: auto-implemented properties with a default value initializer;
