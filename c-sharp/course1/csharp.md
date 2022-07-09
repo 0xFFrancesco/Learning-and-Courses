@@ -262,9 +262,10 @@
     -   Set can't return anything, Get should return the value of the field;
 -   Access modifiers for properties are the exact same of methods;
 -   Modifiers for properties are the exact same of methods;
+-   Access modifiers for accessor methods are the exact same of methods;
 -   Read-only: exposes only the Get accessor;
 -   Write-only: exposes only the Set accessor;
--   Auto-implemented: syntax-sugar for automatically creating a private field and a simple Get and Set accessor methods that just return the field or assign a new value to it respectively. Example:
+-   Auto-implemented: syntax-sugar for automatically creating a private field and a simple Get and Set accessor methods that just return the field or assign a new value to it respectively. You can't add additional logic to these methods. The full definition of the methods and the private field are automatically added by the compiler. Example:
 
 ```cs
     /// This (syntax-sugar):
@@ -285,4 +286,73 @@
     }
 ```
 
--   Auto-implemented property initializer: auto-implemented properties with a default value initializer;
+-   Auto-implemented property initializer: auto-implemented properties with a default value initializer. Example:
+
+```cs
+    public decimal TaxRate { get; set; } = 10.5;
+```
+
+## Indexer
+
+-   Special property of a class that lets you access an instance with an array-like syntax (just like it was an array);
+-   The accessor methods receive an index parameter that you can use to assign and retrieve the right data on/from your internal data structure;
+-   Can't have ref and out parameter modifiers;
+-   Access modifiers are the exact same of methods;
+-   Modifiers are the exact same of methods, except for static that is not applicable here;
+-   Example:
+
+```cs
+    class MyClass {
+        private string[] _brands = {"Miele", "Sony", "Bosch"};
+
+        /// Indexer
+        public string this[int index]
+        {
+            set
+            {
+                if (index >= 0 && index < _brands.Lenght) {
+                    _brands[index] = value;
+                }
+            }
+            get
+            {
+                return _brands[index];
+            }
+        }
+    }
+
+    [...]
+
+    /// Access the instance just like it was an array.
+    MyClass myObj = new MyClass();
+    string firstBrand = myObj[0]; /// Miele
+    myObj[2] = "Electrolux";
+```
+
+-   Supports overloading. Example:
+
+```cs
+    class MyClass {
+        private string[] _brands = {"Miele", "Sony", "Bosch"};
+
+        public string this[int index]
+        {
+            [...]
+        }
+        public string this[string s]
+        {
+            [...]
+        }
+        public string this[int a, int b]
+        {
+            [...]
+        }
+    }
+
+    [...]
+
+    MyClass myObj = new MyClass();
+    string firstBrand = myObj[0];
+    string secondBrand = myObj["one"];
+    string thirdBrand = myObj[2, 0];
+```
