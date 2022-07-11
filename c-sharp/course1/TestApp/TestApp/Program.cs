@@ -19,7 +19,8 @@ class Sample
         //RefReturn();
         //Numbers();
         //Conversions();
-        ConstructorOverloading();
+        //ConstructorOverloading();
+        AccessorMethods();
     }
 
     static void ConsoleClass()
@@ -316,6 +317,20 @@ class Sample
         MCQuestion.Test();
 
         System.Console.ReadLine();
+    }
+
+    static void AccessorMethods()
+    {
+        Introduction("Accessor Methods");
+
+        CreditCard cc = new CreditCard();
+        cc.Pin = "1234";
+        cc.Pin = "1234ef";
+        cc.Pin = "123456";
+        cc.Pin = "0";
+        cc.Pin = "AB12";
+
+        System.Console.WriteLine();
     }
 
     static void Introduction(string text)

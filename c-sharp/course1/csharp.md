@@ -343,16 +343,11 @@
         {
             [...]
         }
-        public string this[int a, int b]
-        {
-            [...]
-        }
     }
 
     [...]
 
     MyClass myObj = new MyClass();
     string firstBrand = myObj[0];
-    string secondBrand = myObj["one"];
-    string thirdBrand = myObj[2, 0];
+    string secondBrand = myObj["second"];
 ```
