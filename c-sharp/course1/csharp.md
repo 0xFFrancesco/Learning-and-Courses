@@ -64,13 +64,13 @@
 -   Overloading: defining multiple methods with the same name and within the same class but with different arguments' types (you can call the same method name with different arguments' types, and based on the arguments' types the "right one" will be executed);
 -   Access modifiers are the exact same of fields;
 -   Modifiers (optional):
-    -   static:;
-    -   virtual:;
-    -   abstract:;
-    -   override:;
-    -   new:;
+    -   static: can be called without instantiating the class;
+    -   virtual: can be overriddend in child classes;
+    -   abstract: doesn't containt the method body, must be overridden in child classes (only available in abstract classes);
+    -   override: overrides a virtual or abstract parent method;
+    -   new: hides a parent method (if the child one has the same exact name and parameters);
     -   partial:;
-    -   sealed:;
+    -   sealed: can't be overridden in subsequent child classes;
 -   Parameter modifiers (optional):
 
     -   ref: the parameter (even if it is a primitive type) is treated like a reference, and every change made inside the method is reflected outside. It must be pre-initialized and stored in a variable (no literals). Example:
@@ -302,7 +302,8 @@
 -   Example:
 
 ```cs
-    class MyClass {
+    class MyClass
+    {
         private string[] _brands = {"Miele", "Sony", "Bosch"};
 
         /// Indexer
@@ -310,7 +311,8 @@
         {
             set
             {
-                if (index >= 0 && index < _brands.Lenght) {
+                if (index >= 0 && index < _brands.Lenght)
+                {
                     _brands[index] = value;
                 }
             }
@@ -332,7 +334,8 @@
 -   Supports overloading. Example:
 
 ```cs
-    class MyClass {
+    class MyClass
+    {
         private string[] _brands = {"Miele", "Sony", "Bosch"};
 
         public string this[int index]
@@ -350,4 +353,177 @@
     MyClass myObj = new MyClass();
     string firstBrand = myObj[0];
     string secondBrand = myObj["second"];
+```
+
+## Inheritance
+
+-   Syntax:
+
+```cs
+    class Parent
+    {
+        [...]
+    }
+
+    class Child : Parent
+    {
+        [...]
+    }
+```
+
+-   Single: the child inherits only from one parent (that doesn't inherit from anything);
+-   Multi-level: the child inherits from another child (the inheritance chain is longer than 1);
+-   Hierarchical: there are multiple children from the same parent;
+-   Multiple: the child has multiple parents (not allowed in C#, but can be done indirectly using interfaces). Example:
+
+```cs
+    interface A
+    {
+        [...]
+    }
+
+    interface B
+    {
+        [...]
+    }
+
+    class C : A, B
+    {
+        [...]
+    }
+```
+
+-   Hybrid: a combination of both multi-level and hierarchical inheritance;
+-   base: access the parent class members in the child class (optional, useful in case the child class has fields or methods with the exact same name of the parent class - just like using the this keyword);
+-   Parent constructor: called automatically before the child constructor when instantiating a new child. If it has parameters, it has to be written in the child constructor, otherwise is optional. Example:
+
+```cs
+    /// Parent constructor with params
+    class Parent
+    {
+        public Parent(int x)
+        {
+            [...]
+        }
+    }
+
+    class Child: Parent
+    {
+        public Child(string s, int x): base(x)
+        {
+            [...]
+        }
+    }
+
+    /// Parent constructor without params
+    class Parent2
+    {
+        public Parent()
+        {
+            [...]
+        }
+    }
+
+    class Child2: Parent2
+    {
+        public Child(string s)
+        {
+            [...]
+        }
+    }
+```
+
+-   Method hiding: hides a parent method by creating a new one with the exact same name and parameters in the child class. The new keyword has to be used. It doesn't work if the child is casted to the parent class. Example:
+
+```cs
+    class Parent
+    {
+        public Parent()
+        {
+        }
+
+        public void Display(int x)
+        {
+            System.Console.WriteLine("Parent" + x);
+        }
+    }
+
+    class Child: Parent
+    {
+        public Child()
+        {
+        }
+
+        public new void Display(int x)
+        {
+            System.Console.WriteLine("Child" + x);
+        }
+    }
+
+    Child child = new Child();
+    child.Display(1); /// Child1
+
+    Parent child2 = new Child();
+    child2.Display(1); /// Parent1
+```
+
+-   Overriding: extends a parent method by creating another one with the exact same name and parameters in the child class. The virtual and overide keywords have to be used. Overriding a virtual method is optional. It works even in case the child is casted to the parent class. Example:
+
+```cs
+    class Parent
+    {
+        public Parent()
+        {
+        }
+
+        public virtual void Display(int x)
+        {
+             System.Console.WriteLine("Parent" + x);
+        }
+    }
+
+    class Child: Parent
+    {
+        public Child()
+        {
+        }
+
+        public override void Display(int x)
+        {
+            System.Console.WriteLine("Child!" + x);
+        }
+    }
+
+    Child child = new Child();
+    child.Display(1); /// Child1
+
+    Parent child2 = new Child();
+    child2.Display(1); /// Child1
+```
+
+-   Sealed classes: they can't be inherited. They can't define virtual or abstract methods;
+-   Sealed methods: they can't be overiddend in other child classes (assuming the parent uses the virtual or override modifier on the method);
+
+## Abstract classes
+
+-   Can't be instantiated, can contain abstact methods (signature methods without body, only available in abstract classes. They must be implemented in the child classes using override methods). Example:
+
+```cs
+    abstract class Sorter<T>
+    {
+        [...]
+
+        protected abstract bool CompareElements(T a, T b)
+        {
+            [...]
+        }
+    }
+
+    class IntSorter: Sorter<int>
+    {
+        protected override bool CompareElements(int a, int b)
+        {
+            return a > b;
+        }
+    }
 ```
