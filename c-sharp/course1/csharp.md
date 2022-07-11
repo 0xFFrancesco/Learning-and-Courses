@@ -438,9 +438,7 @@
 ```cs
     class Parent
     {
-        public Parent()
-        {
-        }
+        public Parent() {}
 
         public void Display(int x)
         {
@@ -450,9 +448,7 @@
 
     class Child: Parent
     {
-        public Child()
-        {
-        }
+        public Child() {}
 
         public new void Display(int x)
         {
@@ -472,9 +468,7 @@
 ```cs
     class Parent
     {
-        public Parent()
-        {
-        }
+        public Parent() {}
 
         public virtual void Display(int x)
         {
@@ -484,9 +478,7 @@
 
     class Child: Parent
     {
-        public Child()
-        {
-        }
+        public Child() {}
 
         public override void Display(int x)
         {
@@ -504,9 +496,9 @@
 -   Sealed classes: they can't be inherited. They can't define virtual or abstract methods;
 -   Sealed methods: they can't be overiddend in other child classes (assuming the parent uses the virtual or override modifier on the method);
 
-## Abstract classes
+## Abstract classes and Interfaces
 
--   Can't be instantiated, can contain abstact methods (signature methods without body, only available in abstract classes. They must be implemented in the child classes using override methods). Example:
+-   Abstract classes: can't be instantiated, can contain abstact methods (signature methods without body, only available in abstract classes. They must be implemented in the child classes using the override modifier). Example:
 
 ```cs
     abstract class Sorter<T>
@@ -527,3 +519,66 @@
         }
     }
 ```
+
+-   Interfaces: can't be instantiated, can define only abstract methods and properties (that must be implemented in the child classes). All the interface methods and properties are public by default and can't have a different access modifier. The override keyword in the child class is not needed. Example:
+
+```cs
+    interface IVehicle
+    {
+        string FuelType { set; get; }
+        int GetWheels() {}
+        void Drive() {}
+    }
+
+    class Car: IVehicle
+    {
+        public string FuelType { set; get; }
+
+        public int GetWheels()
+        {
+            return 4;
+        }
+
+        public void Drive()
+        {
+            System.Console.WriteLine("Vroooom!!");
+        }
+    }
+```
+
+-   Polymorphism: defines different implementations of the same method in the same class or different classes;
+
+    -   Compile-time (early binding / static polymorphism): overloading;
+    -   Run-time (late binding / dynamic polymorphism): overriding. Example:
+
+    ```cs
+        interface IVehicle
+        {
+            void Drive() {}
+        }
+
+        class Car: IVehicle
+        {
+            public void Drive()
+            {
+                System.Console.WriteLine("Brum brum brum!");
+            }
+        }
+
+        class Truck: IVehicle
+        {
+            public void Drive()
+            {
+                System.Console.WriteLine("Vrooooooooom!");
+            }
+        }
+
+        IVehicle instance = new Car();
+        instance.Drive(); /// Brum brum brum!
+        instance = new Truck();
+        instance.Drive(); /// Vrooooooooom!
+    ```
+
+-   Multiple inheritance: a child class can inherit from multiple interfaces (but not from multiple classes);
+-   Interface inheritance: an interface can inherit from another interface (but not from a class);
+-   Explicit interface implementation: creating two methods with the same exact signature in two different interfaces and implementing both them in the same child class;
