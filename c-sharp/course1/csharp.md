@@ -31,10 +31,10 @@
 
 -   Classes can be either internal (default - accessible only within the same project) or public (accessible also in different projects):
     -   Optional sub-types are:
-        -   static: contains only static members;
+        -   static: can contain only static members;
         -   abstract: can contain abstract methods, to be implemented in child classes;
         -   sealed: can't be inherited;
-        -   partial: multiple partial classes with the same name can be combined into a single class;
+        -   partial: split across multiple source files;
 -   Objects are stored in the Heap, methods' variables are stored in the Stack;
     -   A new Stack is created for every method call;
     -   To access an object (that is nameless), you need a reference variable that "points" to the Heap's memory location of that object (`Person person = new Person();`);
@@ -78,7 +78,7 @@
     ```cs
         public void CalcData(ref int x)
         {
-            System.Console.PrintLine(x); /// -> 5
+            System.Console.WriteLine(x); /// -> 5
             x = 12;
         }
 
@@ -94,7 +94,7 @@
     ```cs
         public void CalcData(out int x)
         {
-            System.Console.PrintLine(x); /// -> 0
+            System.Console.WriteLine(x); /// -> 0
             x = 12;
         }
 
@@ -526,20 +526,20 @@
     interface IVehicle
     {
         string FuelType { set; get; }
-        int GetWheels() {}
-        void Drive() {}
+        int GetWheels();
+        void Drive();
     }
 
     class Car: IVehicle
     {
-        public string FuelType { set; get; }
+        string FuelType { set; get; }
 
-        public int GetWheels()
+        int GetWheels()
         {
             return 4;
         }
 
-        public void Drive()
+        void Drive()
         {
             System.Console.WriteLine("Vroooom!!");
         }
@@ -554,12 +554,12 @@
     ```cs
         interface IVehicle
         {
-            void Drive() {}
+            void Drive();
         }
 
         class Car: IVehicle
         {
-            public void Drive()
+            void Drive()
             {
                 System.Console.WriteLine("Brum brum brum!");
             }
@@ -567,7 +567,7 @@
 
         class Truck: IVehicle
         {
-            public void Drive()
+            void Drive()
             {
                 System.Console.WriteLine("Vrooooooooom!");
             }
@@ -581,4 +581,124 @@
 
 -   Multiple inheritance: a child class can inherit from multiple interfaces (but not from multiple classes);
 -   Interface inheritance: an interface can inherit from another interface (but not from a class);
--   Explicit interface implementation: creating two methods with the same exact signature in two different interfaces and implementing both them in the same child class;
+-   Explicit interface implementation: creating two methods with the same exact signature in two different interfaces and implementing both them in the same child class, so that they are called alternatively based on the interface casting. Example:
+
+```cs
+    interface IPoint
+    {
+        void Draw();
+    }
+
+    interface ICircle
+    {
+        void Draw();
+    }
+
+    class CirclePoint: IPoint, ICircle
+    {
+        void IPoint.Draw()
+        {
+            System.Console.WriteLine("Point");
+        }
+
+        void ICircle.Draw()
+        {
+            System.Console.WriteLine("Circle");
+        }
+
+        public void Draw()
+        {
+            System.Console.WriteLine("Circle Point");
+        }
+    }
+
+    IPoint a = new CirclePoint();
+    a.Draw(); /// Point
+    ICircle b = new CirclePoint();
+    b.Draw(); /// Circle
+    CirclePoint c = new CirclePoint();
+    c.Draw(); /// Circle Point
+```
+
+## Namespaces
+
+-   Collections of classes, interfaces, structures, delegates and enumerations. A namespace can span multiple files (but will be always treated as one-per-name);
+-   Nested: a namespace (inner) created inside another namespace (outer);
+-   Using: top level statement that imports all the members of a namespace so that there is no need to type the namespace name again. Inner (nested) namespaces are not automatically imported. Example:
+
+```cs
+    /// With using;
+    using System;
+
+    Console.WriteLine();
+    Console.ReadLine();
+
+    /// Without using
+    System.Console.WriteLine();
+    System.Console.ReadLine();
+```
+
+-   Alias: uses another name for the namespace. Useful to shorten namespace names and deal with naming conflicts. Example:
+
+```cs
+    using OS = System;
+    using SysConsole = System.Console;
+    using MyConsole = MyNamespace.Console;
+
+    OS.Console.WriteLine(); /// Shorten syntax
+
+    /// Avoid name conflicts
+    SysConsole.WriteLine();
+    MyConsole.Print();
+```
+
+-   Static: imports a static class from a namespace so that you can use its static members without even typing the class name. Example:
+
+```cs
+    using static System.Console;
+
+    WriteLine("Called without typing neither the namespace nor the class name!");
+```
+
+## Partial, Static and Enumerations
+
+-   Partial class: it is splitted across multiple files, but is treated and instantiated as a single normal class. THe different "parts" must have the same namespace, name, access modifier and modifier. Example:
+
+```cs
+    /// Car_1.cs
+    partial class Car {
+        protected int wheels;
+    }
+
+    /// Car_2.cs
+    partial class Car {
+        public void Drive() {}
+    }
+```
+
+-   Partial structure: the same as partial class applies;
+-   Partial interface: the same as partial class applies;
+-   Partial method: is defined in a file of a partial class, and is implemented in another file of the same partial class. Partial methods must be private and void;
+-   Static class: can contain only static members, can't inherit from other classes or interfaces, can't be inherited, can't be instantiated;
+-   Enumeration: collection of constants, supports the same access modifiers and modifiers as classes. Syntax:
+
+```cs
+    public enum CarType {
+        Coupe,          /// 0 - default
+        Convertible,    /// 1 - default
+        Sport           /// 2 - default
+    }
+
+    /// Defaults override
+    public enum AgeGroup: string
+    {
+        Baby = "Baby",
+        Child = "Child",
+        Teenager = "Teenager",
+        Adult = "Adult",
+        Senior = "Senior"
+    }
+
+    CarType myCar = CarType.Sport; /// 2
+    AgeGroup myAge = AgeGroup.Adult; /// Adult
+```

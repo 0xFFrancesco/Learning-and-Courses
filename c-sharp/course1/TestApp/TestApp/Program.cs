@@ -20,23 +20,24 @@ class Sample
         //Numbers();
         //Conversions();
         //ConstructorOverloading();
-        AccessorMethods();
+        //AccessorMethods();
+        ExplicitInterfaceImplementation();
     }
 
     static void ConsoleClass()
     {
         Introduction("The Console Class");
 
-        System.Console.WriteLine("Welcome");
-        System.Console.WriteLine("to");
-        System.Console.WriteLine("C# programming");
-        System.Console.ReadKey();
+        Console.WriteLine("Welcome");
+        Console.WriteLine("to");
+        Console.WriteLine("C# programming");
+        Console.ReadKey();
 
-        System.Console.WriteLine();
-        System.Console.Write("Welcome ");
-        System.Console.Write("to ");
-        System.Console.Write("C# programming ");
-        System.Console.ReadKey();
+        Console.WriteLine();
+        Console.Write("Welcome ");
+        Console.Write("to ");
+        Console.Write("C# programming ");
+        Console.ReadKey();
     }
 
     static void Variables()
@@ -66,23 +67,23 @@ class Sample
         bool booleanVal = false;
 
         Introduction("Variables");
-        System.Console.WriteLine(maxSByteVal);
-        System.Console.WriteLine(mySByteVal);
-        System.Console.WriteLine(defaultSByteVal);
-        System.Console.WriteLine(byteVal);
-        System.Console.WriteLine(shortVal);
-        System.Console.WriteLine(uShortVal);
-        System.Console.WriteLine(intVal);
-        System.Console.WriteLine(uIntVal);
-        System.Console.WriteLine(longVal);
-        System.Console.WriteLine(uLongVal);
-        System.Console.WriteLine(floatVal);
-        System.Console.WriteLine(doubleVal);
-        System.Console.WriteLine(decimalVal);
-        System.Console.WriteLine(charVal);
-        System.Console.WriteLine(stringVal);
-        System.Console.WriteLine(booleanVal);
-        System.Console.ReadKey();
+        Console.WriteLine(maxSByteVal);
+        Console.WriteLine(mySByteVal);
+        Console.WriteLine(defaultSByteVal);
+        Console.WriteLine(byteVal);
+        Console.WriteLine(shortVal);
+        Console.WriteLine(uShortVal);
+        Console.WriteLine(intVal);
+        Console.WriteLine(uIntVal);
+        Console.WriteLine(longVal);
+        Console.WriteLine(uLongVal);
+        Console.WriteLine(floatVal);
+        Console.WriteLine(doubleVal);
+        Console.WriteLine(decimalVal);
+        Console.WriteLine(charVal);
+        Console.WriteLine(stringVal);
+        Console.WriteLine(booleanVal);
+        Console.ReadKey();
     }
 
     static void CircleArea()
@@ -91,8 +92,8 @@ class Sample
         byte r = 12;
         double area = Math.PI * Math.Pow(r, 2);
 
-        System.Console.WriteLine("The area of a circle with r=" + r + " is equal to " + area.ToString("N2") + ".");
-        System.Console.ReadKey();
+        Console.WriteLine("The area of a circle with r=" + r + " is equal to " + area.ToString("N2") + ".");
+        Console.ReadKey();
     }
 
     static void PersonHeight()
@@ -103,8 +104,8 @@ class Sample
 
         double centimeters = (12 * feet + inches) * 2.54;
 
-        System.Console.WriteLine("The conversion of " + feet + " feet and " + inches + " inches is equal to " + centimeters + " centimeters.");
-        System.Console.ReadKey();
+        Console.WriteLine("The conversion of " + feet + " feet and " + inches + " inches is equal to " + centimeters + " centimeters.");
+        Console.ReadKey();
     }
 
     static void NearestThousand()
@@ -113,18 +114,18 @@ class Sample
 
         for (byte x = 0; x < 3; x++)
         {
-            System.Console.WriteLine("Type an integer number.");
-            int number = System.Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Type an integer number.");
+            int number = Convert.ToInt32(Console.ReadLine());
             int nearestThousand = 1000;
             if (number > 1499)
             {
                 int remainder = number % 1000;
                 nearestThousand = ((number - remainder) / 1000 + (remainder > 499 ? 1 : 0)) * 1000;
             }
-            System.Console.WriteLine("The nearest thousand of " + number + " is " + nearestThousand + ".");
+            Console.WriteLine("The nearest thousand of " + number + " is " + nearestThousand + ".");
         }
 
-        System.Console.ReadKey();
+        Console.ReadKey();
     }
 
     static void SecondsToTime()
@@ -132,9 +133,9 @@ class Sample
         Introduction("Seconds to Time");
 
 
-        System.Console.WriteLine("Type an integer number representing seconds.");
+        Console.WriteLine("Type an integer number representing seconds.");
 
-        int seconds = System.Convert.ToInt32(Console.ReadLine());
+        int seconds = Convert.ToInt32(Console.ReadLine());
 
         int displayS = seconds % 60;
         int minutes = (seconds - displayS) / 60;
@@ -143,8 +144,8 @@ class Sample
         int displayH = hours % 24;
         int days = (hours - displayH) / 24;
 
-        System.Console.WriteLine(days + " Days, " + displayH + " Hours, " + displayM + " Minutes, " + displayS + " Seconds.");
-        System.Console.ReadKey();
+        Console.WriteLine(days + " Days, " + displayH + " Hours, " + displayM + " Minutes, " + displayS + " Seconds.");
+        Console.ReadKey();
     }
 
     static void HeightCategory()
@@ -152,8 +153,8 @@ class Sample
         Introduction("Height Category");
 
 
-        System.Console.WriteLine("Type an integer number representing the height in inches.");
-        byte inches = System.Convert.ToByte(Console.ReadLine());
+        Console.WriteLine("Type an integer number representing the height in inches.");
+        byte inches = Convert.ToByte(Console.ReadLine());
         double cms = inches * 2.54;
 
         string category;
@@ -175,8 +176,8 @@ class Sample
             category = "abnormal tall";
         }
 
-        System.Console.WriteLine("You are " + category + ".");
-        System.Console.ReadKey();
+        Console.WriteLine("You are " + category + ".");
+        Console.ReadKey();
     }
 
     static void LargerAmong3()
@@ -186,15 +187,15 @@ class Sample
         int max = 0;
         for (byte x = 0; x < 3; x++)
         {
-            System.Console.WriteLine("Type an integer number.");
-            int number = System.Convert.ToInt32(Console.ReadLine());
+            Console.WriteLine("Type an integer number.");
+            int number = Convert.ToInt32(Console.ReadLine());
             if (number > max)
             {
                 max = number;
             }
         }
-        System.Console.WriteLine("The larger number is: " + max + ".");
-        System.Console.ReadKey();
+        Console.WriteLine("The larger number is: " + max + ".");
+        Console.ReadKey();
     }
 
     static void Loops()
@@ -218,9 +219,9 @@ class Sample
                         continue;
                     }
                 }
-                System.Console.Write(n + " ");
+                Console.Write(n + " ");
             }
-            System.Console.WriteLine();
+            Console.WriteLine();
         }
     }
 
@@ -237,9 +238,9 @@ class Sample
         {
             i++;
 
-            System.Console.WriteLine("\nType 1 to generate a new employee, 0 to exit.");
-            System.Console.Write("Enter choice:");
-            choice = System.Convert.ToSByte(System.Console.ReadLine());
+            Console.WriteLine("\nType 1 to generate a new employee, 0 to exit.");
+            Console.Write("Enter choice:");
+            choice = Convert.ToSByte(Console.ReadLine());
 
             if (choice == 1)
             {
@@ -249,21 +250,21 @@ class Sample
                 employee.WorkingHours = 8 * 5 * 4 * 12;
                 employee.NetSalary = employee.WorkingHours * employee.SalaryPerHour;
 
-                System.Console.WriteLine("--------------------");
-                System.Console.WriteLine("Id: " + employee.Id);
-                System.Console.WriteLine("Name: " + employee.Name);
-                System.Console.WriteLine("Salary/h: " + employee.SalaryPerHour);
-                System.Console.WriteLine("Working hours: " + employee.WorkingHours);
-                System.Console.WriteLine("Net salary: " + employee.NetSalary);
-                System.Console.WriteLine("Organization name: " + Employee.OrgName);
-                System.Console.WriteLine("Type: " + Employee.EmployeeType);
-                System.Console.WriteLine("Department: " + employee.Department);
-                System.Console.WriteLine("--------------------");
+                Console.WriteLine("--------------------");
+                Console.WriteLine("Id: " + employee.Id);
+                Console.WriteLine("Name: " + employee.Name);
+                Console.WriteLine("Salary/h: " + employee.SalaryPerHour);
+                Console.WriteLine("Working hours: " + employee.WorkingHours);
+                Console.WriteLine("Net salary: " + employee.NetSalary);
+                Console.WriteLine("Organization name: " + Employee.OrgName);
+                Console.WriteLine("Type: " + Employee.EmployeeType);
+                Console.WriteLine("Department: " + employee.Department);
+                Console.WriteLine("--------------------");
 
             }
         } while (choice != 0);
 
-        System.Console.ReadKey();
+        Console.ReadKey();
     }
 
     static void RefReturn()
@@ -276,7 +277,7 @@ class Sample
         studentGradeRef = 8;
         student.Print();
 
-        System.Console.ReadKey();
+        Console.ReadKey();
     }
 
     static void Numbers()
@@ -285,7 +286,7 @@ class Sample
 
         Number.Test();
 
-        System.Console.ReadKey();
+        Console.ReadKey();
     }
 
     static void Conversions()
@@ -303,11 +304,11 @@ class Sample
         bool success = decimal.TryParse(c, out decimal cDecimal);
 
         decimal d = 11.56M;
-        string dString = System.Convert.ToString(d);
+        string dString = Convert.ToString(d);
 
-        System.Console.WriteLine("Parsed values: " + aShort + ", " + bShort + ", " + cDouble + ", " + cDecimal + " (" + success + ")" + ", " + dString + ".");
+        Console.WriteLine("Parsed values: " + aShort + ", " + bShort + ", " + cDouble + ", " + cDecimal + " (" + success + ")" + ", " + dString + ".");
 
-        System.Console.ReadLine();
+        Console.ReadLine();
     }
 
     static void ConstructorOverloading()
@@ -316,7 +317,7 @@ class Sample
 
         MCQuestion.Test();
 
-        System.Console.ReadLine();
+        Console.ReadLine();
     }
 
     static void AccessorMethods()
@@ -330,15 +331,24 @@ class Sample
         cc.Pin = "0";
         cc.Pin = "AB12";
 
-        System.Console.WriteLine();
+        Console.ReadLine();
+    }
+
+    static void ExplicitInterfaceImplementation()
+    {
+        Introduction("Explicit Interface Implementation");
+
+        CirclePoint.Test();
+
+        Console.ReadLine();
     }
 
     static void Introduction(string text)
     {
-        System.Console.Clear();
-        System.Console.WriteLine(text);
-        System.Console.ReadKey();
-        System.Console.Clear();
+        Console.Clear();
+        Console.WriteLine(text);
+        Console.ReadKey();
+        Console.Clear();
     }
 }
 
@@ -350,7 +360,7 @@ class Student
 
     public void Print()
     {
-        System.Console.WriteLine("The grade is: " + _grade + ".");
+        Console.WriteLine("The grade is: " + _grade + ".");
     }
 
     public ref int RefMethod()
