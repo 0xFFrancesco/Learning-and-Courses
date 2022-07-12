@@ -680,25 +680,57 @@
 -   Partial interface: the same as partial class applies;
 -   Partial method: is defined in a file of a partial class, and is implemented in another file of the same partial class. Partial methods must be private and void;
 -   Static class: can contain only static members, can't inherit from other classes or interfaces, can't be inherited, can't be instantiated;
--   Enumeration: collection of constants, supports the same access modifiers and modifiers as classes. Syntax:
+-   Enumeration: collection of integer numerical constants, supports the same access modifiers and modifiers as classes. Syntax:
 
 ```cs
     public enum CarType {
         Coupe,          /// 0 - default
         Convertible,    /// 1 - default
-        Sport           /// 2 - default
+        Sport = 100     /// 100 - overridden
     }
 
-    /// Defaults override
-    public enum AgeGroup: string
-    {
-        Baby = "Baby",
-        Child = "Child",
-        Teenager = "Teenager",
-        Adult = "Adult",
-        Senior = "Senior"
-    }
-
-    CarType myCar = CarType.Sport; /// 2
-    AgeGroup myAge = AgeGroup.Adult; /// Adult
+    CarType myCar = CarType.Sport; /// 100
 ```
+
+## Structures
+
+-   Value types: structures and enumerations;
+    -   Meant for simple values;
+    -   Stored in tha Stack (a new one for every method call);
+    -   Internally derived from System.ValueType;
+-   Reference types: stings, classes, interfaces and delegates;
+    -   Meant for complex values;
+    -   Stored in the Heap (one for the entire program);
+    -   Accessible via reference variables (stored in the Stack, pointing to the Heap);
+    -   Internally derived from System.ObjectType;
+-   Structures VS classes: only meant for simple values, faster, stored in the Stack, don't support inheritance (but can implement interfaces), don't support abstract or virtual methods, don't support protected or protected internal access modifiers, don't support custom parameter-less-constructors or destructors, if you create a parameterized-constructor you must also initialize all the fields, derived from System.ValueType, can't initialize non-static fields in the declaration, isn't nullable, they "new" keyword is not required if all the fields are then manually initialized. Example:
+
+```cs
+    public struct Category {
+        public int Id { set; get; }
+        public string Name { set; get; }
+        public void Print()
+        {
+            System.Console.WriteLine(Id + " - " + Name);
+        }
+    }
+
+    Category cat;
+    cat.Id = 1001;
+    cat.Name = "Beverages";
+    cat.Print(); /// 1001 - Beverages
+
+    Category cat2 = new Category();
+    cat.Name = "Food";
+    cat.Print(); /// 0 - Food
+
+    cat2 = cat;
+    cat2.Id = 9999;
+    cat2.Print(); /// 9999 - Beverages
+    cat.Print(); /// 1001 - Beverages
+```
+
+-   Readonly structures: all the fields are readonly and can be assigned only in a parameterized constructor;
+-   Primitive types: all primitive types (excepts strings) are internally structures;
+
+## System.Object
