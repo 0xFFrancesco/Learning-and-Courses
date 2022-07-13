@@ -854,7 +854,7 @@
 
 ```
 
--   Implicitly typed variables: variables declared with the "var" keyword, their type is implicitly inferred by the compiler. They must be initialized and their type can't change afterwards. Example:
+-   Implicitly typed variables: declared with the "var" keyword, their type is implicitly inferred by the compiler. They must be initialized at declaration and their type can't change afterwards. They can only be local variables inside a method. Example:
 
 ```cs
     var x;           /// Error! must be initialized
@@ -862,7 +862,39 @@
     y = 10;          /// Error! the type can't change
 ```
 
--   Dynamically typed variables:;
--   Inner Classes:;
+-   Dynamically typed variables: declared with the "dynamic" keyword, their type is not fixed and can change. They are not type-checked by the compiler, and thus there is a greater risk of bugs. Example:
 
-## GC, Destructors, IDisposable
+```cs
+    dynamic x;  /// Null
+    x = 10;     /// Int
+    x = "Test"; /// String
+    x.Print();  /// Run-time error (not checked during compilation)
+```
+
+-   Inner classes: are defined inside another class, by default are private and thus accessible in the outer class only (but can be changed using other access modifiers). Example:
+
+```cs
+    class MyOuterClass
+    {
+        static void Calculate()
+        {
+            MyInnerClass c1 = new MyInnerClass();
+            MyInnerPublicClass c2 = new MyInnerPublicClass();
+        }
+
+
+        class MyInnerClass {}
+        public class MyInnerPublicClass {}
+    }
+
+    MyOuterClass.MyInnerClass c1 = new MyOuterClass.MyInnerClass(); /// Error!
+    MyOuterClass.MyInnerPublicClass c2 = new MyOuterClass.MyInnerPublicClass();
+```
+
+## Garbage collection, Destructors, IDisposable
+
+-   Garbage collection: automatic process (done by the CLR) to delete unreachable objects (with a reference count of 0) from the Heap to free up unused memory. It usually runs when the CLR can't find unused space to allocate new objects. The Heap is usually ~64MB at the start, but is extendable. If after the GC process the space is not yet enough, then the CLR requests the OS to extend its Heap memory. Stacks don't need GC as they are completely destroyed at the end of the methods;
+-   `GC.Collect()`: method to manually invoke the garbage collection process;
+-   Destructors:
+-   IDisposable
+-
