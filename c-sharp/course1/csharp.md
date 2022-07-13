@@ -697,13 +697,13 @@
 -   Value types: structures and enumerations;
     -   Meant for simple values;
     -   Stored in tha Stack (a new one for every method call);
-    -   Internally derived from System.ValueType;
+    -   Internally derived from System.ObjectType->System.ValueType;
 -   Reference types: stings, classes, interfaces and delegates;
     -   Meant for complex values;
     -   Stored in the Heap (one for the entire program);
     -   Accessible via reference variables (stored in the Stack, pointing to the Heap);
     -   Internally derived from System.ObjectType;
--   Structures VS classes: only meant for simple values, faster, stored in the Stack, don't support inheritance (but can implement interfaces), don't support abstract or virtual methods, don't support protected or protected internal access modifiers, don't support custom parameter-less-constructors or destructors, if you create a parameterized-constructor you must also initialize all the fields, derived from System.ValueType, can't initialize non-static fields in the declaration, isn't nullable, they "new" keyword is not required if all the fields are then manually initialized. Example:
+-   Structures VS classes: only meant for simple values, faster, stored in the Stack, don't support inheritance (but can implement interfaces), don't support abstract or virtual methods, don't support protected or protected internal access modifiers, don't support custom parameter-less-constructors or destructors, if you create a parameterized-constructor you must also initialize all the fields, can't initialize non-static fields in the declaration, isn't nullable, they "new" keyword is not required if all the fields are then manually initialized. Example:
 
 ```cs
     public struct Category {
@@ -734,3 +734,135 @@
 -   Primitive types: all primitive types (excepts strings) are internally structures;
 
 ## System.Object
+
+-   Is the "ultimate" super/base class of everything in .NET, even of primitive types (that are derived from System.ValueType, which is itself a child of System.Object);
+-   Is directly or indirectly the parent class of everything;
+-   Everything can be casted to System.Object (for example even integers);
+-   Some of its methods are virtual and can be overridden in child classes:
+    -   `bool Equals(System.Object value)`: compares two objects and return whether they are equal or not;
+    -   `int GetHashCode()`: returns an hashcode representing the object;
+    -   `string ToString()`: returns a string representing the object;
+-   The "object" keyword is a syntax-sugar for "System.Object";
+-   Boxing: conversion from value-type to reference-type (the value is shifted from the Stack to the Heap);
+-   Unboxing: conversion from reference-type to value-type (the value is shifted from the Heap to the Stack), only possible for values that can be converted to value-types;
+-   Boxing is automatic, unboxing requires explicit casting. Example:
+
+```cs
+    int number = 12;
+    Syste.Object myNumber = number; /// Automatic boxing
+    int mySecondNumber = (int) myNumber; /// Explicit unboxing
+```
+
+## Generics
+
+-   Parameters that specify a dynamic type across a class, method, interface or delegate. Any data type is accepted, primitive or not. Example:
+
+```cs
+    class MyClass<T>
+    {
+        public T Data { set; get; }
+        public bool CheckData(T data) {}
+        public bool GenericMethod<U, V>() {}
+    }
+
+    MyClass<string> c = new MyClass<string>();
+    c.Data = "Hello!";
+
+    MyClass<int> c2 = new MyClass<int>();
+    c2.Data = 15;
+
+    MyClass<MyOtherClass> c3 = new MyClass<MyOtherClass>();
+    c3.Data = new MyOtherClass();
+```
+
+-   Constraints: a generic can be constrained to be more specific about the types it can accept. Example:
+
+```cs
+    class MyClass<T, U> where T: class where U: int, string /// Only classes are accepted for T, only integers or strings are accepted for U
+    {
+        public U Calculate(T data) {}
+    }
+```
+
+## Nullability
+
+-   Non-nullable: value types;
+-   Nullable: reference types;
+-   Is possible to convert non-nullable types to nullable types. Example:
+
+```cs
+    int x = null; /// Error! Int type is non-nullable
+
+    Nullable<int> y = null; /// Ok!
+    int? z = null; /// Ok! Sintax-sugar
+
+    if (z.HasValue) /// Property available after conversion, checks whether a value has been assigned
+    {
+        int k = z.Value; /// Property available after conversion, gives back the real value (unboxed)
+    }
+```
+
+-   Null coalescing operator: returns the right-hand operand only if the left-hand one is null. The right-hand type must be the same of the left-hand. Example:
+
+```cs
+    int a = 0 ?? 10; /// 0
+    int b = null ?? 10; /// 10
+    System.Console.WriteLine(a ?? "no value"); /// Error! left-hand is int and right-hand is string
+```
+
+-   Null propagation operator: access the right-hand only if the left-hand is not null. Example:
+
+```cs
+    MyClass c;  /// Null
+    int? x;     /// Null
+
+    x = c.Prop; /// Error! c is null
+    x = c?.Prop;/// null
+```
+
+## Extension Methods and Pattern Matching
+
+-   Extension methods: methods injected into an existing class/struct/interface from the outside. Useful to enrich pre-defined, system or library classes with additionl methods without modifying their source code. You must create a static class, and the extension method must have the target class as first parameter. Inside an extension method you can't use private or protected members of the target class. It can't be overridden. Example:
+
+```cs
+    class SystemClass {} /// Source code not accessible
+
+    static class MyClass {
+        public static void MyExtensionMethod(this SystemClass sc, int x) {
+            sc.SystemPublicMethod();
+            System.Console.WriteLine(x);
+        }
+    }
+
+    SystemClass c = new SystemClass();
+    c.MyExtensionMethod(10); /// 10
+```
+
+-   Pattern matching: allows you to declare a new variable while checking the data type (class) of an already existing reference variable and automatically type-casts the reference variable in the specified data type (class) in the new variable. Example:
+
+```cs
+    /// Without pattern matching
+    if (myVar is MyClass) {
+        MyClass c = (MyClass) myVar;
+        c.MyClassMethod();
+    }
+
+    /// With pattern matching
+    if (myVar is MyClass c) {
+        c.MyClassMethod();
+    }
+
+```
+
+-   Implicitly typed variables: variables declared with the "var" keyword, their type is implicitly inferred by the compiler. They must be initialized and their type can't change afterwards. Example:
+
+```cs
+    var x;           /// Error! must be initialized
+    var y = "Hello"; /// Implicity typed as string
+    y = 10;          /// Error! the type can't change
+```
+
+-   Dynamically typed variables:;
+-   Inner Classes:;
+
+## GC, Destructors, IDisposable
