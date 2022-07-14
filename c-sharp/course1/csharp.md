@@ -895,6 +895,177 @@
 
 -   Garbage collection: automatic process (done by the CLR) to delete unreachable objects (with a reference count of 0) from the Heap to free up unused memory. It usually runs when the CLR can't find unused space to allocate new objects. The Heap is usually ~64MB at the start, but is extendable. If after the GC process the space is not yet enough, then the CLR requests the OS to extend its Heap memory. Stacks don't need GC as they are completely destroyed at the end of the methods;
 -   `GC.Collect()`: method to manually invoke the garbage collection process;
--   Destructors:
--   IDisposable
--
+-   Managed resources: allocated and garbage collected by the CLR;
+-   Unmanaged resources: objects that are not managed by the CLR, and thus are not garbage collected (ex. file streams, database connections). They can cause memory leaks. They require manual destruction via:
+
+    -   Destructor: method that runs automatically before de-allocating an object (GC) or before the end of the program, where you can perform the clean-up of unmanaged resources (like closing a DB connection). Is public and can't have parameters or return values. Can be defined only in classes (not in structs or interfaces). Is unique to the class and doesn't support overloading. Is converted to the .NET "Finalize()" method after the compilation, in the IL. Example:
+
+    ```cs
+        public class MyClass
+        {
+            public MyClass()
+            {
+                System.Console.WriteLine("Constructor");
+                /// Set up unmanaged resource, ex. open DB connection
+            }
+
+            ~MyClass()
+            {
+                System.Console.WriteLine("Destructor");
+                /// Destroy unmanaged resource, ex. close DB connection
+            }
+        }
+    ```
+
+    -   IDisposable: pre-defined interface, has a "Dispose" method, which is used to clean-up unmanaged resources after the end of a specific task, it needs to be called manually or via the "using" declaration. Can't return values (must be Void). Usually better than Destructor, as is not sure when the Destructor will be called, as it needs the GC process to run. Example:
+
+    ```cs
+        public class MyClass: System.IDisposable
+        {
+            [...]
+
+            public void Dispose()
+            {
+                System.Console.WriteLine("Dispose");
+                /// Destroy unmanaged resource, ex. close DB connection
+            }
+        }
+
+        MyClass c = new MyClass();
+
+        [...]
+
+        c.Dispose();
+    ```
+
+-   Using declaration: creates an object only for a specific block of code or method. After that block or method the Dispose method is automatically called and the object destroyed. Example:
+
+```cs
+    public void MyMethod()
+    {
+        using (MyClass c = new MyClass())
+        {
+            [...]
+        }
+        /// Here c.Dispose() is called and then c is destroyed
+
+        [...]
+    }
+
+    /// Syntax-sugar
+    public void MyMethod()
+    {
+        using MyClass c = new MyClass()
+
+        [...]
+
+    } /// At the end of the method c.Dispose() is called and then c is destroyed
+
+```
+
+## Delegates and Events
+
+-   Delegate: object that stores the reference of one or more methods that are compatible with the delegate type (delegate types are internally classes) in order to undirectly call them. Useful in relation to events: events are internally delegates. They are derived from System.Delegate. You can call the stored methods with the Invoke method of the delegate object. Example:
+
+```cs
+    namespace MyNamespace
+    {
+        /// Delegate type (internally is a class derived from System.Delegate)
+        public delegate int GetValueDelegate(int x, int y);
+
+        public class MyClass
+        {
+            public int CalculateValue(int valueA, int valueB)
+            {
+                return valueA * valueB;
+            }
+
+            public int AddValues(int valueA, int valueB)
+            {
+                return valueA + valueB;
+            }
+
+            public void Print()
+            {
+                System.Console.WriteLine("Hello");
+            }
+        }
+    }
+
+    using MyNamespace;
+
+    /// The class from which the methods are delegated must be instantiated
+    MyClass c = new MyClass();
+
+    /// Delegate objects (the new keyword is optional)
+    GetValueDelegate myDelegate = c.CalculateValue;
+    GetValueDelegate myDelegate2 = new GetValueDelegate(c.Print); /// Error! MyClass.Print is not compatible with the delegate type
+
+    /// Call the stored methods
+    int res = myDelegate.Invoke(3, 2); /// 6
+```
+
+    -   Single-cast: contains the reference of only one compatible method;
+    -  Multi-cast: contains the references of multiple compatible methods, its return value is the return value of the last executed method. Example:
+
+    ```cs
+        MyClass c = new MyClass();
+
+        GetValueDelegate myMultiCastDelegate = c.AddValues;
+        /// Sustitute method with =
+        myMultiCastDelegate = c.CalculateValue;
+        /// Store multiple methods with +=
+        myMultiCastDelegate += c.AddValues;
+
+        int res = myMultiCastDelegate.Invoke(3, 2); /// 5
+    ```
+
+    -   Func: name of a Delegate that has parameters and return values;
+    -   Action: name of a Delegate that has parameters but doesn't return values;
+    -   Predicate: name of a Delegate that has only one parameter and returns a boolean value;
+    -   EventHandler: name of a Delegate used for data exchange in events;
+
+-   Event: multi-cast delegate that is created and invoked in a "publisher" class, where its "subscribers" are the stored methods. Example:
+
+```cs
+    public delegate void NewsSubscribers(string newsText);
+
+    public class Subscriber
+    {
+        public void OnNewsItem(string text)
+        {
+            System.Console.WriteLine("Incoming news: " + text);
+        }
+    }
+
+    public class Publisher
+    {
+        private NewsSubscribers Subscribers;
+
+        public void AddNewsSubscriber(NewsSubscribers method)
+        {
+            Subscribers += method;
+        }
+
+        public void NewsEvent()
+        {
+            string newsText = "COOL HEADLINE!";
+            Subscribers.Invoke(newsText);
+        }
+    }
+
+    Publisher p = new Publisher();
+    Subscriber s = new Subscriber();
+
+    p.AddNewsSubscriber(s.OnNewsItem);
+    p.NewsEvent(); /// Incoming news: COOL HEADLINE!
+```
+
+    -   Auto-implemented: event with auto-generated add and remove accessors;
+
+-   Anonymouse method: method without a name;
+-   Lamba expression: expression without a name but with a body;
+    -   Inline: lamba expression with a single expression body;
+-   Expression trees:;
+-   Expression bodied members:;
+-   Switch expression:;
