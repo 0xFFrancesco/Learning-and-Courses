@@ -967,46 +967,46 @@
 
 -   Delegate: object that stores the reference of one or more methods that are compatible with the delegate type (delegate types are internally classes) in order to undirectly call them. Useful in relation to events: events are internally delegates. They are derived from System.Delegate. You can call the stored methods with the Invoke method of the delegate object. Example:
 
-```cs
-    namespace MyNamespace
-    {
-        /// Delegate type (internally is a class derived from System.Delegate)
-        public delegate int GetValueDelegate(int x, int y);
-
-        public class MyClass
+    ```cs
+        namespace MyNamespace
         {
-            public int CalculateValue(int valueA, int valueB)
-            {
-                return valueA * valueB;
-            }
+            /// Delegate type (internally is a class derived from System.Delegate)
+            public delegate int GetValueDelegate(int x, int y);
 
-            public int AddValues(int valueA, int valueB)
+            public class MyClass
             {
-                return valueA + valueB;
-            }
+                public int CalculateValue(int valueA, int valueB)
+                {
+                    return valueA * valueB;
+                }
 
-            public void Print()
-            {
-                System.Console.WriteLine("Hello");
+                public int AddValues(int valueA, int valueB)
+                {
+                    return valueA + valueB;
+                }
+
+                public void Print()
+                {
+                    System.Console.WriteLine("Hello");
+                }
             }
         }
-    }
 
-    using MyNamespace;
+        using MyNamespace;
 
-    /// The class from which the methods are delegated must be instantiated
-    MyClass c = new MyClass();
+        /// The class from which the methods are delegated must be instantiated
+        MyClass c = new MyClass();
 
-    /// Delegate objects (the new keyword is optional)
-    GetValueDelegate myDelegate = c.CalculateValue;
-    GetValueDelegate myDelegate2 = new GetValueDelegate(c.Print); /// Error! MyClass.Print is not compatible with the delegate type
+        /// Delegate objects (the new keyword is optional)
+        GetValueDelegate myDelegate = c.CalculateValue;
+        GetValueDelegate myDelegate2 = new GetValueDelegate(c.Print); /// Error! MyClass.Print is not compatible with the delegate type
 
-    /// Call the stored methods
-    int res = myDelegate.Invoke(3, 2); /// 6
-```
+        /// Call the stored methods
+        int res = myDelegate.Invoke(3, 2); /// 6
+    ```
 
     -   Single-cast: contains the reference of only one compatible method;
-    -  Multi-cast: contains the references of multiple compatible methods, its return value is the return value of the last executed method. Example:
+    -   Multi-cast: contains the references of multiple compatible methods, its return value is the return value of the last executed method. Example:
 
     ```cs
         MyClass c = new MyClass();
@@ -1020,15 +1020,10 @@
         int res = myMultiCastDelegate.Invoke(3, 2); /// 5
     ```
 
-    -   Func: name of a Delegate that has parameters and return values;
-    -   Action: name of a Delegate that has parameters but doesn't return values;
-    -   Predicate: name of a Delegate that has only one parameter and returns a boolean value;
-    -   EventHandler: name of a Delegate used for data exchange in events;
-
--   Event: multi-cast delegate that is created and invoked in a "publisher" class, where its "subscribers" are the stored methods. Example:
+-   Event: multi-cast delegate that is created and invoked in a "publisher" class, where its "subscribers" are the stored methods. The "event" keyword is used, it provides the "add" and "remove" accesor properties to manage the list of subscribers (the delegate). The stored methods can be invoked by calling the delegate itself. Events can be static, virtual, sealed and abstract. They can be in interfaces too. If invoked with no subscribers, they will throw a run-time error. Example:
 
 ```cs
-    public delegate void NewsSubscribers(string newsText);
+    public delegate void OnNewsCallbacks(string newsText);
 
     public class Subscriber
     {
@@ -1040,32 +1035,162 @@
 
     public class Publisher
     {
-        private NewsSubscribers Subscribers;
+        private OnNewsCallbacks _newsSubscribers;
 
-        public void AddNewsSubscriber(NewsSubscribers method)
+        public event OnNewsCallbacks NewsEvent
         {
-            Subscribers += method;
+            add
+            {
+                /// Like the Set method for properties, the value parameter is automatically provided
+                _newsSubscribers += value;
+            }
+            remove
+            {
+                /// Executes when a subscriber cancels the subscription
+                _newsSubscribers -= value;
+            }
         }
 
-        public void NewsEvent()
+        public void RaiseNewsEvent()
         {
             string newsText = "COOL HEADLINE!";
-            Subscribers.Invoke(newsText);
+
+            /// Check that there is at least one subscriber, otherwise it will throw a run-time error
+            if (_newsSubscribers !== null)
+            {
+                _newsSubscribers(newsText);
+            }
         }
     }
 
     Publisher p = new Publisher();
     Subscriber s = new Subscriber();
 
-    p.AddNewsSubscriber(s.OnNewsItem);
-    p.NewsEvent(); /// Incoming news: COOL HEADLINE!
+    p.NewsEvent += s.OnNewsItem; /// Automatically calls the NewsEvent.Add method
+    p.RaiseNewsEvent(); /// Incoming news: COOL HEADLINE!
 ```
 
-    -   Auto-implemented: event with auto-generated add and remove accessors;
+    -   Auto-implemented: syntax-sugar to declare events, it auto-generates the private delegate and its add and remove accessors. You can't add custom logic to the add and remove accessors.  Example:
 
--   Anonymouse method: method without a name;
--   Lamba expression: expression without a name but with a body;
-    -   Inline: lamba expression with a single expression body;
+    ```cs
+        public class Publisher
+        {
+            public event OnNewsCallbacks NewsEvent;
+
+            public void RaiseNewsEvent()
+            {
+                string newsText = "COOL HEADLINE!";
+                if (NewsEvent !== null)
+                {
+                    NewsEvent(newsText);
+                }
+            }
+        }
+
+        Publisher p = new Publisher();
+        Subscriber s = new Subscriber();
+
+        p.NewsEvent += s.OnNewsItem;
+        p.RaiseNewsEvent(); /// Incoming news: COOL HEADLINE!
+    ```
+
+-   Anonymous method: nameless method that can be invoked from a delegate (or event). Access modifiers and modifers are not applicable. The keyword delegate is necessary (even though it is not a delegate). It can't contain "goto", "break" or "continue" statements. It can't access ref or out parameters from outer methods. Example
+
+```cs
+    p.NewsEvent += delegate (string eventData)
+        {
+            System.Console.WriteLine("A NewsEvent came! - " + eventData);
+        }
+```
+
+-   Lamba expression: syntax-sugar for creating anonymous methods (no "delegate" keyword is needed). The parameters' types are inferred from the delegate/event type. Example:
+
+    ```cs
+        p.NewsEvent += (eventData) =>
+        {
+            System.Console.WriteLine("A NewsEvent came! - " + eventData);
+        }
+    ```
+
+    -   Inline: lamba expression with a single-expression body (doesn't require curly braces). Must return a value, can't be void. Example:
+
+    ```cs
+        public delegate int AdditionEventCallbacks(int a, int b);
+        public event AdditionEventCallbacks AdditionEvent;
+
+        [...]
+
+        p.AdditionEvent += (a, b) => a + b;
+    ```
+
+-   Func: pre-defined generic delegate-type, has up to 16 parameters and returns a value. Example:
+
+```cs
+    public event Func<int, int, int, string> MyFuncEvent;
+
+    MyFuncEvent += (a, b, c) => "Sum: " + (a + b + c);
+```
+
+-   Action: pre-defined generic delegate-type, has up to 16 parameters and doesn't return a value (must be void). Example:
+
+```cs
+    public event Action<int, int, int> MyActionEvent;
+
+    MyActionEvent += (a, b, c) =>
+    {
+        System.Console.WriteLine("Sum: " + (a + b + c));
+    }
+```
+
+-   Predicate: pre-defined generic delegate-type, has exactly one parameter and returns a boolean value. Example:
+
+```cs
+    public event Predicate<int> MyPredicateEvent;
+
+    MyPredicateEvent += (x) => x > 0;
+```
+
+-   EventHandler: pre-defined generic delegate-type, has two fixed parameters that are "object sender" and "EventArgs e", and doesn't return a value (must be void). The second parameter is usually a child class of EventArgs (defined vie the generic). Example:
+
+```cs
+    public class MyEventArgs: EventArgs
+    {
+        public string Text { get; set; }
+        public int Number { get; set; }
+    }
+
+    [...]
+
+    public event EventHandler<MyEventArgs> MyEventHandlerEvent;
+
+    MyEventHandlerEvent += (sender, e) =>
+    {
+        /// sender -> System.Object type, represents the source object from which the event was originally raised. Needs manual type-casting.
+        MyPublisherClass p = (MyPublisherClass) sender;
+
+        /// e -> MyEventArgs type (via the generic), represents all the additional parameters passed to the event handler method.
+        string t = e.Text;
+        int n = e.Number;
+
+        System.Console.WriteLine("Data: " + t ", " + n : "." );
+    };
+
+    [...]
+
+    /// Create the second parameter for the EventHandler event
+    MyEventArgs params = new MyEventArgs()
+    {
+        Text = "Hello",
+        Number = 12
+    }
+
+    /// Invoke the methods
+    if (MyEventHandlerEvent != null)
+    {
+        MyEventHandlerEvent(this, params); /// Data: Hello, 12.
+    }
+```
+
 -   Expression trees:;
 -   Expression bodied members:;
 -   Switch expression:;
