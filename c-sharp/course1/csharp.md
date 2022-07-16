@@ -1191,6 +1191,82 @@
     }
 ```
 
--   Expression trees:;
--   Expression bodied members:;
--   Switch expression:;
+-   Expression tree: tree-like data structure that represents an expression. Stores WHAT we want to do (source code), instead of HOW we want to do it (compiled IL). Mostly used for language-conversion purposes. Heavily used in LINQ. The source code is thus represented in a tree structure, that is easier to inspect, navigate and modify than the compiled IL output. It is useful for example to parse a C# expression to SQL code. The LINQ-to-SQL translator can better understand WHAT we want to do in order to create the appropriate SQL query. It can be manually compiled via the "Compile" method, that returns a delegate, that can be executed via the Invoke method. The "Expression" class must be used. It can contain only inline lambda expressions (no multi line). Example:
+
+```cs
+    Expression<Func<int, int>> myExpression = num => num * num;
+
+    Func<int, int> myDelegate = myExpression.Compile();
+    int res = myDelegate.Invoke(5); /// 25
+```
+
+-   Expression bodied members: use an inline lambda expression to creade methods, property accessors, constructors, destructors or indexers in a class. Example:
+
+```cs
+    class MyClass
+    {
+        /// This
+        public int GetSum(int a, int b) => a + b;
+        /// Instead of this
+        public int GetSum(int a, int b)
+        {
+            return a + b;
+        }
+    }
+```
+
+-   Switch expression: short-version of a "normal" switch statement. It is used to assign a value into a resultVariable based on the value of a sourceVariable (like a mapping). Example:
+
+```cs
+    int num = 3;
+    string res;
+    /// This
+    res = num switch
+    {
+        1 => "One",
+        2 => "Two",
+        3 => "Three",
+        _ => "Default"
+    }
+    /// Instead of this
+    switch (num)
+    {
+        case 1:
+            res = "One":
+            break;
+        case 2:
+            res = "Two":
+            break;
+        case 3:
+            res = "Three":
+            break;
+        default:
+            res = "Default";
+            break;
+    }
+```
+
+## Arrays
+
+-   Array: group of multiple elements of the same type. You must specify a size in order to create and use it. Is not automatically resized in case of new or deleted elements. Is an object and thus is stored in the Heap (in continuous memory locations) and is accessed via a reference variable. Starts from 0. Example:
+
+```cs
+    short[] myArrayReference = new short[4] /// 4 -> Set the exact size of the array
+    {
+        /// Initialize its elements
+        1, 2, 3, 4
+    };
+    bool res = myArrayReference[0] == 1; /// True
+
+    /// Array of classes
+    MyClass[] myClassArray = new MyClass[];
+```
+
+-   Iteration:
+    -   For loop:
+    -   Foreach loop:
+-   System.Array: arrays are derived from the System.Array class (that is derived from System.Object);
+    -   Properties:
+    -   Methods:
+-   Multi-dimentional:
+-   Jagged:
