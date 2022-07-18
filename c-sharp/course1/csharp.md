@@ -1248,25 +1248,172 @@
 
 ## Arrays
 
--   Array: group of multiple elements of the same type. You must specify a size in order to create and use it. Is not automatically resized in case of new or deleted elements. Is an object and thus is stored in the Heap (in continuous memory locations) and is accessed via a reference variable. Starts from 0. Example:
+-   Array: group of multiple elements of the same type. You must specify a size or initialize all its values in order to create and use it. Is not automatically resized in case of new or deleted elements. Is an object and thus is stored in the Heap (in continuous memory locations) and is accessed via a reference variable. Starts from 0. Example:
 
 ```cs
-    short[] myArrayReference = new short[4] /// 4 -> Set the exact size of the array
-    {
-        /// Initialize its elements
+    short[] myArrayReference = new short[4]; /// Set the exact size
+    short[] myArrayReference2 = new short[]{
+        /// OR initialize its elements (size is implicitely 4)
         1, 2, 3, 4
     };
-    bool res = myArrayReference[0] == 1; /// True
-
-    /// Array of classes
-    MyClass[] myClassArray = new MyClass[];
+    bool res = myArrayReference2[0] == 1; /// True
 ```
 
 -   Iteration:
     -   For loop:
-    -   Foreach loop:
+    ```cs
+        int[] arr = new int[4];
+        for (int i = 0; i < arr.Lenght; i++){
+            System.Console.WriteLine(arr[i]);
+        }
+    ```
+    -   Foreach loop (internally uses iterators):
+    ```cs
+        int[] arr = new int[4];
+        foreach (int element in arr){
+            System.Console.WriteLine(element);
+        }
+    ```
 -   System.Array: arrays are derived from the System.Array class (that is derived from System.Object);
-    -   Properties:
-    -   Methods:
+    -   Useful properties: Length;
+    -   Useful methods: IndexOf (linear search), BinarySearch, Clear, Resize, Sort, Reverse, CopyTo (needs you to first create the new array to clone the elements into, performs a shallow copy), Clone (automatically creates a new array for the output, needs you to type-cast the output, performs a shallow copy);
+-   IndexFromEnd operator `^`: treats the index as if the array was reversed. Example:
+
+```cs
+    int[] arr = new int[]{ 1, 2, 3, 4 };
+    System.Console.WriteLine(arr[0]);   /// 1
+    System.Console.WriteLine(arr[^0]);  /// 4
+    System.Console.WriteLine(arr[^3]);  /// 1
+```
+
+-   Range operator `..`: treats the index as if the array was reversed. Example:
+
+```cs
+    int[] arr = new int[]{ 1, 2, 3, 4, 5, 6 };
+    int[] arr2 = arr[0..2];   /// [1, 2, 3]
+    int[] arr3 = arr[2..3];   /// [3, 4]
+    int[] arr4 = arr[4..4];   /// [5]
+```
+
 -   Multi-dimentional:
--   Jagged:
+
+```cs
+    /// 2 dimensions (ex. 3x4)
+    int[,] arr2D = new int[]
+    {
+        {2, 4, 6, 8},
+        {3, 6, 9, 12},
+        {4, 8, 12, 16},
+    };
+
+    System.Console.WriteLine(arr2D[1, 0]); /// 3
+    System.Console.WriteLine(arr2D[2, 3]); /// 16
+
+    /// 3 dimensions (ex. 2x5x8)
+    int[,,] arr3D = new int[2, 5, 8];
+
+    System.Console.WriteLine(arr3D[1, 1, 1]); /// 0 (default value)
+
+    /// And so on for more than 3 dimensions
+```
+
+-   Jagged (the number of "columns" inside each "row" can vary):
+
+```cs
+    int[][] jagged = new int[5][]
+    {
+        new int[] {2, 4, 6, 8},
+        new int[] {3, 6},
+        new int[] {4, 8, 12, 16, 20, 24, 28},
+        new int[] {5, 10, 15},
+        new int[] {6}
+    };
+
+    System.Console.WriteLine(arr[0][1]); /// 4
+    System.Console.WriteLine(arr[3][2]); /// 15
+```
+
+-   Mixing Jagged and Multi-dimensional:
+
+```cs
+    int[][,] jagged2DArray = new int[3][,]
+    {
+        new int[,] {
+            {1,3},
+            {5,7}
+        },
+        new int[,] {
+            {0,2},
+            {4,6},
+            {8,10}
+        },
+        new int[,] {
+            {11,22},
+            {99,88},
+            {0,9}
+        }
+    };
+
+    System.Console.WriteLine(arr[0][0, 1]); /// 3
+    System.Console.WriteLine(arr[1][2, 1]); /// 10
+    System.Console.WriteLine(arr[2][1, 0]); /// 99
+```
+
+-   Array of objects:
+
+```cs
+    MyClass[] myClassArray = new MyClass[3];
+
+    MyClass[] myClassArray2 = new MyClass[] {
+        new MyClass('A'),
+        new MyClass('B'),
+        new MyClass('C')
+    };
+
+    char myLetter = myClassArray2[1].MyLetter; /// B
+```
+
+-   Deep-copy: copy objects by creating new instances instead of by just copying their references over;
+
+    -   ICloneable: interface that is recommended to be implemented when deep cloning objects (to guarantee consistency across the codebase). Example:
+
+    ```cs
+        class Person
+        {
+            public string Name { get; set; }
+            public int Age { get; set; }
+        };
+
+        Person p = new Person() {
+            Name: "Lukas", Age: 25
+        };
+        Person p2 = p;
+
+        p.Age = 999;
+        System.Console.WriteLine(p2.Age); /// 999 -> Changed! It was shallow-copied
+
+        class CloneablePerson: System.ICloneable
+        {
+            public string Name { get; set; }
+            public int Age { get; set; }
+            public System.Object Clone()
+            {
+                return new CloneablePerson()
+                {
+                    Name: this.Name,
+                    Age: this.Age
+                }
+            }
+        };
+
+        CloneablePerson cp = new CloneablePerson
+        {
+            Name: "Lukas", Age: 25
+        };
+        CloneablePerson cp2 = (CloneablePerson) cp.Clone(); /// Type-cast needed: the return type is System.Object
+
+        cp.Age = 999;
+        System.Console.WriteLine(cp2.Age); /// 25 -> Didn't change! It was deep-copied
+    ```
+
+## Collections
