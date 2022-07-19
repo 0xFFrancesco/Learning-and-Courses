@@ -1103,7 +1103,7 @@
         }
 ```
 
--   Lamba expression: syntax-sugar for creating anonymous methods (no "delegate" keyword is needed). The parameters' types are inferred from the delegate/event type. Example:
+-   lambda expression: syntax-sugar for creating anonymous methods (no "delegate" keyword is needed). The parameters' types are inferred from the delegate/event type. Example:
 
     ```cs
         p.NewsEvent += (eventData) =>
@@ -1112,7 +1112,7 @@
         }
     ```
 
-    -   Inline: lamba expression with a single-expression body (doesn't require curly braces). Must return a value, can't be void. Example:
+    -   Inline: lambda expression with a single-expression body (doesn't require curly braces). Must return a value, can't be void. Example:
 
     ```cs
         public delegate int AdditionEventCallbacks(int a, int b);
@@ -1417,3 +1417,80 @@
     ```
 
 ## Collections
+
+-   Standard-way to store and manipulate groups of elements;
+    -   We don't need to know and specify its size in advance;
+-   Types of collections:
+
+    -   List: contains elements of the same type. Needs to be imported from `System.Collections.Generic`. Internally uses arrays;
+
+        -   Useful properties: Count (number of items stored), Capacity (number of storable items before it resizes itself, can be passed as argument in the constructor);
+        -   Useful methods: Add (at the end), AddRange, Insert (at a specific index - less than Count), InsertRange, Remove (a value), RemoveAt (a index), RemoveRange, RemoveAll (based on a Predicate), Clear (empties the List), IndexOf, BinarySearch, Contains, Sort (needs "IComparable" items), Reverse, ToArray (returns an array representing the collection, performs a shallow copy), ForEach, Exists (executes a Predicate on each item, returns true if at least one matches the condition), Find (finds first value based on a Predicate), FindIndex (Predicate based), FindLast (Predicate based), FindLastIndex (Predicate based), FindAll (Predicate based - returns a new collection with the matching items), ConvertAll (applies a lambda expression to all the items and returns the resulting List - like Map in JS);
+        -   Example:
+
+        ```cs
+            using System;
+            using System.Collections.Generic;
+
+            List<Person> myPersonList = new List<Person>();
+            List<int> myIntList = new List<int>()
+            {
+                /// Initialize some values
+                10, 20, 30
+            };
+
+            for (int i = 0; i < myIntList.Count; i++)
+            {
+                Console.WriteLine(myIntList[0]); /// 10 20 30
+            }
+
+            myIntList.Add(40);
+            myIntList.Insert(0, -10);
+
+            foreach (int item in myIntList)
+            {
+                Console.WriteLine(item); /// -10 10 20 30 40
+            }
+
+            List<int> matches = myIntList.FindAll(x => x > 20);
+            matches.ForEach(match => { Console.WriteLine(match); }); /// 30 40
+        ```
+
+    -   Dictionary;
+    -   SortedList:;
+    -   Hashtable:;
+    -   HashSet:;
+    -   ArrayList:;
+    -   Stack:;
+    -   Queue:;
+
+-   Object relations:;
+-   Interfaces hierarchy:;
+-   IEnumerable:;
+-   IEnumerator:;
+-   Iterator:;
+-   Yield return;
+-   Custom collections:;
+    -   IEnumerable:;
+    -   ICollection:;
+    -   IList:;
+-   IEquatable:;
+-   IComparable: interface that must be implemented on a custom class in order to sort its objects (is already implemented in system classes). Example:
+
+```cs
+    class MyClass: IComparable<MyClass>
+    {
+        public int Value { get; set; }
+        public int CompareTo(MyClass other)
+        {
+            return Value > other.Value;
+        }
+    }
+
+    List<MyClass> myList = new List<MyClass>();
+    myList.Sort();
+```
+
+-   IComparer:;
+-   Covariance:;
+-   Contravariance:;
