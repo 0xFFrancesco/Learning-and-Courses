@@ -1422,7 +1422,7 @@
     -   We don't need to know and specify its size in advance;
 -   Types of collections:
 
-    -   List: contains elements of the same type. Needs to be imported from `System.Collections.Generic`. Internally uses arrays;
+    -   List: contains elements of the same type. Index based. Needs to be imported from `System.Collections.Generic`. Internally uses arrays;
 
         -   Useful properties: Count (number of items stored), Capacity (number of storable items before it resizes itself, can be passed as argument in the constructor);
         -   Useful methods: Add (at the end), AddRange, Insert (at a specific index - less than Count), InsertRange, Remove (a value), RemoveAt (a index), RemoveRange, RemoveAll (based on a Predicate), Clear (empties the List), IndexOf, BinarySearch, Contains, Sort (needs "IComparable" items), Reverse, ToArray (returns an array representing the collection, performs a shallow copy), ForEach, Exists (executes a Predicate on each item, returns true if at least one matches the condition), Find (finds first value based on a Predicate), FindIndex (Predicate based), FindLast (Predicate based), FindLastIndex (Predicate based), FindAll (Predicate based - returns a new collection with the matching items), ConvertAll (applies a lambda expression to all the items and returns the resulting List - like Map in JS);
@@ -1456,9 +1456,84 @@
             matches.ForEach(match => { Console.WriteLine(match); }); /// 30 40
         ```
 
-    -   Dictionary;
-    -   SortedList:;
-    -   Hashtable:;
+    -   Dictionary: contains a collection of key/value pairs. Key based. Keys can't be null or duplicated. Needs to be imported from `System.Collections.Generic`;
+
+        -   Useful properties: Count, Keys (returns all the keys), Values (returns al the values);
+        -   Useful methods: Add, Remove, ContainsKey, ContainsValue, Clear;
+        -   Example:
+
+        ```cs
+            using System.Collections.Generic;
+
+            Dictionary<string, Person> peopleDic = new Dictionary<string, Person>()
+            {
+                {"Lukas", new Person()},
+                {"Annette", new Person()},
+                {"Yulia", new Person()}
+            };
+
+            foreach (KeyValuePair<string, Person> item in peopleDic)
+            {
+                Console.WriteLine(item.Key); /// Lukas Annette Yulia
+                Person value = item.Value;
+            }
+
+            Person lukas = peopleDic["Lukas"];
+
+            /// Get keys
+            Dictionary<string, People>.KeyCollection peopleKeys = peopleDic.Keys; /// Lukas Annette Yulia
+        ```
+
+    -   SortedList: contains a collection of key/value pairs, automatically sorted by their keys. Keys can't be null or duplicated. Needs to be imported from `System.Collections.Generic`;
+
+        -   Useful properties: same as Dictionary;
+        -   Useful methods: same as Dictionary + IndexOfKey, IndexOfValue;
+        -   Example:
+
+        ```cs
+            using System.Collections.Generic;
+
+            SortedList<string, Person> people = new SortedList<string, Person>()
+            {
+                {"Lukas", new Person()},
+                {"Annette", new Person()},
+                {"Yulia", new Person()}
+            };
+
+            foreach (KeyValuePair<string, Person> item in people)
+            {
+                Console.WriteLine(item.Key); /// Annette Lukas Yulia
+                Person value = item.Value;
+            }
+
+            Person lukas = people["Lukas"];
+        ```
+
+    -   Hashtable: contains a collection of key/value pairs, automatically sorted by their keys. Keys can't be null or duplicated. Needs to be imported from `System.Collections.Generic`;
+
+        -   Useful properties: same as Dictionary;
+        -   Useful methods: same as Dictionary + IndexOfKey, IndexOfValue;
+        -   Example:
+
+        ```cs
+            using System.Collections.Generic;
+
+            SortedList<string, Person> people = new SortedList<string, Person>()
+            {
+                {"Lukas", new Person()},
+                {"Annette", new Person()},
+                {"Yulia", new Person()}
+            };
+
+            foreach (KeyValuePair<string, Person> item in people)
+            {
+                Console.WriteLine(item.Key); /// Annette Lukas Yulia
+                Person value = item.Value;
+            }
+
+            Person lukas = people["Lukas"];
+        ```
+
     -   HashSet:;
     -   ArrayList:;
     -   Stack:;
