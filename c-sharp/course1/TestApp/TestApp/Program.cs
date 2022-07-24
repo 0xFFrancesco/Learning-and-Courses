@@ -21,7 +21,8 @@ class Sample
         //Conversions();
         //ConstructorOverloading();
         //AccessorMethods();
-        ExplicitInterfaceImplementation();
+        //ExplicitInterfaceImplementation();
+        ArrayOfMultipleNumbers();
     }
 
     static void ConsoleClass()
@@ -339,6 +340,19 @@ class Sample
         Introduction("Explicit Interface Implementation");
 
         CirclePoint.Test();
+
+        Console.ReadLine();
+    }
+
+    static void ArrayOfMultipleNumbers()
+    {
+        Introduction("Array of Multiples");
+
+        int[] res = ArrayOfMultiples.CreateMultiples(2, 20);
+        foreach (int item in res)
+        {
+            Console.Write(item + ", ");
+        }
 
         Console.ReadLine();
     }

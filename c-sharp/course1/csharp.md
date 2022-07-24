@@ -1420,12 +1420,13 @@
 
 -   Standard-way to store and manipulate groups of elements;
     -   We don't need to know and specify its size in advance;
+    -   Provide useful methods and properties to store/access/manipulate the data;
 -   Types of collections:
 
     -   List: contains elements of the same type. Index based. Needs to be imported from `System.Collections.Generic`. Internally uses arrays;
 
         -   Useful properties: Count (number of items stored), Capacity (number of storable items before it resizes itself, can be passed as argument in the constructor);
-        -   Useful methods: Add (at the end), AddRange, Insert (at a specific index - less than Count), InsertRange, Remove (a value), RemoveAt (a index), RemoveRange, RemoveAll (based on a Predicate), Clear (empties the List), IndexOf, BinarySearch, Contains, Sort (needs "IComparable" items), Reverse, ToArray (returns an array representing the collection, performs a shallow copy), ForEach, Exists (executes a Predicate on each item, returns true if at least one matches the condition), Find (finds first value based on a Predicate), FindIndex (Predicate based), FindLast (Predicate based), FindLastIndex (Predicate based), FindAll (Predicate based - returns a new collection with the matching items), ConvertAll (applies a lambda expression to all the items and returns the resulting List - like Map in JS);
+        -   Useful methods: Add (at the end), AddRange, Insert (at a specific index - less than Count), InsertRange, Remove (a value), RemoveAt (a index), RemoveRange, RemoveAll (based on a Predicate), Clear (empties the List), IndexOf, BinarySearch, Contains, Sort (needs "IComparable" items), Reverse, ToArray (returns an array representing the collection, performs a shallow copy), ForEach, Exists (executes a Predicate on each item, returns true if at least one matches the condition), Find (finds the first value based on a Predicate), FindIndex (Predicate based), FindLast (Predicate based), FindLastIndex (Predicate based), FindAll (Predicate based - returns a new collection with the matching items), ConvertAll (applies a lambda expression to all the items and returns the resulting List - like Map in JS);
         -   Example:
 
         ```cs
@@ -1456,7 +1457,7 @@
             matches.ForEach(match => { Console.WriteLine(match); }); /// 30 40
         ```
 
-    -   Dictionary: contains a collection of key/value pairs. Key based. Keys can't be null or duplicated. Needs to be imported from `System.Collections.Generic`;
+    -   Dictionary: contains a collection of key/value pairs stored at specific and fixed indexes (that are calculated hashing the key). The hash of a numeric type is the number itself. The hash of a custom class needs to be manually calculated by implementing the GetHashCode method of the System.Object class. The retrieval time is O(1). Keys can't be null or duplicated. Internally is an Hashtable. Needs to be imported from `System.Collections.Generic`;
 
         -   Useful properties: Count, Keys (returns all the keys), Values (returns al the values);
         -   Useful methods: Add, Remove, ContainsKey, ContainsValue, Clear;
@@ -1484,6 +1485,78 @@
             Dictionary<string, People>.KeyCollection peopleKeys = peopleDic.Keys; /// Lukas Annette Yulia
         ```
 
+    -   Hashtable: similar to a Dictionary, but can store different types of key/value pairs at the same time (ex. int, string, MyClass, etc.), thus it returns always a System.Object type that needs to be casted. Needs boxing/unboxing for value types (slower than Dictionary). Needs to be imported from `System.Collections`;
+
+        -   Useful properties: same as Dictionary;
+        -   Useful methods: same as Dictionary;
+        -   Example:
+
+        ```cs
+            using System.Collections;
+
+            Person lukas = new Person();
+            Hashtable myHashTable = new Hashtable()
+            {
+                {"Lukas", lukas},
+                {2, 14},
+                {lukas, "test"},
+            }
+            myHashTable.Add("Anna", new Person());
+            myHashTable[lukas] = "valUpdated";
+
+            foreach (DictionaryEntry item in myHashTable)
+            {
+                if (item.Key is string)
+                {
+                    Console.WriteLine(item.Key); /// Lukas Anna
+                }
+                if (item.Value is string)
+                {
+                    Console.WriteLine(item.Value); /// valUpdated
+                }
+            }
+
+            int myNumber = System.Conver.ToInt(myHashTable[2]);
+            string myValue = System.Conver.ToString(myHashTable[lukas]);
+            Person myPerson = myHashTable["Anna"] as Person;
+
+        ```
+
+    -   HashSet: contains a collection of values, like a Dictionary, but without keys. The hash is calculated using the values themselves (that must implement the GetHashCode method). Values can't be duplicated and can't be of different types (unlike an Hashtable). Needs to be imported from `System.Collections.Generic`;
+
+        -   Useful properties: Count;
+        -   Useful methods: Add, Remove, RemoveWhere (based on a Predicate), Contains, Clear, UnionWith (add the items contained in another HashSet), ExceptWith (removes the items contained in another HashSet), IntersectWith (keeps only the common items with another HashSet);
+        -   Example:
+
+        ```cs
+           using System.Collections.Generic;
+
+            HashSet<string> allPeople = new HashSet<string>()
+            {
+                "Lukas",
+                "Marco",
+                "Julie"
+            };
+
+            foreach (string item in allPeople)
+            {
+                /// It follows the insertion order
+                Console.WriteLine(item); /// Lukas Marco Julie
+            }
+
+            bool isLukasIn = allPeople.Contains("Lukas"); /// True
+
+            HashSet<string> newPeople = new HashSet<string>()
+            {
+                "Annette",
+                "Maria"
+            };
+
+            allPeople.UnionWith(newPeople); /// Lukas Marco Julie Annette Maria
+            allPeople.ExceptWith(newPeople); /// Lukas Marco Julie
+            allPeople.IntersectWith(newPeople); /// empty
+        ```
+
     -   SortedList: contains a collection of key/value pairs, automatically sorted by their keys. Keys can't be null or duplicated. Needs to be imported from `System.Collections.Generic`;
 
         -   Useful properties: same as Dictionary;
@@ -1509,34 +1582,60 @@
             Person lukas = people["Lukas"];
         ```
 
-    -   Hashtable: contains a collection of key/value pairs, automatically sorted by their keys. Keys can't be null or duplicated. Needs to be imported from `System.Collections.Generic`;
+    -   ArrayList: like an array, but can contain different types of values. Values can be null or duplicated. Requires casting on retrieving the values (like an Hashtable). Needs to be imported from `System.Collections`;
 
-        -   Useful properties: same as Dictionary;
-        -   Useful methods: same as Dictionary + IndexOfKey, IndexOfValue;
+        -   Useful properties: Capacity, Count;
+        -   Useful methods: Add, AddRange, Insert, InsertRange, Remove, RemoveAt, RemoveRange, Clear, IndexOf, BinarySearch, Contains, Sort, Reverse, ToArray;
+        -   Example:
+
+        ```cs
+            using System.Collections;
+
+            ArrayList values = new ArrayList()
+            {
+                1040,
+                "Maria",
+                new Person()
+            };
+
+            foreach (System.Object item in values)
+            {
+                if (item is string) {
+                    Console.Write(item); /// Maria
+                }
+            }
+
+            int n = System.Convert.ToInt(values[0]);
+            Person p = values[2] as Person;
+        ```
+
+    -   Stack: contains a group of elements of the same type based on LIFO (Last-In-First-Out). Values can be null or duplicated. Hasn't the "Add" method, and thus can't be default-initialized (can be done only as a constructor argument). Needs to be imported from `System.Collections.Generic`;
+
+        -   Useful properties: Count;
+        -   Useful methods: Push (puts a new item on top), Peek (gets the item on top), Pop (gets and removes the item on top), Contains, ToArray, Clear;
         -   Example:
 
         ```cs
             using System.Collections.Generic;
 
-            SortedList<string, Person> people = new SortedList<string, Person>()
-            {
-                {"Lukas", new Person()},
-                {"Annette", new Person()},
-                {"Yulia", new Person()}
-            };
+            Stack<int> myStack = new Stack<int>();
+            myStack.push(20);
+            myStack.push(10);
+            myStack.push(10);
 
-            foreach (KeyValuePair<string, Person> item in people)
+            myStack.Push(100);
+            foreach (int item in myStack)
             {
-                Console.WriteLine(item.Key); /// Annette Lukas Yulia
-                Person value = item.Value;
+                Console.WriteLine(item); /// 100, 10, 10, 20
             }
 
-            Person lukas = people["Lukas"];
+            int firstItem = myStack.Pop(); /// 100
+            foreach (int item in myStack)
+            {
+                Console.WriteLine(item); /// 10, 10, 20
+            }
         ```
 
-    -   HashSet:;
-    -   ArrayList:;
-    -   Stack:;
     -   Queue:;
 
 -   Object relations:;
@@ -1556,7 +1655,7 @@
     class MyClass: IComparable<MyClass>
     {
         public int Value { get; set; }
-        public int CompareTo(MyClass other)
+        public bool CompareTo(MyClass other)
         {
             return Value > other.Value;
         }
