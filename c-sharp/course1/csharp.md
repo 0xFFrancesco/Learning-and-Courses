@@ -1619,9 +1619,9 @@
             using System.Collections.Generic;
 
             Stack<int> myStack = new Stack<int>();
-            myStack.push(20);
-            myStack.push(10);
-            myStack.push(10);
+            myStack.Push(20);
+            myStack.Push(10);
+            myStack.Push(10);
 
             myStack.Push(100);
             foreach (int item in myStack)
@@ -1636,12 +1636,58 @@
             }
         ```
 
-    -   Queue:;
+    -   Queue: contains a group of elements of the same type based on FIFO (First-In-First-Out). Values can be null or duplicated. Hasn't the "Add" method, and thus can't be default-initialized (can be done only as a constructor argument). Needs to be imported from `System.Collections.Generic`;
 
--   Object relations:;
--   Interfaces hierarchy:;
--   IEnumerable:;
--   IEnumerator:;
+        -   Useful properties: Count;
+        -   Useful methods: Enqueue (puts a new item at the end), Peek (gets the item on front), Dequeue (gets and removes the item on front), Contains, ToArray, Clear;
+        -   Example:
+
+        ```cs
+            using System.Collections.Generic;
+
+            Queue<int> myQueue = new Queue<int>();
+            myQueue.Enqueue(20);
+            myQueue.Enqueue(10);
+            myQueue.Enqueue(10);
+
+            myQueue.Enqueue(100);
+            foreach (int item in myQueue)
+            {
+                Console.WriteLine(item); /// 20, 10, 10, 100
+            }
+
+            int firstItem = myQueue.Dequeue(); /// 20
+            foreach (int item in myQueue)
+            {
+                Console.WriteLine(item); /// 10, 10, 100
+            }
+        ```
+
+-   Hierarchy of interfaces in collections:
+
+    ```
+        IEnumerator
+        IEnumerator<T>
+        IEnumerable
+            ICollection
+                IList
+                    class ArrayList
+                IDictionary
+                    class Hashtable
+            IEnumerable<T>
+                class Stack<T>
+                class Queue<T>
+                ICollection<T>
+                    class HashSet<T>
+                    IList<T>
+                        class List<T>
+                    IDictionary<TKey, TValue>
+                        class Dictionary<TKey, TValue>
+                        class SortedList<TKey, TValue>
+    ```
+
+-   IEnumerable: represents a group of elements. It is the parent interface of all the collections. Has only one method, that is `IEnumerator GetEnumerator();`;
+-   IEnumerator: interface meant for readonly and sequential reading of the items of a collection (used internally by the `foreach` loop). Has a `object Current { get; }` property and the methods `bool MoveNext()` and `void Reset()`;
 -   Iterator:;
 -   Yield return;
 -   Custom collections:;
