@@ -65,11 +65,11 @@
 -   Access modifiers are the exact same of fields;
 -   Modifiers (optional):
     -   static: can be called without instantiating the class;
-    -   virtual: can be overriddend in child classes;
+    -   virtual: can be overridden in child classes;
     -   abstract: doesn't containt the method body, must be overridden in child classes (only available in abstract classes);
     -   override: overrides a virtual or abstract parent method;
     -   new: hides a parent method (if the child one has the same exact name and parameters);
-    -   partial:;
+    -   partial: is defined in a file of a partial class, and is implemented in another file of the same partial class. Partial methods must be private and void;
     -   sealed: can't be overridden in subsequent child classes;
 -   Parameter modifiers (optional):
 
@@ -168,7 +168,7 @@
         }
     ```
 
--   Local functions: functions written directly inside a method, without the need to create another method. Functions can't be written outside methods. Access modifiers and modifiers are not applicable to local functions. Example:
+-   Local functions: functions written directly inside a method, without the need to create another method. Local functions can't be written outside methods. Access modifiers and modifiers are not applicable to local functions. Example:
 
 ```cs
     public void MyMethod()
@@ -581,7 +581,7 @@
 
 -   Multiple inheritance: a child class can inherit from multiple interfaces (but not from multiple classes);
 -   Interface inheritance: an interface can inherit from another interface (but not from a class);
--   Explicit interface implementation: creating two methods with the same exact signature in two different interfaces and implementing both them in the same child class, so that they are called alternatively based on the interface casting. Example:
+-   Explicit interface implementation: creating two methods with the same exact signature in two different interfaces and implementing both them in the same child class, so that they are called alternatively based on the interface casting. They can't have an access modifier. Example:
 
 ```cs
     interface IPoint
@@ -662,7 +662,7 @@
 
 ## Partial, Static and Enumerations
 
--   Partial class: it is splitted across multiple files, but is treated and instantiated as a single normal class. THe different "parts" must have the same namespace, name, access modifier and modifier. Example:
+-   Partial class: it is splitted across multiple files, but is treated and instantiated as a single normal class. The different "parts" must have the same namespace, name, access modifier and modifier. Example:
 
 ```cs
     /// Car_1.cs
@@ -721,8 +721,8 @@
     cat.Print(); /// 1001 - Beverages
 
     Category cat2 = new Category();
-    cat.Name = "Food";
-    cat.Print(); /// 0 - Food
+    cat2.Name = "Food";
+    cat2.Print(); /// 0 - Food
 
     cat2 = cat;
     cat2.Id = 9999;
@@ -1070,7 +1070,7 @@
     p.RaiseNewsEvent(); /// Incoming news: COOL HEADLINE!
 ```
 
-    -   Auto-implemented: syntax-sugar to declare events, it auto-generates the private delegate and its add and remove accessors. You can't add custom logic to the add and remove accessors.  Example:
+-   Auto-implemented: syntax-sugar to declare events, it auto-generates the private delegate and its add and remove accessors. You can't add custom logic to the add and remove accessors. Example:
 
     ```cs
         public class Publisher
@@ -1286,7 +1286,7 @@
     System.Console.WriteLine(arr[^3]);  /// 1
 ```
 
--   Range operator `..`: treats the index as if the array was reversed. Example:
+-   Range operator `..`: returns a subset of the array. Example:
 
 ```cs
     int[] arr = new int[]{ 1, 2, 3, 4, 5, 6 };
@@ -1442,7 +1442,7 @@
 
             for (int i = 0; i < myIntList.Count; i++)
             {
-                Console.WriteLine(myIntList[0]); /// 10 20 30
+                Console.WriteLine(myIntList[i]); /// 10 20 30
             }
 
             myIntList.Add(40);
@@ -1459,7 +1459,7 @@
 
     -   Dictionary: contains a collection of key/value pairs stored at specific and fixed indexes (that are calculated hashing the key). The hash of a numeric type is the number itself. The hash of a custom class needs to be manually calculated by implementing the GetHashCode method of the System.Object class. The retrieval time is O(1). Keys can't be null or duplicated. Internally is an Hashtable. Needs to be imported from `System.Collections.Generic`;
 
-        -   Useful properties: Count, Keys (returns all the keys), Values (returns al the values);
+        -   Useful properties: Count, Keys (returns all the keys), Values (returns all the values);
         -   Useful methods: Add, Remove, ContainsKey, ContainsValue, Clear;
         -   Example:
 
@@ -1686,16 +1686,120 @@
                         class SortedList<TKey, TValue>
     ```
 
--   IEnumerable: represents a group of elements. It is the parent interface of all the collections. Has only one method, that is `IEnumerator GetEnumerator();`;
--   IEnumerator: interface meant for readonly and sequential reading of the items of a collection (used internally by the `foreach` loop). Has a `object Current { get; }` property and the methods `bool MoveNext()` and `void Reset()`;
--   Iterator:;
--   Yield return;
--   Custom collections:;
-    -   IEnumerable:;
-    -   ICollection:;
-    -   IList:;
--   IEquatable:;
--   IComparable: interface that must be implemented on a custom class in order to sort its objects (is already implemented in system classes). Example:
+-   IEnumerable: represents a group of elements. It is the parent interface of all the collections. Has only one method, that is `IEnumerator GetEnumerator()`;
+-   IEnumerator: interface usually meant for readonly and sequential reading of the items of a collection (used internally by the `foreach` loop). Has a `object Current { get; }` property and the methods `bool MoveNext()` and `void Reset()`;
+-   Iterator and Yield return: step-callable method that must return an `IEnumerable<T>`. The `IEnumerator<T>` can be accessed using the method `GetEnumerator()` on the returned value. The method can be then "step called" using the `MoveNext()` method of the returned `IEnumerator<T>`. Every "step" is enclosed by the `yield return` keyword. It can be a method or get accessor of a property. It can't be a constructor or destructor, and can't have ref or out parameters. Usually used in creating custom collections. Example
+
+    ```cs
+        public class MyClass
+        {
+            public IEnumerable<int> MyMethod()
+            {
+                System.Console.WriteLine("Step 1");
+                yield return 1;
+                System.Console.WriteLine("Step 2");
+                yield return 2;
+                System.Console.WriteLine("Step 3");
+                yield return 3;
+            }
+        }
+
+        class Program
+        {
+            static void Main()
+            {
+                MyClass c = new MyClass();
+
+                IEnumerable<int> enumerable = c.MyMethod();
+                IEnumerator<int> enumerator = enumerable.GetEnumerator();
+
+                enumerator.MoveNext();          /// Step 1
+                int a = enumerator.Current;
+                System.Console.WriteLine(a);    /// 1
+                enumerator.MoveNext();          /// Step 2
+                int b = enumerator.Current;
+                System.Console.WriteLine(b);    /// 2
+                enumerator.MoveNext();          /// Step 3
+                int c = enumerator.Current;
+                System.Console.WriteLine(c);    /// 3
+                enumerator.Reset();
+                enumerator.MoveNext();          /// Step 1
+                int d = enumerator.Current;
+                System.Console.WriteLine(d);    /// 1
+
+                foreach (int item in enumerable)
+                {
+                    System.Console.WriteLine(item); /// Step 1, 1, Step 2, 2, Step 3, 3
+                }
+            }
+        }
+    ```
+
+-   Custom collections: useful to add additional methods or logic (ex. validation) to collections. They should inherit from either:
+
+    -   `IEnumerable<T>`, example:
+
+    ```cs
+        using System.Collections.Generics;
+
+        class CustomerList: IEnumerable<Customer>
+        {
+            private List<Customer> customers = new List<Customer>();
+
+            /// Explicit interface implementation: needed because IEnumerable<T> inherits from IEnumerable. So there must be implemented two methods with the same name and parameters: IEnumerator GetEnumerator() and IEnumerator<T> GetEnumerator(). Explicit interface implementation solves this.
+            IEnumerator IEnumerable.GetEnumerator()
+            {
+                return this.GetEnumerator();
+            }
+
+            public IEnumerator<Customer> GetEnumerator()
+            {
+                for (int i = 0; i < customers.Count; i++) {
+                    yield return customers[i];
+                }
+            }
+
+            public void Add(Customer customer)
+            {
+                /// Example: custom validation logic for the collection
+                if (customer.ID.StartsWith("CU-"))
+                {
+                    customers.Add(customer);
+                }
+            }
+        }
+
+        [...]
+
+        CustomerList myCustomers = new CustomerList()
+        {
+            /// Thanks to the "Add" method it can be directly initialized
+            new Customer() { ID = "CU-1001"},
+            new Customer() { ID = "CU-1002"},
+            new Customer() { ID = "CU-1003"},
+            new Customer() { ID = "AA-0099"}
+        };
+
+        foreach (Customer customer in MyCustomers) {
+            System.Console.WriteLine(customer.ID); /// CU-1001, CU-1002, CU-1003 (AA-0099 is excluded by the validation logic of the "Add" method)
+        }
+
+    ```
+
+    -   `ICollection<T>`, example:
+
+    ```cs
+
+    ```
+
+    -   `IList<T>`, example:
+
+    ```cs
+
+    ```
+
+-   IEquatable: interface that defineds equality;
+-   IComparable: interface that defines ordering. It must be implemented on a custom class in order to sort its objects (is already implemented in system classes). Example:
 
 ```cs
     class MyClass: IComparable<MyClass>
