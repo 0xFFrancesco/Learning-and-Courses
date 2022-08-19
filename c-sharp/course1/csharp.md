@@ -1789,22 +1789,98 @@
     -   `ICollection<T>`, example:
 
     ```cs
+        class CustomerList: ICollection<Customer>
+        {
+            private List<Customer> customers = new List<Customer>();
 
+            /// All ICollection<T> properties and methods must be implemented (inherits from IEnumerable<T>)
+            IEnumerator IEnumerable.GetEnumerator(){};
+            public IEnumerator<T> GetEnumerator(){};
+
+            public int Count { get; }
+            public bool IsReadOnly { get; }
+            public void Add(T item){};
+            public void Clear(){};
+            public bool Contains(T item){};
+            public void CopyTo(T[] array, int arrayIndex){};
+            public bool Remove(T item){};
+        }
     ```
 
     -   `IList<T>`, example:
 
     ```cs
+        class CustomerList: IList<Customer>
+        {
+            private List<Customer> customers = new List<Customer>();
 
+            /// All IList<T> properties and methods must be implemented (inherits from ICollection<T>)
+            IEnumerator IEnumerable.GetEnumerator(){};
+            public IEnumerator<T> GetEnumerator(){};
+
+            public int Count { get; }
+            public bool IsReadOnly { get; }
+            public void Add(T item){};
+            public void Clear(){};
+            public bool Contains(T item){};
+            public void CopyTo(T[] array, int arrayIndex){};
+            public bool Remove(T item){};
+
+            T this[int index] { get; set; }
+            public int IndexOf(T item){};
+            public void Insert(int Index, T item){};
+            public void RemoveAt(int index){};
+        }
     ```
 
--   IEquatable: interface that defineds equality;
--   IComparable: interface that defines ordering. It must be implemented on a custom class in order to sort its objects (is already implemented in system classes). Example:
+-   IEquatable: interface that defines equality; It must be implemented on a custom class in order to check for equality between different instances. Operators like `==` and `!=` don't rely on `IEquatable`, and should be overloaded separately in order to change their default equality behavior (that is checking for reference equality). For consistency also `Equals(Object other)` (for non-typed classes/collections) and `GetHashCode()` methods should be implemented. Example:
+
+```cs
+    class MyClass: IEquatable<MyClass>
+    {
+        public int Value { get; set; }
+
+        public bool Equals(Object other)
+        {
+            if (other is MyClass) {
+                return Equals((MyClass)other);
+            }
+            return false;
+        }
+
+        public bool Equals(MyClass other)
+        {
+            return Value == other.Value;
+        }
+
+        public int GetHashCode()
+        {
+            return Value;
+        }
+    }
+
+    IList<MyClass> myList = new IList<MyClass>();
+    myList.Add(new MyClass(){ Value = 1 });
+    MyClass c = new MyClass(){ Value = 1 };
+    System.Console.WriteLine(myList.Contains(c)); /// True - IList<T>.Contains uses IEquatable
+    System.Console.WriteLine(myList[0] == c); /// False - the == operator doesn't use IEquatable
+```
+
+-   IComparable: interface that defines ordering. It must be implemented on a custom class in order to sort its instances. For consistency also the `CompareTo(Object other)` (for non-typed classes/collections) method should be implemented. Example:
 
 ```cs
     class MyClass: IComparable<MyClass>
     {
         public int Value { get; set; }
+
+        public bool CompareTo(Object other)
+        {
+            if (other is MyClass) {
+                return CompareTo((MyClass)other);
+            }
+            return false;
+        }
+
         public bool CompareTo(MyClass other)
         {
             return Value > other.Value;
@@ -1816,5 +1892,5 @@
 ```
 
 -   IComparer:;
--   Covariance:;
+-   Covariance: way to pass down more specific object types;
 -   Contravariance:;
