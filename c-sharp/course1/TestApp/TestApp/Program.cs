@@ -22,7 +22,9 @@ class Sample
         //ConstructorOverloading();
         //AccessorMethods();
         //ExplicitInterfaceImplementation();
-        ArrayOfMultipleNumbers();
+        //ArrayOfMultipleNumbers();
+        CustomCollection();
+
     }
 
     static void ConsoleClass()
@@ -353,6 +355,15 @@ class Sample
         {
             Console.Write(item + ", ");
         }
+
+        Console.ReadLine();
+    }
+
+    static void CustomCollection()
+    {
+        Introduction("Custom Collection");
+
+        ValidatedDictionary<int>.Test();
 
         Console.ReadLine();
     }
