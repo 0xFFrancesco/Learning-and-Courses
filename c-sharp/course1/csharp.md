@@ -1873,17 +1873,17 @@
     {
         public int Value { get; set; }
 
-        public bool CompareTo(Object other)
+        public int CompareTo(Object other)
         {
             if (other is MyClass) {
                 return CompareTo((MyClass)other);
             }
-            return false;
+            return -1;
         }
 
-        public bool CompareTo(MyClass other)
+        public int CompareTo(MyClass other)
         {
-            return Value > other.Value;
+            return Value - other.Value;
         }
     }
 
@@ -1891,6 +1891,100 @@
     myList.Sort();
 ```
 
--   IComparer:;
--   Covariance: way to pass down more specific object types;
--   Contravariance:;
+-   IComparer: interface that defines ordering for classes that don't implement `IComparable`. An external object that implements `IComparer` can be supplied as an argument to sorthing methods. Example:
+
+```cs
+    class MyClass
+    {
+        public int Value { get; set; }
+    }
+
+    class MyClassComparer: IComparer<MyClass>
+    {
+        public int Compare(MyClass x, MyClass y)
+        {
+            return x.Value - y.Value;
+        }
+    }
+
+    List<MyClass> myList = new List<MyClass>();
+    myList.Sort(new MyClassComparer());
+```
+
+-   Covariance and Contravariance: as a general rule, you are allowed to give more (more specific - child classes), but not less (less specific - parent classes). That is because child classes have all of what parent classes have and some more. It you'd try the opposite, the parent class may not have implemented some properties or methods that are instead expected. The problem with generic types, is that they can be used for both input (parameter type) and output (return type). To solve this Invariance is the default behaviour, that means that a generic type is not allowed to receive any other type (either more or less specific). To have more flexibility covariance and contravariance were introduced, to allow the compiler to accept more or less specific types in some cases. These cases are safeguarded by the parameter modifiers `in` and `out` applied to the generic type. The `out` keyword assures that the generic type can only be used as return type, allowing to return more or less specific types, but not to receive them. The `in` keyword assures that the generic type can only be used as input type, allowing to receive more or less specific types, but not to return them. Example:
+
+```cs
+    class A { public void F1(){} }
+    class B : A { public void F2(){} }
+    class C : B { public void F3(){} }
+
+    B b1 = new A(); /// Error: myObj would miss the method F2 because it is not implement in the parent class A. It's not Ok to give less.
+    B b2 = new C(); /// Ok: myObj has the method F2 because it is a child class of B, which implements that method. It's Ok to give more.
+
+    /// Generics can be used both for parameter and return types
+    interface IGeneric<T>
+    {
+        T Output(); /// Return type
+        void Input(T input); /// Parameter type
+    }
+
+    class MyClass<T> : IGeneric<T>
+    {
+        public T Output(){};
+        public void Input(T input){};
+    }
+
+    MyClass<B> objbb = new MyClass<B>(); /// Ok: as expected
+
+    /////////////
+    ///Covariance
+    /////////////
+
+    MyClass<B> objbc = new MyClass<C>(); /// Error: Invariance violated
+    /// Let's suppose we could ignore the Invariance error
+    objbc.Input(new B()); /// Error: we are passing type B (less specific) (casted via MyClass<B> obj) instead of the expected type C (more specific) (created with new MyClass<C>()). It's not Ok to give less.
+    objbc.Output().F2(); /// Ok: obj.Output() is expected of type B (less specific) (casted via MyClass<B> obj), but type C (more specific) is returned (created with new MyClass<C>()). It's Ok to give more.
+
+    /// How to fix this? Covariance
+    interface IGenericCovariance<out T>
+    {
+        T Output();
+        /// void Input(T input); Removed because not allowed by "out T".
+    }
+
+    class MyClassCovariance<T> : IGenericCovariance<T>
+    {
+        public T Output();
+        /// public void Input(T input){}; Removed because not allowed by "out T".
+    }
+
+    MyClassCovariance<B> objbc2 = new MyClassCovariance<C>(); /// Ok: contravariance
+    /// objbc2.Input(new B()); /// Buggy method not allowed anymore.
+    objbc2.Output().F2(); /// Ok
+
+    /////////////////
+    ///Contravariance
+    /////////////////
+
+    MyClass<B> objba = new MyClass<A>(); /// Error: Invariance violated
+    /// Let's suppose we could ignore the Invariance error
+    objba.Input(new B()); /// Ok: we are passing type B (more specific) (casted via MyClass<B> obj) instead of the expected type A (less specific) (created with new MyClass<A>()). It's Ok to give more.
+    objba.Output().F2(); /// Error: obj.Output() is expected of type B (more specific) (casted via MyClass<B> obj), but type A (less specific) is returned (created with new MyClass<A>()). Type A has not implemented the method F2, and thus it will result in an error. It's not Ok to give less.
+
+    /// How to fix this? Contravariance
+    interface IGenericContravariance<in T>
+    {
+        /// T Output(); Removed because not allowed by "in T".
+        void Input(T input);
+    }
+
+    class MyClassContravariance<T> : IGenericContravariance<T>
+    {
+        /// public T Output(); Removed because not allowed by "in T".
+        public void Input(T input){};
+    }
+
+    MyClassContravariance<B> objba2 = new MyClassContravariance<A>(); /// Ok: contravariance
+    objba2.Input(new B()); /// Ok
+    /// objba2.Output().F2(); Buggy method not allowed anymore.
+```
