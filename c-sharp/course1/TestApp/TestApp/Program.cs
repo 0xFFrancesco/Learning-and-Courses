@@ -23,7 +23,8 @@ class Sample
         //AccessorMethods();
         //ExplicitInterfaceImplementation();
         //ArrayOfMultipleNumbers();
-        CustomCollection();
+        //CustomCollection();
+        LargestOfCollections();
 
     }
 
@@ -364,6 +365,15 @@ class Sample
         Introduction("Custom Collection");
 
         ValidatedDictionary<int>.Test();
+
+        Console.ReadLine();
+    }
+
+    static void LargestOfCollections()
+    {
+        Introduction("Largest Number of Collection");
+
+        FindLargestInCollections.Test();
 
         Console.ReadLine();
     }

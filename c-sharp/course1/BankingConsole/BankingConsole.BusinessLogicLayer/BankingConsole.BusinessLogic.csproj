@@ -1,0 +1,16 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <AssemblyName>BankingConsole.BusinessLogicLayer</AssemblyName>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\BankingConsole.Configuration\BankingConsole.Configuration.csproj" />
+    <ProjectReference Include="..\BankingConsole.Entities\BankingConsole.Entities.csproj" />
+    <ProjectReference Include="..\BankingConsole.Exceptions\BankingConsole.Exceptions.csproj" />
+    <ProjectReference Include="..\BankingConsole.AccessLayer\BankingConsole.DataAccess.csproj" />
+  </ItemGroup>
+</Project>

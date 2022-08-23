@@ -1103,7 +1103,7 @@
         }
 ```
 
--   lambda expression: syntax-sugar for creating anonymous methods (no "delegate" keyword is needed). The parameters' types are inferred from the delegate/event type. Example:
+-   Lambda expression: syntax-sugar for creating anonymous methods (no "delegate" keyword is needed). The parameters' types are inferred from the delegate/event type. Example:
 
     ```cs
         p.NewsEvent += (eventData) =>
@@ -1988,3 +1988,107 @@
     objba2.Input(new B()); /// Ok
     /// objba2.Output().F2(); Buggy method not allowed anymore.
 ```
+
+## Anonymous Types
+
+-   Anonymous type: allows you to create an object with a set of properties and values, without specifiyng the type beforehand. The compiler automatically creates a class behind the scenes that supports those properties and "assings" it as the type for that object. That class is sealed (can't create child classes from it), and the properties are all public and readonly. It can be casted only to System.Object. None of its properties can be initialized with a null value (otherwise it doesn't know of which type that property should be). As the type is not formally defined, the "var" keyword must be used. Example:
+
+```cs
+    var myAnonType = new { Name = "AnonType", Subject = "C#", Level = 3};
+    myAnonType.Name = "Changed"; /// Error! Anonymous properties are readonly.
+```
+
+-   Nested: it is possible to create anonymous types/objects inside other anonymous types/objects. Example:
+
+```cs
+    var myAnonType = new
+    {
+        Prop1 = "Prop1",
+        Prop2 = "Prop2",
+        Prop3 = new
+        {
+            Prop3_1 = 3.1,
+            Prop3_2 = "Prop3_2",
+        }
+    }
+```
+
+-   Anonymous array: array containing anonymous objects (also called implicitly typed array). Its anonymous objects must be of the same anonymous type (can't have different properties). Example:
+
+```cs
+    var myAnonArray = new[]
+    {
+        new { Name = "AnonName", Subject = "C#", Level = 3},
+        new { Name = "AnonName2", Subject = "C", Level = 1},
+        new { Name = "AnonName3", Subject = "C++", Level = 2}
+    }
+```
+
+## Tuples
+
+-   Tuple class: represents a set of values of one or multiple types. Supports up to 8 elements by default (more if nesting tuples). Very useful to return multiple values from a method (without creating a new class or using anomymous objects or the "out" parameter modifier). Example:
+
+```cs
+    var myTuple = new Tuple<int, int, string>()
+    {
+        10,
+        11,
+        "eleven"
+    };
+
+    int a = myTuple.Item1; /// 10
+    int b = myTuple.Item2; /// 11
+    string c = myTuple.Item3; /// eleven
+```
+
+-   Value tuple: syntax-sugar to create a tuple. Supports property names and an unlimited number of items. Example:
+
+```cs
+    (int a, int b, string c) myValueTuple = (10, 11, "eleven");
+
+    int a = myTuple.a; /// 10
+    int b = myTuple.b; /// 11
+    string c = myTuple.c; /// eleven
+
+    [...]
+
+    public (bool success, int value) MyMethod()
+    {
+        return (true, 12);
+    }
+
+    var result = MyMethod();
+    System.Console.WriteLine(result.success); /// true
+    System.Console.WriteLine(result.value);   /// 12
+```
+
+-   Deconstruction: syntax-sugar to copy the elements of a value tuple into local variables. It follows the tuple value order (the naming doesn't count). Example:
+
+```cs
+    public (bool success, int value) MyMethod()
+    {
+        return (true, 12);
+    }
+
+    (bool isSuccess, int resultValue) = MyMethod();
+    System.Console.WriteLine(isSuccess);    /// true
+    System.Console.WriteLine(resultValue);  /// 12
+```
+
+-   Discards: skipping elements during the deconstruction using the underscore keyword (\_). Example:
+
+```cs
+    public (bool success, int value1, int value2, int value3, int value4) MyMethod()
+    {
+        return (true, 1, 2, 3, 4);
+    }
+
+    (bool isSuccess, int v1, _, _, int v4) = MyMethod();
+    System.Console.WriteLine(isSuccess); /// true
+    System.Console.WriteLine(v1);        /// 1
+    System.Console.WriteLine(v4);        /// 4
+```
+
+## LINQ
+
+-   LINQ: Language INtegrated Query;
