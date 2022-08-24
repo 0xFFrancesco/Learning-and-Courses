@@ -2089,6 +2089,32 @@
     System.Console.WriteLine(v4);        /// 4
 ```
 
+## Comments and Regions
+
+-   Comments: created with a double slash (//). Example:
+
+```cs
+   int number = 4; // This is a comment
+```
+
+-   XML comments: created with a triple slash (///). The comment information is automatically provided when that class/variable/type/... is hovered with the mouse in Visual Studio. Example:
+
+```cs
+   /// <summary>
+   /// Represents the choice of the customer. This text is visible hovering with the mouse on the property Choice.
+   /// </summary>
+   public int Choice = 4;
+```
+
+-   Regions: parts of code delimited by a region are foldable in Visual Studio. Example:
+
+```cs
+   #region Properties
+   public string Name { get; set; } // This is foldable!
+   public string Address { get; set; }
+   #endregion
+```
+
 ## LINQ
 
 -   LINQ: Language INtegrated Query;
