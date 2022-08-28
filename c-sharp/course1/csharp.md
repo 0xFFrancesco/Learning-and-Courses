@@ -238,7 +238,7 @@
 -   Must have the same name of the class name;
 -   Supports overloading;
 -   Instance constructor: the "normal" constructor, executes every time a new object is created;
--   Static constructor: executes only once during the application, either when the first object of the class is created or when the class is accessed for the first time. It can initialize the static fields and run some logic required only once per class. Can't access the instance fields, must be public, can't have parameters and doesn't return any value;
+-   Static constructor: executes only once during the application, either when the first object of the class is created or when the class is accessed for the first time. It can initialize the static fields and run some logic required only once per class. Useful to create singletons. Can't access the instance fields, must be public, can't have parameters and doesn't return any value;
 -   Implicit constructor: if a class has no constructor method, then the compiler automatically creates an empty constructor for the class;
 -   Object initializer: special syntax to initialize the fields (some or all) of the object along with creating the object (executes after the constructor). Example:
 
@@ -2117,4 +2117,60 @@
 
 ## LINQ
 
--   LINQ: Language INtegrated Query;
+-   LINQ: Language INtegrated Query. Allows to use a uniform query syntax against different data sources (arrays, collections, databases, csv files, etc.). Must be imported from `System.Linq`. It provides extensions methods such as `Where` to be called on the data source. Returns an `IEnumerable<T>` of the type of the data source. Example:
+
+```cs
+    using System.Linq;
+
+    class Employee
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public string City { get; set; }
+    }
+
+    [...]
+
+    List<Employee> employees = new List<Employee>()
+    {
+        new Employee(){ID = 100, Name = "Lukas", City = "Boston"},
+        new Employee(){ID = 101, Name = "Emma", City = "Boston"},
+        new Employee(){ID = 102, Name = "Hannah", City = "New York"},
+        new Employee(){ID = 103, Name = "Lucia", City = "Paris"}
+    };
+
+    // Using LINQ
+    IEnumerable<Employee> filtered = employees.Where(e => e.City == "Boston");
+    foreach(Employee item in filtered)
+    {
+        Console.WriteLine(item.Name); // Lukas, Emma
+    }
+```
+
+-   Filtering methods: Where, OfType;
+
+-   Sorting methods: OrderBy, OrderByDescending, ThenBy, ThenByDescending, Reverse;
+
+-   Grouping methods: GroupBy;
+
+-   Joining methods: Join;
+
+-   Projection methods: Select, SelectMany;
+
+-   Aggregation methods: Average, Min, Max, Count, Sum;
+
+-   Quantifier methods: All, Any, Contains;
+
+-   Element methods: ElementAt, ElementAtOrDefault, First, FirstOrDefault, Last, LastOrDefault, Single, SingleOrDefault;
+
+-   Set-Operation methods: Distinct, Except, Intersect, Union;
+
+-   Partitioning methods: Skip, SkipWhile, Take, TakeWhile;
+
+-   Concatenation methods: Concat;
+
+-   Equaliy methods: SequenceEqual;
+
+-   Generation methods: DefaultEmpty, Empty, Range, Repeat;
+
+-   Conversion methods: AsEnumerable, AsQueryable, Cast, ToArray, ToDictionary, ToList;

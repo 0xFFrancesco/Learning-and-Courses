@@ -12,14 +12,14 @@ namespace BankingConsole.DataAccessLayer
     /// <summary>
     /// Represents the DAL of the customer.
     /// </summary>
-    public class CustomerDAL: ICustomerDAL
+    public class CustomerDAL : ICustomerDAL
     {
         #region Private fields
-        private List<Customer> _customers;
+        private static List<Customer> _customers;
         #endregion
 
         #region Private properties
-        private List<Customer> Customers
+        private static List<Customer> Customers
         {
             get => _customers;
             set => _customers = value;
@@ -27,7 +27,7 @@ namespace BankingConsole.DataAccessLayer
         #endregion
 
         #region Constructors
-        public CustomerDAL()
+        static CustomerDAL()
         {
             _customers = new List<Customer>();
         }

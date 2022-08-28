@@ -1,4 +1,6 @@
-﻿class BankingConsole
+﻿using BankingConsole.Presentation;
+
+class App
 {
     static void Main()
     {
@@ -82,7 +84,8 @@
             System.Console.WriteLine("1. Add Customer");
             System.Console.WriteLine("2. Delete Customer");
             System.Console.WriteLine("3. Update Customer");
-            System.Console.WriteLine("4. View Customer");
+            System.Console.WriteLine("4. View Customers");
+            System.Console.WriteLine("5. Search Customer");
             System.Console.WriteLine("0. Back to Main Menu");
 
             System.Console.Write("Enter choice:");
@@ -93,7 +96,7 @@
             {
                 case 1:
                     {
-                        //
+                        CustomerPresentation.AddCustomer();
                         break;
                     }
                 case 2:
@@ -108,6 +111,11 @@
                     }
                 case 4:
                     {
+                        CustomerPresentation.ViewCustomers();
+                        break;
+                    }
+                case 5:
+                    {
                         //
                         break;
                     }
@@ -115,6 +123,7 @@
         } while (menuChoiche != 0);
     }
 
+    // TODO
     static void AccountsMenu()
     {
         sbyte menuChoiche = -1;

@@ -13,4 +13,10 @@
     <ProjectReference Include="..\BankingConsole.Exceptions\BankingConsole.Exceptions.csproj" />
     <ProjectReference Include="..\BankingConsole.AccessLayer\BankingConsole.DataAccess.csproj" />
   </ItemGroup>
+  <ItemGroup>
+    <None Remove="Contracts\" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Contracts\" />
+  </ItemGroup>
 </Project>
