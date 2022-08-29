@@ -2157,7 +2157,7 @@
 
 -   Projection methods: Select, SelectMany;
 
--   Aggregation methods: Average, Min, Max, Count, Sum;
+-   Aggregation methods: Min, Max, Average, Count, Sum;
 
 -   Quantifier methods: All, Any, Contains;
 
@@ -2174,3 +2174,50 @@
 -   Generation methods: DefaultEmpty, Empty, Range, Repeat;
 
 -   Conversion methods: AsEnumerable, AsQueryable, Cast, ToArray, ToDictionary, ToList;
+
+## Strings
+
+-   String: object of the pre-defined class `System.String`. It is stored in the Heap, and addressed via a reference variable in the Stack. It stores a set ot characters (`char[]`). Can contain a maximum number of 2 billion characters;
+
+-   Array notation: single characters are accesible using an array-like notation. Example:
+
+```cs
+    string s = "ABCD";
+    char c = s[0]; // A
+```
+
+-   Immutability: a string is immutable, when modified it actually returns a new string object;
+
+-   Useful methods: ToUpper, ToLower, Substring, Replace, Format, IsNullOrEmpty, Split, Trim, ToCharArray, Equals, Join, CompareTo, StartsWith, EndsWith, Contains, IndexOf, LastIndexOf, IsNullOrWhiteSpace;
+
+## Dates
+
+## Math
+
+## I/O
+
+## Serialization
+
+## Encoding
+
+## Exception Handling
+
+## C# 9 Features
+
+-   Records:;
+-   Init-only setters/properties:;
+-   Top-level statements:;
+-   Pattern matching enhancements:;
+-   Target-typed new expressions:;
+-   Module initializers:;
+
+## C# 10 Features
+
+-   Record structs:;
+-   User-defined parameter-less constructor in structs:;
+-   Global using:;
+-   File-scoped namespaces:;
+-   Extended property pattern:;
+-   Sealed ToString() method in records:;
+
+## C# 11 Features
