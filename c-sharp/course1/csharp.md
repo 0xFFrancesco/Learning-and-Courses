@@ -2188,6 +2188,13 @@
 
 -   Immutability: a string is immutable, when modified it actually returns a new string object;
 
+-   Creating the same string twice: when a new string is created (or modified), if there is already a string in memory (Heap) with the same exact value, then the newly created/modified one will just be a reference to that already existing string. This is automatically enforced by the CLR to avoid memory waste. Example:
+
+```cs
+    string a = "ABC"; // Created and instantiated in the Heap
+    string b = "ABC"; // String "ABC" is already existing, b is then a reference variable to the same memory location of a
+```
+
 -   Useful methods: ToUpper, ToLower, Substring, Replace, Format, IsNullOrEmpty, Split, Trim, ToCharArray, Equals, Join, CompareTo, StartsWith, EndsWith, Contains, IndexOf, LastIndexOf, IsNullOrWhiteSpace;
 
 ## Dates
