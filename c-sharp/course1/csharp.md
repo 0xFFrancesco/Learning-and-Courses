@@ -2179,7 +2179,7 @@
 
 -   String: object of the pre-defined class `System.String`. It is stored in the Heap, and addressed via a reference variable in the Stack. It stores a set ot characters (`char[]`). Can contain a maximum number of 2 billion characters;
 
--   Array notation: single characters are accesible using an array-like notation. Example:
+-   Array notation: single characters are accessible using an array-like notation. Example:
 
 ```cs
     string s = "ABCD";
@@ -2195,7 +2195,52 @@
     string b = "ABC"; // String "ABC" is already existing, b is then a reference variable to the same memory location of a
 ```
 
--   Useful methods: ToUpper, ToLower, Substring, Replace, Format, IsNullOrEmpty, Split, Trim, ToCharArray, Equals, Join, CompareTo, StartsWith, EndsWith, Contains, IndexOf, LastIndexOf, IsNullOrWhiteSpace;
+-   Formatting: string formatting is done using the `$""` syntax-sugar (or with the "long version" `string.Format`). Example:
+
+```cs
+    string name = "Emma";
+    int age = 24;
+
+    string formatted1 = $"{name} is {age} years old.";
+    /// Equivalent to:
+    string formatted2 = string.Format("{0} is {1} years old.", name, age);
+    /// Equivalent to:
+    string formatted3 = name + " is " + age + " years old.";
+```
+
+-   Useful methods: ToUpper, ToLower, Substring, Replace, Format, IsNullOrEmpty, Split, Trim, ToCharArray, Equals, Join, CompareTo, StartsWith, EndsWith, Contains, IndexOf, LastIndexOf, IsNullOrWhiteSpace, Insert, Remove;
+
+## StringBuilder
+
+-   StringBuilder: pre-defined class (`System.StringBuilder`) that unlike a "normal string" allows for mutability. Must be imported from `System.Text`. Useful for continuous modifications of the same string (it doesn't create a new one each time). Example:
+
+```cs
+    using System.Text;
+
+    string[] words = new string[]{ "I", "like", "eating". "fruits", "like", "apples", "and", "kiwis." };
+
+    string sentence = "";
+    foreach (string word in words)
+    {
+        // Every iteration creates a new string object, because the variable "sentence" is an immutable string.
+        sentence = sentence + " " + word;
+    }
+
+    // Using StringBuilder
+    StringBuilder builder = new StringBuilder();
+    foreach (string word in words)
+    {
+        // StringBuilder is mutable, thus this doesn't create new unecessary "intermediate" string objects.
+        builder.Append(" ");
+        builder.Append(word);
+    }
+    string result = builder.ToString();
+
+    // Single characthers of a StringBuilder can be accessed/modified with an array-like notation.
+    builder[0] = 'a';
+```
+
+-   Useful methods: Append, Insert, Remove, Replace, ToString;
 
 ## Dates
 
