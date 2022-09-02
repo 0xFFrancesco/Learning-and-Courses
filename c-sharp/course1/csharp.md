@@ -2244,6 +2244,39 @@
 
 ## Dates
 
+-   DateTime: predefined class (`System.DateTime`) useful to store and manipulate date and time values. The default formatting is `yyyy-MM-dd hh:mm:ss.fff tt` (example `2025-12-31 11:59:59.999 PM`). Example:
+
+```cs
+    // Get the current date and time.
+    DateTime currentDateTime = new DateTime().Now;
+
+    // Assign a custom value using parsing.
+    DateTime dateOfBirth = DateTime.Parse("1966-06-21");
+    // Assign a custom value using the System.Convert class.
+    DateTime dateOfGraduation = Convert.ToDateTime("1989-03-04");
+    // Assign a custom value using the constructor.
+    DateTime dateOfMarriage = new DateTime(1994, 2, 28);
+
+    // In output the formatting is taken from the OS settings.
+    Console.WriteLine(dateOfBirth.ToString()); // 19/01/1995 00:00:00 AM
+```
+
+-   Subtractions: datetimes can be subtracted using the `CompareTo` and `Subtract` methods. The `Subtract` method returns an object of the `System.TimeSpan` class, that represents a duration (distance between 2 points in time). Example:
+
+```cs
+
+```
+
+-   Additions: datetimes can be added using the XXX methods. Example:
+
+```cs
+
+```
+
+-   Useful properties (readonly): Day, Month, Year, Hour, Minute, Second, Millisecond, DayOfYear, DayOfWeek, Now;
+
+-   Useful methods: Parse, ParseExact, ToString, ToShortDateString, ToLongDateString, ToShortTimeString, ToLongTimeString, DaysInMonth;
+
 ## Math
 
 ## I/O
