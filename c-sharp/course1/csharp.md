@@ -2248,7 +2248,7 @@
 
 ```cs
     // Get the current date and time.
-    DateTime currentDateTime = new DateTime().Now;
+    DateTime currentDateTime = DateTime.Now;
 
     // Assign a custom value using parsing.
     DateTime dateOfBirth = DateTime.Parse("1966-06-21");
@@ -2261,23 +2261,54 @@
     Console.WriteLine(dateOfBirth.ToString()); // 19/01/1995 00:00:00 AM
 ```
 
--   Subtractions: datetimes can be subtracted using the `CompareTo` and `Subtract` methods. The `Subtract` method returns an object of the `System.TimeSpan` class, that represents a duration (distance between 2 points in time). Example:
+-   Subtraction: datetimes can be subtracted using the `Subtract` method or the `-` operator. They both return an object of the `System.TimeSpan` class, that represents a duration (distance between 2 points in time). Example:
 
 ```cs
-
+    DateTime today = DateTime.Now;
+    DateTime birthday = new DateTime(1993, 4, 22);
+    // Find the age.
+    TimeSpan tsAge1 = today.Subtract(birthday);
+    TimeSpan tsAge2 = today - birthday;
+    int ageInYears = tsAge1 / 365;
 ```
 
--   Additions: datetimes can be added using the XXX methods. Example:
+-   Manipulation: datetimes can be manipulated using the methods `AddDays`, `AddMonths`, `AddYears`, `AddHours`, `AddMinutes`, `AddSeconds` and `AddMilliseconds`. These methods can also be used with negative numbers. They all return a new `System.DateTime` object. Example:
 
 ```cs
-
+    DateTime dateA = new DateTime(1999, 10, 10);
+    DateTime dateB = dateA.AddDays(3).AddMonths(2).AddYears(1); // 2000/12/13
+    DateTime dateC = dateB.AddDays(-1).AddYears(-10); // 1990/12/12
 ```
 
 -   Useful properties (readonly): Day, Month, Year, Hour, Minute, Second, Millisecond, DayOfYear, DayOfWeek, Now;
 
--   Useful methods: Parse, ParseExact, ToString, ToShortDateString, ToLongDateString, ToShortTimeString, ToLongTimeString, DaysInMonth;
+-   Other useful methods: Parse, ParseExact, ToString, ToShortDateString, ToLongDateString, ToShortTimeString, ToLongTimeString, DaysInMonth;
 
 ## Math
+
+-   Math: predefined static class (`System.Math`) useful to perform mathematical operations;
+-   Useful properties: PI, E;
+-   Useful methods: Abs, Sign, Pow, Sqrt, Exp, Log, Log10, Min, Max, Floor, Ceiling, Round, Truncate, Sin, Cos, Tan, Asin, Acos, Atan, DivRem, IEEERemainder;
+
+## Regular Expressions
+
+-   Regular expression: provides the ability to validate and capture patterns against strings. The `Regex` class must be imported from `System.Text.RegularExpressions`. Example:
+
+```cs
+    using System.Text.RegularExpressions;
+
+    Regex regexp = new Regex("[a-z]{1}[0-9]?");
+    string input = "a1b2c3def4";
+
+    bool isValid = regexp.IsMatch(input);
+    Console.WriteLine(isValid); // True
+
+    MatchCollection matches = regexp.Matches(input);
+    foreach (Match match in matches)
+    {
+        Console.WriteLine(match.Value); // a1, b2, c3, d, e, f4
+    }
+```
 
 ## I/O
 
