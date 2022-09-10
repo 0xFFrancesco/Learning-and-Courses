@@ -2310,6 +2310,66 @@
     }
 ```
 
+## Number Systems
+
+-   There are infinitely possible number systems. The one that we are accostumed to is base-10 (decimal). Other commonly used number systems in computer science are base-2 (binary), base-8 (octal) and base-16 (hexadecimal);
+
+-   The `Convert.ToString` method can convert numbers from base-10 to a different number system (different base, either 2, 8 or 16). The `Convert.ToInt32` method can convert a number from a non-base-10 number system (either 2, 8 or 16) to base-10. Example:
+
+```cs
+    int base10 = 100;
+
+    // Convert to a non-base-10 number system
+    string base2 = Convert.ToString(base10, 2);   // 1100100
+    string base8 = Convert.ToString(base10, 8);   // 144
+    string base16 = Convert.ToString(base10, 16); // 64
+
+    // Convert from a non-base-10 number system
+    string fromBase2ToBase10 = Convert.ToInt32(base2, 2);    // 100
+    string fromBase8ToBase10 = Convert.ToInt32(base8, 8);    // 100
+    string fromBase16ToBase10 = Convert.ToInt32(base16, 16); // 100
+
+    // From base-16 to base-2 (via base-10)
+    string fromBase16ToBase2 = Convert.ToString(Convert.ToInt32(base16, 16), 2);
+```
+
+-   This is the process to convert a number from base-10 to a different base (number system):
+
+```cs
+    // Divide the number by the new base, then take the remainder and continue with the quotient.
+
+    // Example 100 in base-10 to ? in base-16:
+    // 100 / 16 = 6 quotient + 4 remainder, take the remainder and continue with the quotient;
+    // 6 / 16 = 0 quotient + 6 remainder, take the remainder and continue with the quotient;
+    // The quotient is 0 thus stop;
+    // The converted number is the inverse concatenation of the remainders: 64.
+```
+
+-   This is the process to convert a number from non-base-10 to base-10:
+
+```cs
+    // For every digit in reverse order do:
+    // 1 - Elevate the base to the power of the digit's index;
+    // 2 - Multiply that with the actual digit;
+    // 3 - Sum them all.
+
+    // Example 64 in base-16 to ? in base-10:
+    // First digit is 4, index is 0;
+    // The base is 16, to the power of 0 is 1;
+    // The digit is 4, multiplied with 1 is 4;
+    // Second digit is 6, index is 1;
+    // The base is 16, to the power of 1 is 16;
+    // The digit is 6, multiplied with 16 is 96;
+    // The sum of all the results is 96 + 4 that is 100.
+```
+
+-   Binary and Hexadecimal literals: in order to directly write a number in the binary or hexadecimal format, you have to use the prefix `0b` or `0x`. These numbers will be automatically converted to base-10 at compilation time. Example:
+
+```cs
+    int numA = 0b1100100; // 100
+    int numB = 0x64;      // 100
+```
+
 ## I/O
 
 ## Serialization
