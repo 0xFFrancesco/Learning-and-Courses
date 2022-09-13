@@ -2370,11 +2370,62 @@
     int numB = 0x64;      // 100
 ```
 
+## Encoding
+
+-   Encoding: process of converting a character into numerical format (bits);
+-   Decoding: process of converting a number into a character;
+-   Common encoding systems:
+
+    -   ASCII: stands for "American Stadard Code for Information Interchange". Useful for the english based languages. Supports only 128 characters (the lower and upper case english alphabet, the numerical digits, the escape/special characters and some other useful symbols, for example the mathematical ones);
+    -   UTF-16/Unicode: is the evolutions of UTF-8, uses more bits to represent a charachter than both ASCII and UTF-8, thus allowing many more characters to be representable (more than 100.000). It is indeed used for all the world languages, including chinese, japanese, arabic, greek, etc. Each character occupies 2 or 4 bytes;
+
+-   Using the ASCII encoding:
+
+```cs
+    char character = 'A';
+
+    // Converting an ASCII character into numerical format using explicit casting. A single byte variable is enough as ASCII only contains characters from 0 to 127.
+    byte ASCIICode = (byte) character; // 65
+
+    // Converting a number into an ASCII character using explicit casting.
+    char codeToChar = (char) ASCIICode; // A
+
+    // Converting an entire array of bytes (ASCII characters in numerical format) into a string.
+    byte[] array = new byte[]{
+        65, 66, 67
+    };
+    string result = System.Text.Encoding.ASCII.GetString(array); // ABC
+
+    // Specifying an encoding system for the console.
+    Console.OutputEncoding = System.Text.Encoding.ASCII;
+    Console.WriteLine(result);
+
+    // Converting an ASCII string into an array of bytes (useful for example to write the data into files).
+    string data = "DEF";
+    byte[] dataIntoBytes = System.Text.Encoding.ASCII.GetBytes(data); // 68, 69, 70
+```
+
+-   Using the UTF-16/Unicode encoding:
+
+```cs
+    // C# automatically supports every unicode character, either wrote directly in the code or using the appropriate unicode code (ex. \uXXXX).
+    char directCharacter = "Ʊ";
+    char unicodeCode = "\u01B1"; // Ʊ
+
+    // Converting an entire array of bytes (Unicode characters in numerical format) into a string.
+    byte[] array = new byte[]{
+        144, 33, 32, 0, 146, 33
+    };
+    string result = System.Text.Encoding.Unicode.GetString(array); // ← →
+
+    // Converting a Unicode string into an array of bytes (a single character is represented by multiple bytes).
+    string data = "← →";
+    byte[] dataIntoBytes = System.Text.Encoding.Unicode.GetBytes(data); // 144, 33, 32, 0, 146, 33
+```
+
 ## I/O
 
 ## Serialization
-
-## Encoding
 
 ## Exception Handling
 
