@@ -2391,7 +2391,8 @@
     char codeToChar = (char) ASCIICode; // A
 
     // Converting an entire array of bytes (ASCII characters in numerical format) into a string.
-    byte[] array = new byte[]{
+    byte[] array = new byte[]
+    {
         65, 66, 67
     };
     string result = System.Text.Encoding.ASCII.GetString(array); // ABC
@@ -2413,7 +2414,8 @@
     char unicodeCode = "\u01B1"; // Ʊ
 
     // Converting an entire array of bytes (Unicode characters in numerical format) into a string.
-    byte[] array = new byte[]{
+    byte[] array = new byte[]
+    {
         144, 33, 32, 0, 146, 33
     };
     string result = System.Text.Encoding.Unicode.GetString(array); // ← →
@@ -2424,6 +2426,155 @@
 ```
 
 ## I/O
+
+-   System.IO: .NET provides the pre-defined `System.IO` namespace that contains a set of useful classes to perform file input/output operations. These classes are: `File`, `Directory`, `FileInfo`, `DirectoryInfo`, `DriveInfo`, `FileStream`, `FileNotFoundException`, `StreamWriter`, `StreamReader`, `BinaryWriter`, `BineryReader`.
+
+-   Useful methods of the `File` static class: `Create`, `Delete`, `Exists`, `Open`, `Copy`, `Move`, `OpenRead`, `OpenWrite`, `WriteAllText`, `WriteAllLines`, `ReadAllText`, `ReadAllLines`. Example:
+
+```cs
+    using System.IO;
+
+    string filePath = ".\\MyApp\\.data";
+    string fileName = "MyFile";
+    string fileExtension = ".data";
+    string file1FullPath = filePath + fileName + fileExtension;
+
+    // Create a new file (and don't keep it open).
+    File.Create(file1FullPath).Close();
+
+    // Check if a file exists.
+    bool exists = File.Exists(file1FullPath);
+
+    if (exists)
+    {
+        // Create a copy of a file.
+        string file2FullPath = filePath + fileName + "-2" + fileExtension;
+        File.Copy(file1FullPath, file2FullPath);
+
+        // Rename or move a file.
+        string newFile2FullPath = filePath + fileName + "-2-renamed" + fileExtension;
+        File.Move(file2FullPath, newFile2FullPath);
+
+        // Delete a file.
+        File.Delete(newFile2FullPath);
+    }
+
+    // Writing data into a file.
+    string data = "MY_KEY=1122334455";
+    string path = ".\\MyApp\\Keys.txt";
+    File.WriteAllText(path, data);
+    // In case the file doesn't exist, it creates it.
+    // In case the file exists, it overrides it.
+
+    // Reading data from a file.
+    string content = File.ReadAllText(path); // MY_KEY=1122334455
+
+    // Writing data into a file from an IEnumerable of strings (lines).
+    List<string> dataLines = new List<string>
+    {
+        "Europe", "Asia", "Africa"
+    };
+    string path2 = ".\\MyApp\\Countries.txt";
+    File.WriteAllLines(path2, dataLines);
+
+    // Reading data from a file separated into its lines.
+    string[] continents = File.ReadAllLines(path2); // Europe, Asia, Africa
+```
+
+-   Useful methods of the `FileInfo` class: `Create`, `Open`, `Delete`, `MoveTo`, `CopyTo`, `OpenText`, `OpenRead`, `OpenWrite`, `CreateText`, `AppendText`. Example:
+
+```cs
+    using System.IO;
+
+    string path = ".\\MyApp\\Data.txt";
+
+    // Unlike File, FileInfo is not a static class and thus needs to be instantiated.
+    FileInfo dataFileInfo = new FileInfo(path);
+
+    // Create a file.
+    dataFileInfo.Create().Close();
+
+    // Copy a file.
+    string destination = ".\\MyApp\\Data-copy.txt";
+    FileInfo copiedFile = dataFileInfo.CopyTo(destination);
+
+    // Rename or move a file.
+    string newDestination = ".\\MyApp\\Data-copy-renamed.txt";
+    copiedFile.MoveTo(newDestination);
+
+    // Delete a file.
+    copiedFile.Delete();
+```
+
+-   Useful properties of the `FileInfo` class: `Name`. Example:
+
+```cs
+    using System.IO;
+```
+
+-   Useful methods of the `Directory` class: `A`, `B`. Example:
+
+```cs
+    using System.IO;
+
+
+```
+
+-   Useful methods of the `DirectoryInfo` class: `A`, `B`. Example:
+
+```cs
+    using System.IO;
+
+
+```
+
+-   Useful methods of the `DriveInfo` class: `A`, `B`. Example:
+
+```cs
+    using System.IO;
+
+
+```
+
+-   Useful methods of the `FileStream` class: `A`, `B`. Example:
+
+```cs
+    using System.IO;
+
+
+```
+
+-   Useful methods of the `StreamWriter` class: `A`, `B`. Example:
+
+```cs
+    using System.IO;
+
+
+```
+
+-   Useful methods of the `StreamReader` class: `A`, `B`. Example:
+
+```cs
+    using System.IO;
+
+
+```
+
+-   Useful methods of the `BinaryWriter` class: `A`, `B`. Example:
+
+```cs
+    using System.IO;
+
+
+```
+
+-   Useful methods of the `BinaryReader` class: `A`, `B`. Example:
+
+```cs
+    using System.IO;
+
+
+```
 
 ## Serialization
 
