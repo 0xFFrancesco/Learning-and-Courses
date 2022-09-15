@@ -2506,21 +2506,75 @@
     copiedFile.Delete();
 ```
 
--   Useful properties of the `FileInfo` class: `Name`. Example:
-
-```cs
-    using System.IO;
-```
-
--   Useful methods of the `Directory` class: `A`, `B`. Example:
+-   Useful properties of the `FileInfo` class: `Name`, `Extension`, `FullName`, `DirectoryName`, `Exists`, `Length`, `CreationTime`, `LastWriteTime`, `LastAccessTime`. Example:
 
 ```cs
     using System.IO;
 
+    string filePath = ".\\MyApp\\Data.txt";
+    FileInfo file = new FileInfo(filePath);
 
+    string name = file.Name; // Data.txt
+    string ext = file.Extension; // .txt
+    string fullPath = file.FullName; // .\MyApp\Data.txt
+    DateTime lastEdit = file.LastWriteTime; // 01/01/2020
 ```
 
--   Useful methods of the `DirectoryInfo` class: `A`, `B`. Example:
+-   Useful methods of the `Directory` static class: `CreateDirectory`, `Move`, `Delete`, `Exists`, `GetFiles`, `GetDirectories`. Example:
+
+```cs
+    using System.IO;
+
+    string path = ".\\MyApp\\Countries";
+
+    // Create a directory.
+    Directory.CreateDirectory(path);
+
+    // Verify that a directory exists.
+    bool exists = Directory.Exists(path); // True
+
+    string[] countries = new string[]
+    {
+        "Africa", "Europe", "Asia"
+    };
+    foreach (string country in countries)
+    {
+        Directory.CreateDirectory(path + "\\" + country);
+    }
+
+    // Rename/move a directory.
+    string newPath = ".\\MyApp\\World";
+    Directory.Move(path, newPath);
+
+    // Get sub-directories.
+    string[] subDirectories = Directory.GetDirectories(newPath); // .\MyApp\Africa, .\MyApp\Europe, .\MyApp\Asia
+
+    // Get sub-files.
+    string[] subFiles = Directory.GetFiles(newPath);
+
+    // Delete an empty directory.
+    Directory.Delete(newPath); // Error: directory not empty.
+
+    // Delete a non-empty directory.
+    Directory.Delete(newPath, true);
+```
+
+-   Useful methods of the `DirectoryInfo` class: `Create`, `MoveTo`, `Delete`, `GetFiles`, `GetDirectories`, `CreateSubDirectory`. The difference in usage is the same as `File` vs `FileInfo`, the first is a static class, while the latter has to be instantiated. Example:
+
+```cs
+    using System.IO;
+
+    string path = ".\\MyApp\\Countries";
+
+    // Creating a sub-directory with the static class Directory
+    Directory.CreateDirectory(path + "\\Sub1");
+
+    // Creating a sub-directory with the class DirectoryInfo
+    DirectoryInfo dir = new DirectoryInfo(path);
+    dir.CreateSubDirectory("Sub2");
+```
+
+-   Useful properties of the `DirectoryInfo` class: `A`, `B`. Example:
 
 ```cs
     using System.IO;
@@ -2532,8 +2586,6 @@
 
 ```cs
     using System.IO;
-
-
 ```
 
 -   Useful methods of the `FileStream` class: `A`, `B`. Example:
