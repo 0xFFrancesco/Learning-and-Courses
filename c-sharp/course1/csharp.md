@@ -2566,12 +2566,18 @@
 
     string path = ".\\MyApp\\Countries";
 
-    // Creating a sub-directory with the static class Directory
+    // Creating a sub-directory with the static class Directory.
     Directory.CreateDirectory(path + "\\Sub1");
 
-    // Creating a sub-directory with the class DirectoryInfo
+    // Creating a sub-directory with the class DirectoryInfo.
     DirectoryInfo dir = new DirectoryInfo(path);
     dir.CreateSubDirectory("Sub2");
+
+    // Getting the sub-directories with the static class Directory.
+    string[] subDirs = Directory.GetDirectories(path); // Retuns an array of paths (strings)
+
+    // Getting the sub-directories with the class DirectoryInfo.
+    DirectoryInfo[] subDirsInfo = DirectoryInfo.GetDirectories(); // Retuns an array of DirectoryInfo objects
 ```
 
 -   Useful properties of the `DirectoryInfo` class: `A`, `B`. Example:
