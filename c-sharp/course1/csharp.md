@@ -2580,27 +2580,75 @@
     DirectoryInfo[] subDirsInfo = DirectoryInfo.GetDirectories(); // Retuns an array of DirectoryInfo objects
 ```
 
--   Useful properties of the `DirectoryInfo` class: `A`, `B`. Example:
+-   Useful properties of the `DirectoryInfo` class: `Exists`, `Name`, `FullName`, `Parent`, `Root`, `CreationTime`, `LastWriteTime`, `LastAccessTime`. Example:
 
 ```cs
     using System.IO;
 
+    string path = ".\\MyApp\\Countries";
+    DirectoryInfo dir = new DirectoryInfo(path);
+    dir.Create();
 
+    bool exists = dir.Exists; // True
+    string name = dir.Name; // Countries
+    DirectoryInfo parent = dir.Parent().Name; // MyApp
 ```
 
--   Useful methods of the `DriveInfo` class: `A`, `B`. Example:
+-   Useful properties of the `DriveInfo` class: `Name`, `DriveType`, `VolumeLabel`, `RootDirectory`, `TotalSize`, `AvailableFreeSpace`. Those properties are read-only, and it has no methods. Example:
 
 ```cs
     using System.IO;
+
+    // Info about the C:\ drive (Windows).
+    DriveInfo drive = new DriveInfo("c:");
+    string name = drive.Name; // c:\
+    string type = drive.DriveType; // Fixed
+    string volume = drive.VolumeLabel; // Windows SSD
+    int sizeInGB = drive.TotalSize / (1024 * 1024 * 1024); // 249
 ```
 
--   Useful methods of the `FileStream` class: `A`, `B`. Example:
+-   FileStream: allows you to open and keep a connection to a file in order to read or write content from/into that file multiple times more efficiently than using the methods of the FileInfo class (that are suited more for one-time read or write operations). Useful methods of the `FileStream` class: `Write`, `Read`, `Close`. Those methods work with a byte array only. Example:
 
 ```cs
     using System.IO;
 
+    string path = ".\\MyApp\\Countries\\Japan.txt";
 
+    FileStream stream = new FileStream(path, FileMode.Create, FileAccess.Write);
+    // Alternative ways.
+    // FileStream stream = File.Create(path);
+    // FileStream stream = File.Open(path, FileMode.Create, FileAccess.Write);
+    // FileStream stream = File.OpenWrite(path);
+
+    // Writing into a file.
+    string stringContent = "Japan is full of beautiful things to see and try.";
+    byte[] writeableContent = System.Text.Encoding.ASCII.GetBytes(stringContent);
+    for (byte i = 0; i < 100; i++)
+    {
+        // Write(bytesContent, offset, numberOfBytesToWrite);
+        stream.Write(writeableContent, 0, writeableContent.Length);
+        // The "base position" is kept updated after each write operation, so there is no need to change the offset parameter.
+    }
+    stream.Close();
+
+    // Reading from a file.
+    // It is better to create a new stream and keep the read and write operations seperated: so that we don't have to seek/change the stream position inside the file for the different read and write operations.
+    FileStream streamRead = new FileStream(path, FileMode.Create, FileAccess.Read);
 ```
+
+-   `FileMode` options:
+
+    -   `CreateNew`: create a new file, if it already exists throw an error;
+    -   `Create`: create a new file, if it already exists overwrite it;
+    -   `Open`: open an existing file, if it doesn't already exists throw an error;
+    -   `OpenOrCreate`: open an existing file, if it doesn't already exists create and open it;
+    -   `Append`: open an existing file and go to the end of the file in order to appen new content after it;
+
+-   `FileAccess` options:
+
+    -   `Read`: can read-only from a file;
+    -   `Write`: can write-only into a file;
+    -   `ReadWrite`: can both read and write from/into a file;
 
 -   Useful methods of the `StreamWriter` class: `A`, `B`. Example:
 
