@@ -2673,7 +2673,7 @@
     streamWrite.Close();
 ```
 
--   `StreamReader`: similar as a `FileStream` in `Read` mode, but without the need to constantly convert the data from an array of bytes to a string (it is done automatically by the `StreamReader`). Supports strings and text-files only. Useful methods of the `StreamReader` class: `Read`, `ReadLine`, `Close`. Example:
+-   `StreamReader`: similar as a `FileStream` in `Read` mode, but without the need to constantly convert the data from an array of bytes to a string (it is done automatically by the `StreamReader`). Supports strings and text-files only. Useful methods of the `StreamReader` class: `Read`, `ReadLine`, `ReadToEnd`, `Close`. Example:
 
 ```cs
     using System.IO;
@@ -2681,7 +2681,7 @@
     string path = ".\\MyApp\\Countries\\Japan.txt";
     StreamReader streamRead = new StreamReader(path);
 
-    string firstLine = streamRead.ReadLine();
+    string stringContent = streamRead.ReadToEnd();
     streamRead.Close();
 ```
 
@@ -2720,6 +2720,10 @@
 ```
 
 ## Serialization
+
+-   Binery serialization: ;
+-   JSON serialization: ;
+-   XML serialization: ;
 
 ## Exception Handling
 
