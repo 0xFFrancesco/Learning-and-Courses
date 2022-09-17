@@ -2685,20 +2685,42 @@
     streamRead.Close();
 ```
 
--   Useful methods of the `BinaryWriter` class: `A`, `B`. Example:
+-   `BinaryWriter`: similar as `StreamWriter`, but it converts internally all the data into binary format before writing it. Useful methods of the `StreamWriter` class: `Write`, `Close`. Example:
 
 ```cs
     using System.IO;
 
+    short countryId = 1;
+    string countryName = "France";
+    long population = 3242536;
 
+    string path = ".\\MyApp\\Countries\\France.dat";
+    FileStream fileStream = new FileStream(path, FileMode.Create, FileAccess.Write);
+    BinaryWriter binaryWriter = new BinaryWriter(fileStream);
+
+    // All information is converted to binary data.
+    binaryWriter.Write(countryId);   //0001
+    binaryWriter.Write(countryName); //100 0100 ...
+    binaryWriter.Write(population);  //...
+
+    binaryWriter.Close();
 ```
 
--   Useful methods of the `BinaryReader` class: `A`, `B`. Example:
+-   `BinaryReader`: similar as `StreamReader`, but it converts internally all the data that is reading from binary format into a specified format. Useful methods of the `BinaryReader` class: `ReadInt16` (short), `ReadInt32` (int), `ReadInt64` (long), `ReadString`, ..., `Close`. Basically there is a "read" method for every C# base type. Example:
 
 ```cs
     using System.IO;
 
+    string path = ".\\MyApp\\Countries\\France.dat";
+    FileStream fileStream = new FileStream(path, FileMode.Open, FileAccess.Read);
+    BinaryReader binaryReader = new BinaryReader(fileStream);
 
+    // The data must be read in the same order as the "writing" order.
+    short countryId = binaryReader.ReadInt16();     // 1
+    string countryName = binaryReader.ReadString(); // France
+    long population = binaryReader.ReadInt64();     // 3242536
+
+    binaryReader.Close();
 ```
 
 -   Closing streams: it is important to close the access to files in order to let the OS perform other operations on them. If they are kept open the OS may throw an error when you try to move, rename, edit or delete them. Example:
@@ -2721,9 +2743,65 @@
 
 ## Serialization
 
--   Binery serialization: ;
--   JSON serialization: ;
--   XML serialization: ;
+-   Serialization: convering an object form a given format into a different format (ex. converting an object in the heap memory into binary or json format for external storage or for trasmitting the data to another application);
+-   `[Serializable]`: decorator that must be put over a class declaration in order to make that class serializable by the .NET formatters (ex. by the `BinaryFormatter`);
+-   `BinaryFormatter`: class useful to serialize/deserialize data into/from a binary format. It must be imported from `System.Runtime.Serialization.Formatters.Binary`. Useful methods of the `BinaryFormatter` class: `Serialize`, `Deserialize` (returns a `System.Object` type that must be manually type-casted). Example:
+
+```cs
+    using System.Runtime.Serialization.Formatters.Binary;
+    using System.IO;
+
+    [Serializable]
+    public class Country
+    {
+        public short ID { get; set; }
+        public string Name { get; set; }
+        public long Population { get; set; }
+        public string Description { get; set; }
+        public int Ordering { get; set; }
+    }
+
+    Country country = new Country()
+    {
+        ID = 1,
+        Name = "France",
+        Population = 3242536,
+        Description = "Country in Europe",
+        Ordering = 12,
+    };
+
+    string path = ".\\MyApp\\Countries\\France.dat";
+    FileStream fileStream = new FileStream(path, FileModel.Create, FileAccess.Write);
+
+    // Convert an object to binary format and save it into a file.
+    BinaryFormatter binFormatter = new BinaryFormatter();
+    binFormatter.Serialize(fileStream, country);
+    fileStream.Close();
+
+    // Read a binary file and convert it into an object.
+    FileStream fileStreamRead = new FileStream(path, FileModel.Open, FileAccess.Read);
+    Country fromBinFile = (Country)binFormatter.Deserialize(fileStream);
+
+    short fromBinFileID = fromBinFile.ID; // 1
+    string fromBinFileName = fromBinFile.Name; // France
+    long fromBinFilePopulation = fromBinFile.Population; // 3242536
+    short fromBinFileDescription = fromBinFile.Description; // Country in Europe
+    short fromBinFileOrdering = fromBinFile.Ordering; // 12
+
+    fileStreamRead.Close();
+```
+
+-   JSON serialization: . Example:
+
+```cs
+
+```
+
+-   XML serialization: . Example:
+
+```cs
+
+```
 
 ## Exception Handling
 
