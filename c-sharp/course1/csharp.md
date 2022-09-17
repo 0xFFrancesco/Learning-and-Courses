@@ -2607,7 +2607,7 @@
     int sizeInGB = drive.TotalSize / (1024 * 1024 * 1024); // 249
 ```
 
--   FileStream: allows you to open and keep a connection to a file in order to read or write content from/into that file multiple times more efficiently than using the methods of the FileInfo class (that are suited more for one-time read or write operations). Useful methods of the `FileStream` class: `Write`, `Read`, `Close`. Those methods work with a byte array only. Example:
+-   `FileStream`: allows you to open and keep a connection to a file in order to read or write content from/into that file multiple times more efficiently than using the methods of the FileInfo class (that are suited more for one-time read or write operations). Useful methods of the `FileStream` class: `Write`, `Read`, `Close`. Those methods work with a byte array only. Example:
 
 ```cs
     using System.IO;
@@ -2622,18 +2622,25 @@
 
     // Writing into a file.
     string stringContent = "Japan is full of beautiful things to see and try.";
-    byte[] writeableContent = System.Text.Encoding.ASCII.GetBytes(stringContent);
+    byte[] writeBuffer = System.Text.Encoding.ASCII.GetBytes(stringContent);
     for (byte i = 0; i < 100; i++)
     {
         // Write(bytesContent, offset, numberOfBytesToWrite);
-        stream.Write(writeableContent, 0, writeableContent.Length);
+        stream.Write(writeBuffer, 0, writeBuffer.Length);
         // The "base position" is kept updated after each write operation, so there is no need to change the offset parameter.
     }
     stream.Close();
 
     // Reading from a file.
     // It is better to create a new stream and keep the read and write operations seperated: so that we don't have to seek/change the stream position inside the file for the different read and write operations.
-    FileStream streamRead = new FileStream(path, FileMode.Create, FileAccess.Read);
+    FileStream streamRead = new FileStream(path, FileMode.OpenOrCreate, FileAccess.Read);
+
+    // Set the size same as the file size (so that it can contain it all).
+    byte[] readBuffer = new byte[streamRead.Length];
+    // Read(resultArray, offset, numberOfBytesToRead);
+    streamRead.Read(readBuffer, 0, (int)streamRead.Length);
+    string stringResult = System.Text.Encoding.ASCII.GetString(readBuffer);
+    streamRead.Close();
 ```
 
 -   `FileMode` options:
@@ -2650,20 +2657,32 @@
     -   `Write`: can write-only into a file;
     -   `ReadWrite`: can both read and write from/into a file;
 
--   Useful methods of the `StreamWriter` class: `A`, `B`. Example:
+-   `StreamWriter`: similar as a `FileStream` in `Write` mode, but without the need to constantly convert the data from a string to an array of bytes (it is done automatically by the `StreamWriter`). Supports strings and text-files only. Useful methods of the `StreamWriter` class: `Write`,`WriteLine`, `Close`. Example:
 
 ```cs
     using System.IO;
 
+    string path = ".\\MyApp\\Countries\\Japan.txt";
+    StreamWriter streamWrite = new StreamWriter(path);
 
+    string stringContent = "Japan is full of beautiful things to see and try.";
+    for (byte i = 0; i < 100; i++)
+    {
+        streamWrite.WriteLine(stringContent);
+    }
+    streamWrite.Close();
 ```
 
--   Useful methods of the `StreamReader` class: `A`, `B`. Example:
+-   `StreamReader`: similar as a `FileStream` in `Read` mode, but without the need to constantly convert the data from an array of bytes to a string (it is done automatically by the `StreamReader`). Supports strings and text-files only. Useful methods of the `StreamReader` class: `Read`, `ReadLine`, `Close`. Example:
 
 ```cs
     using System.IO;
 
+    string path = ".\\MyApp\\Countries\\Japan.txt";
+    StreamReader streamRead = new StreamReader(path);
 
+    string firstLine = streamRead.ReadLine();
+    streamRead.Close();
 ```
 
 -   Useful methods of the `BinaryWriter` class: `A`, `B`. Example:
@@ -2680,6 +2699,24 @@
     using System.IO;
 
 
+```
+
+-   Closing streams: it is important to close the access to files in order to let the OS perform other operations on them. If they are kept open the OS may throw an error when you try to move, rename, edit or delete them. Example:
+
+```cs
+    using System.IO;
+    string path = ".\\MyApp\\Countries\\Japan.txt";
+
+    // Manual way.
+    StreamReader streamRead = new StreamReader(path);
+    // Do stuff...
+    streamRead.Close(); // Close when finished.
+
+    // Alternative way, leveraging the IDisposable interface of the stream classes with the "using" keyword.
+    using (StreamReader streamRead = new StreamReader(path))
+    {
+        // Do stuff...
+    } // Automatically dispose (close) the object when finished.
 ```
 
 ## Serialization
