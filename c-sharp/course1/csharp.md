@@ -2745,7 +2745,7 @@
 
 -   Serialization: convering an object form a given format into a different format (ex. converting an object in the heap memory into binary or json format for external storage or for trasmitting the data to another application);
 -   `[Serializable]`: decorator that must be put over a class declaration in order to make that class serializable by the .NET formatters (ex. by the `BinaryFormatter`);
--   `BinaryFormatter`: class useful to serialize/deserialize data into/from a binary format. It must be imported from `System.Runtime.Serialization.Formatters.Binary`. Useful methods of the `BinaryFormatter` class: `Serialize`, `Deserialize` (returns a `System.Object` type that must be manually type-casted). Example:
+-   `BinaryFormatter`: class useful to serialize/deserialize data into/from a binary format. It must be imported from `System.Runtime.Serialization.Formatters.Binary`. Useful methods of the `BinaryFormatter` class: `Serialize`, `Deserialize` (returns a `System.Object` type that must be manually type-casted). The issue with `BinaryFormatter` is that you can serialize/deserialize it only from .NET applications. Example:
 
 ```cs
     using System.Runtime.Serialization.Formatters.Binary;
@@ -2791,36 +2791,255 @@
     fileStreamRead.Close();
 ```
 
--   JSON serialization: . Example:
+-   `JavaScriptSerializer`: like `BinaryFormatter` but serializes the data into JSON format, which can be easily "understood" (serialized/deserialized) also by other applications that are not .NET based. It must be imported from `System.Web.Script.Serialization` (in order to use this namespace, the assembly `System.Web.Extensions` must be linked manually to the project). Useful methods of the `JavaScriptSerializer` class: `Serialize`, `Deserialize` (returns a `System.Object` type that must be manually type-casted). Example:
 
 ```cs
+    using System.IO;
+    using System.Web.Script.Serialization;
 
+    [Serializable]
+    public class Employee
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public short DepartmentID { get; set; }
+        public byte Age { get; set; }
+    }
+
+    Employee employee = new Employee()
+    {
+        ID = 1,
+        Name = "Markus",
+        DepartmentID = 24,
+        Age = 55
+    };
+
+    string path = ".\\MyApp\\Employees\\1.json";
+
+    JavaScriptSerializer jsSerializer = new JavaScriptSerializer();
+    string jsonData = jsSerializer.Serialize(employee);
+
+    StreamWriter streamW = new StreamWriter(path);
+    streamW.Write(jsonData);
+    streamW.Close();
+
+    StreamReader streamR = new StreamReader(path);
+    string fileJsonData = streamR.ReadToEnd();
+    Employee employeeObjFromJsonData = (Employee)jsSerializer.Deserialize(fileJsonData, typeof(Employee));
+    streamR.Close();
 ```
 
--   XML serialization: . Example:
+-   `XmlSerializer`: like `BinaryFormatter` but serializes the data into XML (eXtensible Markup Language) format, which can be easily "understood" (serialized/deserialized) also by other applications that are not .NET based. It must be imported from `System.Xml.Serialization`. Useful methods of the `XmlSerializer` class: `Serialize`, `Deserialize` (returns a `System.Object` type that must be manually type-casted). Example:
 
 ```cs
+    using System.IO;
+    using System.Web.Script.Serialization;
 
+    [Serializable]
+    public class Employee
+    {
+        public int ID { get; set; }
+        public string Name { get; set; }
+        public short DepartmentID { get; set; }
+        public byte Age { get; set; }
+    }
+
+    Employee employee = new Employee()
+    {
+        ID = 1,
+        Name = "Markus",
+        DepartmentID = 24,
+        Age = 55
+    };
+
+    string path = ".\\MyApp\\Employees\\1.xml";
+
+    XmlSerializer xmlSerializer = new XmlSerializer(typeof(Employee));
+    FileStream streamW = new FileStream(path, FileMode.Create, FileAccess.Write);
+    xmlSerializer.Serialize(streamW, employee);
+    streamW.Close();
+
+    FileStream streamR = new FileStream(path, FileMode.Open, FileAccess.Read);
+    Employee employeeObjFromXmlFile = (Employee)xmlSerializer.Deserialize(streamR);
+    streamR.Close();
 ```
 
 ## Exception Handling
 
+-   Try-Catch-Finally: . Example:
+
+```cs
+
+```
+
+-   Common types of exception: `FormatException`, `IndexOutOfRangeException`, `NullReferenceException`, `ArgumentNullException`, `InnerException`, `ArgumentOutOfRangeException`, `ArgumentException`, `InvalidOperationException`;
+-   Custom Exceptions: . Example:
+
+```cs
+
+```
+
+-   Stack trace:;
+-   Exception logger:;
+-   `System.Exception`:;
+-   Catch When: . Example:
+
+```cs
+
+```
+
+-   Exception filters: . Example:
+
+```cs
+
+```
+
 ## C# 9 Features
 
--   Records:;
--   Init-only setters/properties:;
--   Top-level statements:;
--   Pattern matching enhancements:;
--   Target-typed new expressions:;
--   Module initializers:;
+-   Records: . Example:
+
+```cs
+
+```
+
+-   Init-only setters/properties: . Example:
+
+```cs
+
+```
+
+-   Top-level statements: . Example:
+
+```cs
+
+```
+
+-   Pattern matching enhancements: . Example:
+
+```cs
+
+```
+
+-   Target-typed `new` expressions: . Example:
+
+```cs
+
+```
+
+-   Module initializers: . Example:
+
+```cs
+
+```
 
 ## C# 10 Features
 
--   Record structs:;
--   User-defined parameter-less constructor in structs:;
--   Global using:;
--   File-scoped namespaces:;
--   Extended property pattern:;
--   Sealed ToString() method in records:;
+-   Record structs: . Example:
+
+```cs
+
+```
+
+-   User-defined parameter-less constructor in structs: . Example:
+
+```cs
+
+```
+
+-   Global `using`: . Example:
+
+```cs
+
+```
+
+-   File-scoped namespaces: . Example:
+
+```cs
+
+```
+
+-   Extended property pattern: . Example:
+
+```cs
+
+```
+
+-   Sealed `ToString` method in records: . Example:
+
+```cs
+
+```
 
 ## C# 11 Features
+
+-   Generic attributes: . Example:
+
+```cs
+
+```
+
+-   Generic math support: . Example:
+
+```cs
+
+```
+
+-   Numeric `IntPtr` and `UIntPtr`: . Example:
+
+```cs
+
+```
+
+-   Newlines in string interpolations: . Example:
+
+```cs
+
+```
+
+-   List patterns: . Example:
+
+```cs
+
+```
+
+-   Improved method group conversion to delegate: . Example:
+
+```cs
+
+```
+
+-   Raw string literals: . Example:
+
+```cs
+
+```
+
+-   Auto-default struct: . Example:
+
+```cs
+
+```
+
+-   Pattern match `Span<char>` or `ReadOnlySpan<char>` on a constant string: . Example:
+
+```cs
+
+```
+
+-   Extended `nameof` scope: . Example:
+
+```cs
+
+```
+
+-   UTF-8 string literals: . Example:
+
+```cs
+
+```
+
+-   Required members: . Example:
+
+```cs
+
+```
