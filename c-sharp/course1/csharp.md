@@ -2866,10 +2866,52 @@
 
 ## Exception Handling
 
--   Try-Catch-Finally: . Example:
+-   Exceptions: un-executable statements. When the CLR finds an un-executable statement (eg. you are trying to convert a Japanese sentence into a number or dividing a number by 0) it throws an exception. If they are left unhandled, the program will just terminate, otherwise it will continue.
+
+-   `Try`-`Catch`-`Finally`: keywords to catch exceptions. An exception thrown inside the `Try` block can be handled inside the `Catch` block(s). Multiple `Catch` blocks can be concatenated in order to catch more specific exception types. The `Finally` block will execute at the end both in case an exception was raised or not (even in the case a new exception was thrown inside a `Catch` block itself!). Example:
 
 ```cs
+    string input = "12m3lm3knmk34nt2";
+    int a = int.Parse(input); // Error! Unhandled exception, the program terminates.
 
+    int b, c;
+    try
+    {
+        b = int.Parse(input); // Error! But at this time it is catched, the program continues to the "catch" block(s).
+        c = 10 / b;
+    }
+    catch (DivideByZeroException e) // Catch a specific exception type.
+    {
+        c = 0; // Handle the error in case a number is divided by 0 (eg. assign a default value).
+    }
+    catch (Exception e) // Catch all the other exception types not already catched.
+    {
+        c = 10; // Handle all the other errors (eg. assign a default value).
+    }
+    finally // Useful to be sure to free critical resources such as DB connections or file streams (in case an exception type was not catched or a new exception is thrown inside a catch block itself).
+    {
+        System.Console.WriteLine($"{a} {b} {c}");
+    }
+```
+
+-   `throw`: exceptions can also be "manually" thrown using the `throw` keyword. Example:
+
+```cs
+    using System;
+
+    Console.WriteLine("Enter an integer number greater then 10:");
+    try
+    {
+        int n = int.Parse(Console.ReadLine());
+        if (n <= 10)
+        {
+            throw new Exception();
+        }
+    }
+    catch (Exception e)
+    {
+        Console.WriteLine("Invalid number!");
+    }
 ```
 
 -   Common types of exception: `FormatException`, `IndexOutOfRangeException`, `NullReferenceException`, `ArgumentNullException`, `InnerException`, `ArgumentOutOfRangeException`, `ArgumentException`, `InvalidOperationException`;
