@@ -2914,7 +2914,7 @@
     }
 ```
 
--   Common types of exception: `FormatException`, `IndexOutOfRangeException`, `NullReferenceException`, `ArgumentNullException`, `InnerException`, `ArgumentOutOfRangeException`, `ArgumentException`, `InvalidOperationException`;
+-   Common types of exception: `FormatException`, `IndexOutOfRangeException`, `NullReferenceException`, `ArgumentNullException`, `ArgumentOutOfRangeException`, `ArgumentException`, `InvalidOperationException`;
 -   Custom Exceptions: . Example:
 
 ```cs
