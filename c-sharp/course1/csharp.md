@@ -2914,7 +2914,7 @@
     }
 ```
 
--   Common types of exception: `FormatException`, `IndexOutOfRangeException`, `NullReferenceException`, `ArgumentNullException`, `ArgumentOutOfRangeException`, `ArgumentException`, `InvalidOperationException`;
+-   Some common types of built-in exception: `FormatException`, `IndexOutOfRangeException`, `NullReferenceException`, `ArgumentNullException`, `ArgumentOutOfRangeException`, `ArgumentException`, `InvalidOperationException`, `DivideByZeroException`, `NotImplementedException`, `NotSupportedException`, `IOException`;
 -   Custom exceptions: used to represent a specific type of error that is not "covered" by the built-in exceptions. It should inherit from a "base" pre-defined exception class (ex. `System.Exception` or a more specific one like `System.InvalidOperationException`). Example:
 
 ```cs
