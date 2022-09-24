@@ -2915,15 +2915,51 @@
 ```
 
 -   Common types of exception: `FormatException`, `IndexOutOfRangeException`, `NullReferenceException`, `ArgumentNullException`, `ArgumentOutOfRangeException`, `ArgumentException`, `InvalidOperationException`;
--   Custom Exceptions: . Example:
+-   Custom exceptions: used to represent a specific type of error that is not "covered" by the built-in exceptions. It should inherit from a "base" pre-defined exception class (ex. `System.Exception` or a more specific one like `System.InvalidOperationException`). Example:
 
 ```cs
+    class MyException: System.Exception
+    {
+        public MyException()
+        {
+        }
 
+        public MyException(string message): base(message)
+        {
+        }
+
+        public MyException(string message, System.Exception innerException): base(message, innerException)
+        {
+        }
+    }
 ```
 
--   Stack trace:;
--   Exception logger:;
--   `System.Exception`:;
+-   Exception logger: saves the end-user generated exceptions in an external log (ex. file, database, external service), so that they can be retrieved later by a developer to be worked on. Example:
+
+```cs
+    using System;
+    using System.IO;
+
+    static class ExceptionLogger
+    {
+        public static string Path { get; set; } = ".\\errorsLog.txt";
+
+        public static void Log(Exception e)
+        {
+            using (StreamWriter s = File.AppendText(Path))
+            {
+                s.WriteLine("Exception on: " DateTime.Now);
+                s.WriteLine("Exception type: " e.GetType().ToString());
+                s.WriteLine("Exception message: " e.Message);
+                s.WriteLine("Exception stacktrace:");
+                s.WriteLine(e.StackTrace);
+                s.WriteLine("========================");
+            }
+        }
+    }
+```
+
+-   `System.Exception`: base class for all the exceptions (every exception inherits from `System.Exception`). Is very useful in a catch block in order to catch every possible exception type (as they are all children of the `System.Exception` class). It is by the way a child itself of the base `System.Object` class;
 -   Catch When: . Example:
 
 ```cs
