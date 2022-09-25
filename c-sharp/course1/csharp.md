@@ -2868,7 +2868,7 @@
 
 -   Exceptions: un-executable statements. When the CLR finds an un-executable statement (eg. you are trying to convert a Japanese sentence into a number or dividing a number by 0) it throws an exception. If they are left unhandled, the program will just terminate, otherwise it will continue.
 
--   `Try`-`Catch`-`Finally`: keywords to catch exceptions. An exception thrown inside the `Try` block can be handled inside the `Catch` block(s). Multiple `Catch` blocks can be concatenated in order to catch more specific exception types. The `Finally` block will execute at the end both in case an exception was raised or not (even in the case a new exception was thrown inside a `Catch` block itself!). Example:
+-   `try`-`catch`-`finally`: keywords to catch exceptions. An exception thrown inside the `try` block can be handled inside the `catch` block(s). Multiple `catch` blocks can be concatenated in order to catch more specific exception types. The `finally` block will execute at the end both in case an exception was raised or not (even in the case a new exception was thrown inside a `catch` block itself!). Example:
 
 ```cs
     string input = "12m3lm3knmk34nt2";
@@ -2960,19 +2960,53 @@
 ```
 
 -   `System.Exception`: base class for all the exceptions (every exception inherits from `System.Exception`). Is very useful in a catch block in order to catch every possible exception type (as they are all children of the `System.Exception` class). It is by the way a child itself of the base `System.Object` class;
--   Catch When: . Example:
+-   `catch`-`when`: executes a `catch` block only if the condition given in the `when` statement is true. Example:
 
 ```cs
-
-```
-
--   Exception filters: . Example:
-
-```cs
-
+    int x = 50;
+    try
+    {
+        throw new Exception("Error");
+    }
+    catch (Exception e) when (x > 100)
+    {
+        // Doens't execute: x is not greater than 100.
+    }
+    catch (Exception e) when (x > 10)
+    {
+        // Executes: x is greater than 10.
+    }
+    catch (Exception e) when (x > 1)
+    {
+        // Doens't execute: x is indeed greater than 1, but the exception was already catched.
+    }
+    catch (Exception e)
+    {
+        //  Doens't execute: the exception was already catched.
+    }
 ```
 
 ## C# 9 Features
+
+-   Top-level statements: allow you to write statements outside of classes and namespaces. Those statements are automatically compiled to the "usual" `static void Main` (using a `Task` though) starting method of the program. They must be placed at the top of the file, after the `using` imports, but before any `namespace` or `class` declaration. Only one file in the project can have top-level statements (as there must be only one starting method for the program to use). Variables or local functions created as top-level statements are not accessible inside other namespaces or classes. Example:
+
+```cs
+    // This:
+    int x = 10;
+    int y = 15;
+    System.Console.WriteLine(x); // 25
+
+    // is then compiled to this:
+    static class Program
+    {
+        static async Task Main(string[] args)
+        {
+            int x = 10;
+            int y = 15;
+            System.Console.WriteLine(x); // 25
+        }
+    }
+```
 
 -   Records: . Example:
 
@@ -2981,12 +3015,6 @@
 ```
 
 -   Init-only setters/properties: . Example:
-
-```cs
-
-```
-
--   Top-level statements: . Example:
 
 ```cs
 
@@ -3030,10 +3058,21 @@
 
 ```
 
--   File-scoped namespaces: . Example:
+-   File-scoped namespaces: the entire file will be put inside the specified namespace. It is not possible to create sub-namespaces or other top-level namespaces. Example:
 
 ```cs
+    //This:
+    namespace MyApp;
 
+    class MyClass1{}
+    class MyClass2{}
+
+    //Is the compiled to:
+    namespace MyApp
+    {
+        class MyClass1{}
+        class MyClass2{}
+    }
 ```
 
 -   Extended property pattern: . Example:
