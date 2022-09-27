@@ -3014,6 +3014,13 @@
 
 ```
 
+-   Non-nullable reference types: from C#9 it is enforced that by default (with a warning) all reference-type variables (ex. for objects) can't be null (as they were by default before). This tries to prevent errors like `NullReferenceException`. To make a reference-type variable nullable again, it has to be postfixed with a `?`. Example:
+
+```cs
+    MyClass myObj1 = null;  // Warning! Is non-nullable by default.
+    MyClass? myObj2 = null; // Ok, is nullable as it is marked with `?`.
+```
+
 -   Init-only setters/properties: . Example:
 
 ```cs
@@ -3032,10 +3039,19 @@
 
 ```
 
--   Module initializers: . Example:
+-   `ModuleInitializer`: decorator that can be put over an `internal` or `public` `static void` method of an `internal` or `public` class. Can't accept parameters. Must be imported from `System.Runtime.CompilerServices`. That so-decorated method will automatically run at the application startup (before the Main method). Usuful as one-time initialization logic for the class. Somehow similar to a static constructor, but the difference is that a static constructor runs the first time the class is accessed/used, while the `ModuleInitializer` runs at program startup even if that class is not accessed. Example:
 
 ```cs
+    using System.Runtime.CompilerServices;
 
+    public class MyClass
+    {
+        [ModuleInitializer]
+        internal static void RunAtProgramStart()
+        {
+            // Do stuff...
+        }
+    }
 ```
 
 ## C# 10 Features
@@ -3052,10 +3068,17 @@
 
 ```
 
--   Global `using`: . Example:
+-   `global using`: imports a namespace in the whole project (not solution) without having to repeat the import (using) statement in every file. It is advisable to put all the `global using` statements for a project into a separate file (eg. `GlobalUsings.cs`). Example:
 
 ```cs
+    // GlobalUsings.cs
+    global using System;
+    global using System.IO;
+    global using System.Text;
 
+    // Program.cs
+    // There is no need to import System again, as it has been already imported globally.
+    Console.WriteLine("Hello-2");
 ```
 
 -   File-scoped namespaces: the entire file will be put inside the specified namespace. It is not possible to create sub-namespaces or other top-level namespaces. Example:
