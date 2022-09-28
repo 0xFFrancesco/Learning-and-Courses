@@ -813,10 +813,10 @@
 -   Null propagation operator: access the right-hand only if the left-hand is not null. Example:
 
 ```cs
-    MyClass c;  /// Null
-    int? x;     /// Null
+    MyClass c;  /// null
+    int? x;     /// null
 
-    x = c.Prop; /// Error! c is null
+    x = c.Prop; /// Error! NullReferenceException: c is null
     x = c?.Prop;/// null
 ```
 
@@ -3021,22 +3021,49 @@
     MyClass? myObj2 = null; // Ok, is nullable as it is marked with `?`.
 ```
 
+-   Null-forgiving operator (`!`): tells the compiler that "you are sure" that a certain value is not null (to avoid compile-time warnings or errors). It has no effects on run-time. Example:
+
+```cs
+    public Data GetData()
+    {
+        Data? data = MyClass.FetchData();
+        return data!; // Avoid the warning that `data` could be `null`, while the method expects to return a non-nullable type. Use only if you are sure that the value can't actually be null.
+    }
+
+```
+
 -   Init-only setters/properties: . Example:
 
 ```cs
 
 ```
 
--   Pattern matching enhancements: . Example:
+-   Pattern matching enhancements: allow you to easily check the data type of a variable and check its value against some given conditions. Example:
 
 ```cs
 
 ```
 
--   Target-typed `new` expressions: . Example:
+-   Target-typed `new` expression: syntax-sugar to instantiate a class without rewriting the class name itself when using the `new` keyword and having a target type (ex. a typed reference variable, a method return type, a method parameter type, etc.). Doesn't work with variables declared with the `var` or `dynamic` keywords. Example:
 
 ```cs
+    public class MyClass(){
+        public void MyMethod(MyServiceClass s){}
+    }
 
+    // Old way:
+    MyClass obj = new MyClass();
+    obj.MyMethod(new MyServiceClass());
+    List<int> list = new List<int>(){
+        1, 2, 3, 4
+    };
+
+    // New way:
+    MyClass obj = new();
+    obj.MyMethod(new());
+    List<int> list = new(){
+        1, 2, 3, 4
+    };
 ```
 
 -   `ModuleInitializer`: decorator that can be put over an `internal` or `public` `static void` method of an `internal` or `public` class. Can't accept parameters. Must be imported from `System.Runtime.CompilerServices`. That so-decorated method will automatically run at the application startup (before the Main method). Usuful as one-time initialization logic for the class. Somehow similar to a static constructor, but the difference is that a static constructor runs the first time the class is accessed/used, while the `ModuleInitializer` runs at program startup even if that class is not accessed. Example:
