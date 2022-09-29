@@ -3038,10 +3038,106 @@
 
 ```
 
--   Pattern matching enhancements: allow you to easily check the data type of a variable and check its value against some given conditions. Example:
+-   Pattern matching enhancements: allow you to easily check that the data type of a variable is of a specific type (or a child type) and type-cast its value to that specific data type into a new variable. Example:
 
 ```cs
+    // IF
 
+    // Old way:
+    if (myVar.GetType() == typeof(MyClass) || myVar.GetType().IsSubClassOf(typeof(MyClass)))
+    {
+        MyClass obj = (MyClass)myVar;
+        // Do stuff...
+    }
+
+    // New way (using the "is" expression):
+    if (myVar is MyClass obj)
+    {
+        // Do stuff...
+    }
+
+    // SWITCH
+
+    // Old way:
+    switch (myVar.GetType().Name)
+    {
+        case "MyClass":
+            MyClass obj = (MyClass)myVar;
+            // Do stuff...
+            break;
+        case "MyServiceClass":
+            MyServiceClass s = (MyServiceClass)myVar;
+            if (s.IsLoading == true)
+            {
+                // Do stuff...
+            }
+            break;
+    }
+
+    // New way:
+    switch (myVar)
+    {
+        case MyClass obj:
+            // Do stuff...
+            break;
+        case MyServiceClass s when s.IsLoading == true:
+            // Do stuff...
+            break;
+    }
+
+    // SWITCH EXPRESSION
+
+    // Old way:
+    int x;
+    switch (myVar.GetType().Name)
+    {
+        case "MyClass":
+            MyClass obj = (MyClass)myVar;
+            if (obj.Error == true)
+            {
+                x = -1;
+            } else
+            {
+                x = 1;
+            }
+            break;
+        default:
+            x = 0;
+    }
+
+    // New way:
+    int x = myVar switch
+    {
+        MyClass obj when obj.Error == true => -1,
+        MyClass obj when obj.Error == false => 1,
+        // Default case:
+        _ => 0
+    }
+
+    // RELATIONAL PATTERN
+    // Useful to reduce the repetition of variable-access code when checking multiple conditions againts the same variable or property.
+
+    // Old way:
+    MyClass myClassObj = new MyClass();
+    if (myClassObj.Value > 0 && myClassObj.Value <= 10 && myClassObj.Value != 7 && myClassObj.Value != 8)
+    {
+        // Do stuff...
+    }
+    if (myClassObj.Value == -1 || myClassObj.Value == 7 || myClassObj.Value == 8 || myClassObj.Value > 10)
+    {
+        // Do stuff...
+    }
+
+    // New way:
+    MyClass myClassObj = new MyClass();
+    if (myClassObj.Value is > 0 and <= 10 and not (7 or 8))
+    {
+        // Do stuff...
+    }
+    if (myClassObj.Value is -1 or 7 or 8 or > 10)
+    {
+        // Do stuff...
+    }
 ```
 
 -   Target-typed `new` expression: syntax-sugar to instantiate a class without rewriting the class name itself when using the `new` keyword and having a target type (ex. a typed reference variable, a method return type, a method parameter type, etc.). Doesn't work with variables declared with the `var` or `dynamic` keywords. Example:
