@@ -2075,7 +2075,7 @@
     System.Console.WriteLine(resultValue);  /// 12
 ```
 
--   Discards: skipping elements during the deconstruction using the underscore keyword (\_). Example:
+-   Discards: skipping elements during the deconstruction using the underscore keyword (`_`). Example:
 
 ```cs
     public (bool success, int value1, int value2, int value3, int value4) MyMethod()
@@ -3032,16 +3032,36 @@
 
 ```
 
--   Init-only setters/properties: . Example:
+-   Init-only fields and properties: syntax-sugar to define fields or properties in a class that become immutable (read-only) as soon as they are initialized. Example:
 
 ```cs
+    public class MyClass
+    {
+        public int readonly code;
+        private boolean _success;
+        public boolean Success { get => _success}
 
+        public MyClass(int code, boolean isSuccess)
+        {
+            this.code = code;
+            this._success = isSuccess;
+        }
+    }
+
+    MyClass obj = new MyClass(500, false);
+
+    Console.WriteLine(obj.code); // 500
+    Console.WriteLine(obj.Success); // false
+
+    obj.code = 200; // Error! Can't modify a read-only field.
+    obj.Success = true; // Error! Can't set a read-only property.
 ```
 
 -   Pattern matching enhancements: allow you to easily check that the data type of a variable is of a specific type (or a child type) and type-cast its value to that specific data type into a new variable. Example:
 
 ```cs
-    // IF
+    // TYPE PATTERN
+    ///////////////
 
     // Old way:
     if (myVar.GetType() == typeof(MyClass) || myVar.GetType().IsSubClassOf(typeof(MyClass)))
@@ -3055,8 +3075,11 @@
     {
         // Do stuff...
     }
+```
 
-    // SWITCH
+```cs
+    // SWITCH-CASE PATTERN
+    //////////////////////
 
     // Old way:
     switch (myVar.GetType().Name)
@@ -3084,8 +3107,11 @@
             // Do stuff...
             break;
     }
+```
 
-    // SWITCH EXPRESSION
+```cs
+    // SWITCH-EXPRESSION PATTERN
+    ////////////////////////////
 
     // Old way:
     int x;
@@ -3113,8 +3139,12 @@
         // Default case:
         _ => 0
     }
+```
 
-    // RELATIONAL PATTERN
+```cs
+    // RELATIONAL AND LOGICAL PATTERN
+    /////////////////////////////////
+
     // Useful to reduce the repetition of variable-access code when checking multiple conditions againts the same variable or property.
 
     // Old way:
@@ -3137,6 +3167,187 @@
     if (myClassObj.Value is -1 or 7 or 8 or > 10)
     {
         // Do stuff...
+    }
+```
+
+```cs
+    // PROPERTY PATTERN
+    ///////////////////
+
+    // Old way:
+    int x;
+    switch (myVar.GetType().Name)
+    {
+        case "MyClass":
+            MyClass obj = (MyClass)myVar;
+            if (obj.Value == 1)
+            {
+                x = 0;
+            } else if (obj.Value > 1 && obj.Value <=10)
+            {
+                x = 1;
+            } else if (obj.Value > 10 && obj.Error == true)
+            {
+                x = -1;
+            } else if (obj.Value > 10)
+            {
+                x = 2;
+            }
+            break;
+        default:
+            x = 0;
+    }
+
+    // New way:
+    int x = myVar switch
+    {
+        MyClass {Value: 1} obj => 0,
+        MyClass {Value: >1 and <=10} obj => 1,
+        MyClass {Value: >10, Error: true} obj => -1,
+        MyClass {Value: >10} obj => 2,
+        // Default case:
+        _ => 0
+    }
+```
+
+```cs
+    // TUPLE PATTERN
+    ////////////////
+
+    // Old way:
+    int x;
+    switch (myVar.GetType().Name)
+    {
+        case "MyClass":
+            MyClass obj = (MyClass)myVar;
+            if (obj.Value == 1)
+            {
+                x = 0;
+            } else if (obj.Value > 1 && obj.Value <=10)
+            {
+                x = 1;
+            } else if (obj.Value > 10 && obj.Error == true)
+            {
+                x = -1;
+            } else if (obj.Value > 10)
+            {
+                x = 2;
+            }
+            break;
+        default:
+            x = 0;
+    }
+
+    // New way:
+    int x = (myVar, myVar.Value, myVar.Error) switch
+    {
+        (MyClass, 1, _) obj => 0,
+        (MyClass, >1 and <=10, _) obj => 1,
+        (MyClass, >10, true) obj => -1,
+        (MyClass, >10, _) obj => 2,
+        // Default case:
+        _ => 0
+    }
+```
+
+```cs
+    // POSITIONAL PATTERN (DECONSTRUCT)
+    ///////////////////////////////////
+
+    // Automatically returns some properties/values in some given order (a tuple) when trying to deconstruct a class using a switch-expression.
+
+    // Old way:
+    int x;
+    switch (myVar.GetType().Name)
+    {
+        case "MyClass":
+            MyClass obj = (MyClass)myVar;
+            if (obj.Value == 1)
+            {
+                x = 0;
+            } else if (obj.Value > 1 && obj.Value <=10)
+            {
+                x = 1;
+            } else if (obj.Value > 10 && obj.Error == true)
+            {
+                x = -1;
+            } else if (obj.Value > 10)
+            {
+                x = 2;
+            }
+            break;
+        default:
+            x = 0;
+    }
+
+    // New way:
+    public class MyClass
+    {
+        public int Value { get; set; }
+        public boolean Error { get; set; }
+
+        //[...]
+
+        public void Deconstruct(out MyClass obj, out int value, out boolean error)
+        {
+            obj = this;
+            error = this.Error;
+            value = this.Value;
+        }
+    }
+
+    int x = myVar switch
+    {
+        (MyClass, 1, _) obj => 0,
+        (MyClass, >1 and <=10, _) obj => 1,
+        (MyClass, >10, true) obj => -1,
+        (MyClass, >10, _) obj => 2,
+        // Default case:
+        _ => 0
+    }
+```
+
+```cs
+    // EXTENDED PROPERTY PATTERN
+    ////////////////////////////
+
+    // The "usual" property pattern, but able to access nested properties via a dot-notation.
+
+    // Old way:
+    int x;
+    switch (myVar.GetType().Name)
+    {
+        case "MyClass":
+            MyClass obj = (MyClass)myVar;
+            if (obj.Value == 1)
+            {
+                x = 0;
+            } else if (obj.Value > 1 && obj.Value <=10)
+            {
+                x = 1;
+            } else if (obj.Value > 10 && (obj.Http.Code == 500 || obj.Http.Code == 404))
+            {
+                x = -1;
+            } else if (obj.Value > 10 && obj.Http.Code == 200 && obj.Http.Status == 'ok')
+            {
+                x = 2;
+            }
+            break;
+        default:
+            x = 0;
+    }
+
+    // New way:
+    int x = myVar switch
+    {
+        MyClass {Value: 1} obj => 0,
+        MyClass {Value: >1 and <=10} obj => 1,
+        // Using the dot-notation:
+        MyClass {Value: >10, Http.Code: 500 or 404} obj => -1,
+        // Using the curly-braces notation:
+        MyClass {Value: >10, Http: {Code: 200, Status: 'ok'}} obj => 2,
+        // Default case:
+        _ => 0
     }
 ```
 
