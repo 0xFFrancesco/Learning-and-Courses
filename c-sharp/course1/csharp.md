@@ -292,6 +292,31 @@
     public decimal TaxRate { get; set; } = 10.5;
 ```
 
+-   Immutable fields and properties: fields or properties in a class that become immutable (read-only) as soon as they are initialized. Example:
+
+```cs
+    public class MyClass
+    {
+        public int readonly code;
+        private boolean _success;
+        public boolean Success { get => _success}
+
+        public MyClass(int code, boolean isSuccess)
+        {
+            this.code = code;
+            this._success = isSuccess;
+        }
+    }
+
+    MyClass obj = new MyClass(500, false);
+
+    Console.WriteLine(obj.code); // 500
+    Console.WriteLine(obj.Success); // false
+
+    obj.code = 200; // Error! Can't modify a read-only field.
+    obj.Success = true; // Error! Can't set a read-only property.
+```
+
 ## Indexer
 
 -   Special property of a class that lets you access an instance with an array-like syntax (just like it was an array);
@@ -696,8 +721,8 @@
 
 -   Value types: structures and enumerations;
     -   Meant for simple values;
-    -   Stored in tha Stack (a new one for every method call);
-    -   Internally derived from System.ObjectType->System.ValueType;
+    -   Stored in the Stack (a new one for every method call);
+    -   Internally derived from `System.ObjectType->System.ValueType`;
 -   Reference types: stings, classes, interfaces and delegates;
     -   Meant for complex values;
     -   Stored in the Heap (one for the entire program);
@@ -715,22 +740,48 @@
         }
     }
 
+    // If you don't use the constructor, you must initialize all the fields before trying to access them.
     Category cat;
     cat.Id = 1001;
     cat.Name = "Beverages";
     cat.Print(); /// 1001 - Beverages
 
+    // If you use the constructor, you don't have to initialize all the fields before trying to access them.
     Category cat2 = new Category();
     cat2.Name = "Food";
     cat2.Print(); /// 0 - Food
 
+    // Structs are "copied by value".
     cat2 = cat;
     cat2.Id = 9999;
     cat2.Print(); /// 9999 - Beverages
     cat.Print(); /// 1001 - Beverages
 ```
 
--   Readonly structures: all the fields are readonly and can be assigned only in a parameterized constructor;
+-   Readonly structures: all the fields are readonly and can be assigned only in a parameterized constructor. Example:
+
+```cs
+    public readonly struct Category {
+        public int Id { get; init; }
+        public string Name { get; init; }
+
+        public Category(int id, string name)
+        {
+            Id = id;
+            Name = name;
+        }
+
+        public void Print()
+        {
+            System.Console.WriteLine(Id + " - " + Name);
+        }
+    }
+
+    Category cat = new Category(10, "Technology");
+    cat.Print(); /// 10 - Technology
+    cat.Id = 11; /// Error! Can't set a read-only property.
+```
+
 -   Primitive types: all primitive types (excepts strings) are internally structures;
 
 ## System.Object
@@ -3008,11 +3059,95 @@
     }
 ```
 
--   Records: . Example:
+-   Record: syntax-sugar to create a class with by-default immutable (init-only) properties. Example:
 
 ```cs
+    // This:
+    public record MyRecord(int Code, int Success, string Message);
+    MyRecord r = new MyRecord(500, false, "Server error");
+    System.Console.WriteLine(r.Code); // 500
+    r.Code = 400; // Error! Can't set an init-only property.
 
+    // Compiles to:
+    public class MyRecord
+    {
+        public int Code { get; init; }
+        public int Success { get; init; }
+        public string Message { get; init; }
+
+        public MyRecord(int code, int success, string message)
+        {
+            this.Code = code;
+            this.Success = success;
+            this.Message = message;
+        }
+    }
+    MyRecord r = new MyRecord(500, false, "Server error");
+    System.Console.WriteLine(r.Code); // 500
+    r.Code = 400; // Error! Can't set an init-only property.
 ```
+
+-   More on records:
+
+    -   Nested records: . Example:
+
+    ```cs
+
+    ```
+
+    -   Immutability: . Example:
+
+    ```cs
+
+    ```
+
+    -   Equality: . Example:
+
+    ```cs
+
+    ```
+
+    -   `with` expression: . Example:
+
+    ```cs
+
+    ```
+
+    -   Deconstructor: . Example:
+
+    ```cs
+
+    ```
+
+    -   `ToString`: . Example:
+
+    ```cs
+
+    ```
+
+    -   Constructor: . Example:
+
+    ```cs
+
+    ```
+
+    -   Inheritance: . Example:
+
+    ```cs
+
+    ```
+
+    -   `sealed ToString`: . Example:
+
+    ```cs
+
+    ```
+
+    -   Record Structs: . Example:
+
+    ```cs
+
+    ```
 
 -   Non-nullable reference types: from C#9 it is enforced that by default (with a warning) all reference-type variables (ex. for objects) can't be null (as they were by default before). This tries to prevent errors like `NullReferenceException`. To make a reference-type variable nullable again, it has to be postfixed with a `?`. Example:
 
@@ -3032,29 +3167,39 @@
 
 ```
 
--   Init-only fields and properties: syntax-sugar to define fields or properties in a class that become immutable (read-only) as soon as they are initialized. Example:
+-   Init-only properties: properties that can be initialized only inline with the declaration, in the constructor or in the object-initializer, and immediately after initialization they become immutable (read-only). Example:
 
 ```cs
     public class MyClass
     {
-        public int readonly code;
-        private boolean _success;
-        public boolean Success { get => _success}
+        public int Val1 { get; init; } = 100;
+        public int Val2 { get; init; }
 
-        public MyClass(int code, boolean isSuccess)
+        private int readonly _val3;
+        public int Val3
         {
-            this.code = code;
-            this._success = isSuccess;
+            get => _val3;
+            init => if (value > 200)
+            {
+                _val3 = value;
+            }
+        }
+
+        public MyClass(int val2)
+        {
+            Val2 = val2;
         }
     }
 
-    MyClass obj = new MyClass(500, false);
+    MyClass obj = new MyClass(200){ Val3 = 300 };
 
-    Console.WriteLine(obj.code); // 500
-    Console.WriteLine(obj.Success); // false
+    Console.WriteLine(obj.Val1); // 100
+    Console.WriteLine(obj.Val2); // 200
+    Console.WriteLine(obj.Val3); // 300
 
-    obj.code = 200; // Error! Can't modify a read-only field.
-    obj.Success = true; // Error! Can't set a read-only property.
+    obj.Val1 = 0; // Error! Can't set a read-only property.
+    obj.Val2 = 0; // Error! Can't set a read-only property.
+    obj.Val3 = 0; // Error! Can't set a read-only property.
 ```
 
 -   Pattern matching enhancements: allow you to easily check that the data type of a variable is of a specific type (or a child type) and type-cast its value to that specific data type into a new variable. Example:
@@ -3396,10 +3541,24 @@
 
 ```
 
--   User-defined parameter-less constructor in structs: . Example:
+-   User-defined custom parameter-less constructor in structs. The condition to use it is to initialize all the fields and properties inside that constructor. Example:
 
 ```cs
+    public struct MyStruct
+    {
+        public int Value { get; init; }
+        public boolean Success { get; set; }
 
+        public MyStruct()
+        {
+            Value = System.DateTime.Now;
+            Success = true;
+        }
+    }
+
+    MyStruct s = new MyStruct();
+    System.Console.WriteLine(s.Value);   // 1664826290635
+    System.Console.WriteLine(s.Success); // true
 ```
 
 -   `global using`: imports a namespace in the whole project (not solution) without having to repeat the import (using) statement in every file. It is advisable to put all the `global using` statements for a project into a separate file (eg. `GlobalUsings.cs`). Example:
