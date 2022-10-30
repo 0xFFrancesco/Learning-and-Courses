@@ -78,7 +78,7 @@
     ```cs
         public void CalcData(ref int x)
         {
-            System.Console.WriteLine(x); /// -> 5
+            System.Console.WriteLine(x); // -> 5
             x = 12;
         }
 
@@ -86,7 +86,7 @@
 
         int myData = 5;
         CalcData(ref myData);
-        System.Console.WriteLine(myData); /// -> 12
+        System.Console.WriteLine(myData); // -> 12
     ```
 
     -   out: the parameter is not passed to the method, but if the method modifies it, it is passed outside. Useful for returning multiple values. It may not be already initialized, in that case you must assign it a value inside the method. Example:
@@ -94,7 +94,7 @@
     ```cs
         public void CalcData(out int x)
         {
-            System.Console.WriteLine(x); /// -> 0
+            System.Console.WriteLine(x); // -> 0
             x = 12;
         }
 
@@ -102,11 +102,11 @@
 
         int myData = 5;
         CalcData(out myData);
-        System.Console.WriteLine(myData); /// -> 12
+        System.Console.WriteLine(myData); // -> 12
 
-        ///The "out" variable can be even declared inline:
+        //The "out" variable can be even declared inline:
         CalcData(out int myNewVar);
-        System.Console.WriteLine(myNewVar); /// -> 12
+        System.Console.WriteLine(myNewVar); // -> 12
     ```
 
     -   in: the parameter is treated as read-only inside the method, and thus can't be modified. Example:
@@ -114,7 +114,7 @@
     ```cs
         public void CalcData(in int x)
         {
-            x = 12; /// Error! Can't assign a new value to x.
+            x = 12; // Error! Can't assign a new value to x.
         }
 
         [...]
@@ -128,8 +128,8 @@
     ```cs
         public void CalcData(int first, params int[] data)
         {
-            /// first == 2
-            /// data == [5, 3, 5, 2]
+            // first == 2
+            // data == [5, 3, 5, 2]
         }
 
         [...]
@@ -160,10 +160,10 @@
             public void Main()
             {
                 Student student = new Student();
-                student.Print(); /// -> 5
+                student.Print(); // -> 5
                 ref int studentGradeRef = ref student.RefMethod();
                 studentGradeRef = 8;
-                student.Print(); /// -> 8
+                student.Print(); // -> 8
             }
         }
     ```
@@ -174,7 +174,7 @@
     public void MyMethod()
     {
         int y = 15;
-        int x = myLocalFn(5); /// x == 20
+        int x = myLocalFn(5); // x == 20
 
         int myLocalFn(int addValue)
         {
@@ -193,7 +193,7 @@
 
         static int myLocalFn(int addValue)
         {
-            return y + 5; /// Error! Can't read y.
+            return y + 5; // Error! Can't read y.
         }
     }
 ```
@@ -205,10 +205,10 @@
 
 ```cs
     long y = 300;
-    int x = (int)y; /// -> 300 (same value)
-    byte z = (byte)y; /// -> 255 (max byte value, loosy conversion)
+    int x = (int)y; // -> 300 (same value)
+    byte z = (byte)y; // -> 255 (max byte value, loosy conversion)
 
-    Parent parent = (Parent)child; /// -> childClass to parentClass conversion
+    Parent parent = (Parent)child; // -> childClass to parentClass conversion
 ```
 
 -   Parse and TryParse: from string type to numerical type (ex. string -> int, string -> float, string -> byte). The source value can only contain numerical characters, otherwise it will throw a run-time error (Parse) or return false and skip the conversion (TryParse - uses an out parameter for the conversion itself, returns wheter it was successfull). Example:
@@ -216,18 +216,18 @@
 ```cs
     string s = "100";
 
-    int numInt = int.Parse(s); /// 100
-    byte numByte = byte.Parse(s); /// 100
+    int numInt = int.Parse(s); // 100
+    byte numByte = byte.Parse(s); // 100
 
-    int result; /// 100
-    bool converted = int.TryParse(s, out result); /// True
+    int result; // 100
+    bool converted = int.TryParse(s, out result); // True
 
     string s2 = "10.20.30";
 
-    int numInt2 = int.Parse(s2); /// Error! Invalid string.
+    int numInt2 = int.Parse(s2); // Error! Invalid string.
 
-    int result2; /// 0
-    bool converted2 = int.TryParse(s2, out result2); /// False
+    int result2; // 0
+    bool converted2 = int.TryParse(s2, out result2); // False
 ```
 
 -   Conversion methods: from any primitive type to any primitive type (ex. string -> bool, string -> int, int -> byte). `System.Convert` is a predefined class that provides conversion (static) methods. If the value can't be converted, it raises a run-time exception;
@@ -268,10 +268,10 @@
 -   Auto-implemented: syntax-sugar for automatically creating a private field and a simple Get and Set accessor methods that just return the field or assign a new value to it respectively. You can't add additional logic to these methods. The full definition of the methods and the private field are automatically added by the compiler. Example:
 
 ```cs
-    /// This (syntax-sugar):
+    // This (syntax-sugar):
     public int Age { get; set; }
 
-    /// Instead of this (regular, extended syntax):
+    // Instead of this (regular, extended syntax):
     private int _age;
     public int Age
     {
@@ -331,7 +331,7 @@
     {
         private string[] _brands = {"Miele", "Sony", "Bosch"};
 
-        /// Indexer
+        // Indexer
         public string this[int index]
         {
             set
@@ -350,9 +350,9 @@
 
     [...]
 
-    /// Access the instance just like it was an array.
+    // Access the instance just like it was an array.
     MyClass myObj = new MyClass();
-    string firstBrand = myObj[0]; /// Miele
+    string firstBrand = myObj[0]; // Miele
     myObj[2] = "Electrolux";
 ```
 
@@ -423,7 +423,7 @@
 -   Parent constructor: called automatically before the child constructor when instantiating a new child. If it has parameters, it has to be written in the child constructor, otherwise is optional. Example:
 
 ```cs
-    /// Parent constructor with params
+    // Parent constructor with params
     class Parent
     {
         public Parent(int x)
@@ -440,7 +440,7 @@
         }
     }
 
-    /// Parent constructor without params
+    // Parent constructor without params
     class Parent2
     {
         public Parent()
@@ -482,10 +482,10 @@
     }
 
     Child child = new Child();
-    child.Display(1); /// Child1
+    child.Display(1); // Child1
 
     Parent child2 = new Child();
-    child2.Display(1); /// Parent1
+    child2.Display(1); // Parent1
 ```
 
 -   Overriding: extends a parent method by creating another one with the exact same name and parameters in the child class. The virtual and overide keywords have to be used. Overriding a virtual method is optional. It works even in case the child is casted to the parent class. Example:
@@ -512,10 +512,10 @@
     }
 
     Child child = new Child();
-    child.Display(1); /// Child1
+    child.Display(1); // Child1
 
     Parent child2 = new Child();
-    child2.Display(1); /// Child1
+    child2.Display(1); // Child1
 ```
 
 -   Sealed classes: they can't be inherited. They can't define virtual or abstract methods;
@@ -599,9 +599,9 @@
         }
 
         IVehicle instance = new Car();
-        instance.Drive(); /// Brum brum brum!
+        instance.Drive(); // Brum brum brum!
         instance = new Truck();
-        instance.Drive(); /// Vrooooooooom!
+        instance.Drive(); // Vrooooooooom!
     ```
 
 -   Multiple inheritance: a child class can inherit from multiple interfaces (but not from multiple classes);
@@ -638,11 +638,11 @@
     }
 
     IPoint a = new CirclePoint();
-    a.Draw(); /// Point
+    a.Draw(); // Point
     ICircle b = new CirclePoint();
-    b.Draw(); /// Circle
+    b.Draw(); // Circle
     CirclePoint c = new CirclePoint();
-    c.Draw(); /// Circle Point
+    c.Draw(); // Circle Point
 ```
 
 ## Namespaces
@@ -652,13 +652,13 @@
 -   Using: top level statement that imports all the members of a namespace so that there is no need to type the namespace name again. Inner (nested) namespaces are not automatically imported. Example:
 
 ```cs
-    /// With using;
+    // With using;
     using System;
 
     Console.WriteLine();
     Console.ReadLine();
 
-    /// Without using
+    // Without using
     System.Console.WriteLine();
     System.Console.ReadLine();
 ```
@@ -670,9 +670,9 @@
     using SysConsole = System.Console;
     using MyConsole = MyNamespace.Console;
 
-    OS.Console.WriteLine(); /// Shorten syntax
+    OS.Console.WriteLine(); // Shorten syntax
 
-    /// Avoid name conflicts
+    // Avoid name conflicts
     SysConsole.WriteLine();
     MyConsole.Print();
 ```
@@ -690,12 +690,12 @@
 -   Partial class: it is splitted across multiple files, but is treated and instantiated as a single normal class. The different "parts" must have the same namespace, name, access modifier and modifier. Example:
 
 ```cs
-    /// Car_1.cs
+    // Car_1.cs
     partial class Car {
         protected int wheels;
     }
 
-    /// Car_2.cs
+    // Car_2.cs
     partial class Car {
         public void Drive() {}
     }
@@ -709,12 +709,12 @@
 
 ```cs
     public enum CarType {
-        Coupe,          /// 0 - default
-        Convertible,    /// 1 - default
-        Sport = 100     /// 100 - overridden
+        Coupe,          // 0 - default
+        Convertible,    // 1 - default
+        Sport = 100     // 100 - overridden
     }
 
-    CarType myCar = CarType.Sport; /// 100
+    CarType myCar = CarType.Sport; // 100
 ```
 
 ## Structures
@@ -744,18 +744,18 @@
     Category cat;
     cat.Id = 1001;
     cat.Name = "Beverages";
-    cat.Print(); /// 1001 - Beverages
+    cat.Print(); // 1001 - Beverages
 
     // If you use the constructor, you don't have to initialize all the fields before trying to access them.
     Category cat2 = new Category();
     cat2.Name = "Food";
-    cat2.Print(); /// 0 - Food
+    cat2.Print(); // 0 - Food
 
     // Structs are "copied by value".
     cat2 = cat;
     cat2.Id = 9999;
-    cat2.Print(); /// 9999 - Beverages
-    cat.Print(); /// 1001 - Beverages
+    cat2.Print(); // 9999 - Beverages
+    cat.Print(); // 1001 - Beverages
 ```
 
 -   Readonly structures: all the fields are readonly and can be assigned only in a parameterized constructor. Example:
@@ -778,8 +778,8 @@
     }
 
     Category cat = new Category(10, "Technology");
-    cat.Print(); /// 10 - Technology
-    cat.Id = 11; /// Error! Can't set a read-only property.
+    cat.Print(); // 10 - Technology
+    cat.Id = 11; // Error! Can't set a read-only property.
 ```
 
 -   Primitive types: all primitive types (excepts strings) are internally structures;
@@ -800,8 +800,8 @@
 
 ```cs
     int number = 12;
-    Syste.Object myNumber = number; /// Automatic boxing
-    int mySecondNumber = (int) myNumber; /// Explicit unboxing
+    Syste.Object myNumber = number; // Automatic boxing
+    int mySecondNumber = (int) myNumber; // Explicit unboxing
 ```
 
 ## Generics
@@ -829,7 +829,7 @@
 -   Constraints: a generic can be constrained to be more specific about the types it can accept. Example:
 
 ```cs
-    class MyClass<T, U> where T: class where U: int, string /// Only classes are accepted for T, only integers or strings are accepted for U
+    class MyClass<T, U> where T: class where U: int, string // Only classes are accepted for T, only integers or strings are accepted for U
     {
         public U Calculate(T data) {}
     }
@@ -842,33 +842,33 @@
 -   Is possible to convert non-nullable types to nullable types. Example:
 
 ```cs
-    int x = null; /// Error! Int type is non-nullable
+    int x = null; // Error! Int type is non-nullable
 
-    Nullable<int> y = null; /// Ok!
-    int? z = null; /// Ok! Sintax-sugar
+    Nullable<int> y = null; // Ok!
+    int? z = null; // Ok! Sintax-sugar
 
-    if (z.HasValue) /// Property available after conversion, checks whether a value has been assigned
+    if (z.HasValue) // Property available after conversion, checks whether a value has been assigned
     {
-        int k = z.Value; /// Property available after conversion, gives back the real value (unboxed)
+        int k = z.Value; // Property available after conversion, gives back the real value (unboxed)
     }
 ```
 
 -   Null coalescing operator: returns the right-hand operand only if the left-hand one is null. The right-hand type must be the same of the left-hand. Example:
 
 ```cs
-    int a = 0 ?? 10; /// 0
-    int b = null ?? 10; /// 10
-    System.Console.WriteLine(a ?? "no value"); /// Error! left-hand is int and right-hand is string
+    int a = 0 ?? 10; // 0
+    int b = null ?? 10; // 10
+    System.Console.WriteLine(a ?? "no value"); // Error! left-hand is int and right-hand is string
 ```
 
 -   Null propagation operator: access the right-hand only if the left-hand is not null. Example:
 
 ```cs
-    MyClass c;  /// null
-    int? x;     /// null
+    MyClass c;  // null
+    int? x;     // null
 
-    x = c.Prop; /// Error! NullReferenceException: c is null
-    x = c?.Prop;/// null
+    x = c.Prop; // Error! NullReferenceException: c is null
+    x = c?.Prop;// null
 ```
 
 ## Extension Methods and Pattern Matching
@@ -876,7 +876,7 @@
 -   Extension methods: methods injected into an existing class/struct/interface from the outside. Useful to enrich pre-defined, system or library classes with additionl methods without modifying their source code. You must create a static class, and the extension method must have the target class as first parameter. Inside an extension method you can't use private or protected members of the target class. It can't be overridden. Example:
 
 ```cs
-    class SystemClass {} /// Source code not accessible
+    class SystemClass {} // Source code not accessible
 
     static class MyClass {
         public static void MyExtensionMethod(this SystemClass sc, int x) {
@@ -886,19 +886,19 @@
     }
 
     SystemClass c = new SystemClass();
-    c.MyExtensionMethod(10); /// 10
+    c.MyExtensionMethod(10); // 10
 ```
 
 -   Pattern matching: allows you to declare a new variable while checking the data type (class) of an already existing reference variable and automatically type-casts the reference variable in the specified data type (class) in the new variable. Example:
 
 ```cs
-    /// Without pattern matching
+    // Without pattern matching
     if (myVar is MyClass) {
         MyClass c = (MyClass) myVar;
         c.MyClassMethod();
     }
 
-    /// With pattern matching
+    // With pattern matching
     if (myVar is MyClass c) {
         c.MyClassMethod();
     }
@@ -908,18 +908,18 @@
 -   Implicitly typed variables: declared with the "var" keyword, their type is implicitly inferred by the compiler. They must be initialized at declaration and their type can't change afterwards. They can only be local variables inside a method. Example:
 
 ```cs
-    var x;           /// Error! must be initialized
-    var y = "Hello"; /// Implicity typed as string
-    y = 10;          /// Error! the type can't change
+    var x;           // Error! must be initialized
+    var y = "Hello"; // Implicity typed as string
+    y = 10;          // Error! the type can't change
 ```
 
 -   Dynamically typed variables: declared with the "dynamic" keyword, their type is not fixed and can change. They are not type-checked by the compiler, and thus there is a greater risk of bugs. Example:
 
 ```cs
-    dynamic x;  /// Null
-    x = 10;     /// Int
-    x = "Test"; /// String
-    x.Print();  /// Run-time error (not checked during compilation)
+    dynamic x;  // Null
+    x = 10;     // Int
+    x = "Test"; // String
+    x.Print();  // Run-time error (not checked during compilation)
 ```
 
 -   Inner classes: are defined inside another class, by default are private and thus accessible in the outer class only (but can be changed using other access modifiers). Example:
@@ -938,7 +938,7 @@
         public class MyInnerPublicClass {}
     }
 
-    MyOuterClass.MyInnerClass c1 = new MyOuterClass.MyInnerClass(); /// Error!
+    MyOuterClass.MyInnerClass c1 = new MyOuterClass.MyInnerClass(); // Error!
     MyOuterClass.MyInnerPublicClass c2 = new MyOuterClass.MyInnerPublicClass();
 ```
 
@@ -957,13 +957,13 @@
             public MyClass()
             {
                 System.Console.WriteLine("Constructor");
-                /// Set up unmanaged resource, ex. open DB connection
+                // Set up unmanaged resource, ex. open DB connection
             }
 
             ~MyClass()
             {
                 System.Console.WriteLine("Destructor");
-                /// Destroy unmanaged resource, ex. close DB connection
+                // Destroy unmanaged resource, ex. close DB connection
             }
         }
     ```
@@ -978,7 +978,7 @@
             public void Dispose()
             {
                 System.Console.WriteLine("Dispose");
-                /// Destroy unmanaged resource, ex. close DB connection
+                // Destroy unmanaged resource, ex. close DB connection
             }
         }
 
@@ -998,19 +998,19 @@
         {
             [...]
         }
-        /// Here c.Dispose() is called and then c is destroyed
+        // Here c.Dispose() is called and then c is destroyed
 
         [...]
     }
 
-    /// Syntax-sugar
+    // Syntax-sugar
     public void MyMethod()
     {
         using MyClass c = new MyClass()
 
         [...]
 
-    } /// At the end of the method c.Dispose() is called and then c is destroyed
+    } // At the end of the method c.Dispose() is called and then c is destroyed
 
 ```
 
@@ -1021,7 +1021,7 @@
     ```cs
         namespace MyNamespace
         {
-            /// Delegate type (internally is a class derived from System.Delegate)
+            // Delegate type (internally is a class derived from System.Delegate)
             public delegate int GetValueDelegate(int x, int y);
 
             public class MyClass
@@ -1045,15 +1045,15 @@
 
         using MyNamespace;
 
-        /// The class from which the methods are delegated must be instantiated
+        // The class from which the methods are delegated must be instantiated
         MyClass c = new MyClass();
 
-        /// Delegate objects (the new keyword is optional)
+        // Delegate objects (the new keyword is optional)
         GetValueDelegate myDelegate = c.CalculateValue;
-        GetValueDelegate myDelegate2 = new GetValueDelegate(c.Print); /// Error! MyClass.Print is not compatible with the delegate type
+        GetValueDelegate myDelegate2 = new GetValueDelegate(c.Print); // Error! MyClass.Print is not compatible with the delegate type
 
-        /// Call the stored methods
-        int res = myDelegate.Invoke(3, 2); /// 6
+        // Call the stored methods
+        int res = myDelegate.Invoke(3, 2); // 6
     ```
 
     -   Single-cast: contains the reference of only one compatible method;
@@ -1063,12 +1063,12 @@
         MyClass c = new MyClass();
 
         GetValueDelegate myMultiCastDelegate = c.AddValues;
-        /// Sustitute method with =
+        // Sustitute method with =
         myMultiCastDelegate = c.CalculateValue;
-        /// Store multiple methods with +=
+        // Store multiple methods with +=
         myMultiCastDelegate += c.AddValues;
 
-        int res = myMultiCastDelegate.Invoke(3, 2); /// 5
+        int res = myMultiCastDelegate.Invoke(3, 2); // 5
     ```
 
 -   Event: multi-cast delegate that is created and invoked in a "publisher" class, where its "subscribers" are the stored methods. The "event" keyword is used, it provides the "add" and "remove" accesor properties to manage the list of subscribers (the delegate). The stored methods can be invoked by calling the delegate itself. Events can be static, virtual, sealed and abstract. They can be in interfaces too. If invoked with no subscribers, they will throw a run-time error. Example:
@@ -1092,12 +1092,12 @@
         {
             add
             {
-                /// Like the Set method for properties, the value parameter is automatically provided
+                // Like the Set method for properties, the value parameter is automatically provided
                 _newsSubscribers += value;
             }
             remove
             {
-                /// Executes when a subscriber cancels the subscription
+                // Executes when a subscriber cancels the subscription
                 _newsSubscribers -= value;
             }
         }
@@ -1106,7 +1106,7 @@
         {
             string newsText = "COOL HEADLINE!";
 
-            /// Check that there is at least one subscriber, otherwise it will throw a run-time error
+            // Check that there is at least one subscriber, otherwise it will throw a run-time error
             if (_newsSubscribers !== null)
             {
                 _newsSubscribers(newsText);
@@ -1117,8 +1117,8 @@
     Publisher p = new Publisher();
     Subscriber s = new Subscriber();
 
-    p.NewsEvent += s.OnNewsItem; /// Automatically calls the NewsEvent.Add method
-    p.RaiseNewsEvent(); /// Incoming news: COOL HEADLINE!
+    p.NewsEvent += s.OnNewsItem; // Automatically calls the NewsEvent.Add method
+    p.RaiseNewsEvent(); // Incoming news: COOL HEADLINE!
 ```
 
 -   Auto-implemented: syntax-sugar to declare events, it auto-generates the private delegate and its add and remove accessors. You can't add custom logic to the add and remove accessors. Example:
@@ -1142,7 +1142,7 @@
         Subscriber s = new Subscriber();
 
         p.NewsEvent += s.OnNewsItem;
-        p.RaiseNewsEvent(); /// Incoming news: COOL HEADLINE!
+        p.RaiseNewsEvent(); // Incoming news: COOL HEADLINE!
     ```
 
 -   Anonymous method: nameless method that can be invoked from a delegate (or event). Access modifiers and modifers are not applicable. The keyword delegate is necessary (even though it is not a delegate). It can't contain "goto", "break" or "continue" statements. It can't access ref or out parameters from outer methods. Example
@@ -1216,10 +1216,10 @@
 
     MyEventHandlerEvent += (sender, e) =>
     {
-        /// sender -> System.Object type, represents the source object from which the event was originally raised. Needs manual type-casting.
+        // sender -> System.Object type, represents the source object from which the event was originally raised. Needs manual type-casting.
         MyPublisherClass p = (MyPublisherClass) sender;
 
-        /// e -> MyEventArgs type (via the generic), represents all the additional parameters passed to the event handler method.
+        // e -> MyEventArgs type (via the generic), represents all the additional parameters passed to the event handler method.
         string t = e.Text;
         int n = e.Number;
 
@@ -1228,17 +1228,17 @@
 
     [...]
 
-    /// Create the second parameter for the EventHandler event
+    // Create the second parameter for the EventHandler event
     MyEventArgs params = new MyEventArgs()
     {
         Text = "Hello",
         Number = 12
     }
 
-    /// Invoke the methods
+    // Invoke the methods
     if (MyEventHandlerEvent != null)
     {
-        MyEventHandlerEvent(this, params); /// Data: Hello, 12.
+        MyEventHandlerEvent(this, params); // Data: Hello, 12.
     }
 ```
 
@@ -1248,7 +1248,7 @@
     Expression<Func<int, int>> myExpression = num => num * num;
 
     Func<int, int> myDelegate = myExpression.Compile();
-    int res = myDelegate.Invoke(5); /// 25
+    int res = myDelegate.Invoke(5); // 25
 ```
 
 -   Expression bodied members: use an inline lambda expression to creade methods, property accessors, constructors, destructors or indexers in a class. Example:
@@ -1256,9 +1256,9 @@
 ```cs
     class MyClass
     {
-        /// This
+        // This
         public int GetSum(int a, int b) => a + b;
-        /// Instead of this
+        // Instead of this
         public int GetSum(int a, int b)
         {
             return a + b;
@@ -1271,7 +1271,7 @@
 ```cs
     int num = 3;
     string res;
-    /// This
+    // This
     res = num switch
     {
         1 => "One",
@@ -1279,7 +1279,7 @@
         3 => "Three",
         _ => "Default"
     }
-    /// Instead of this
+    // Instead of this
     switch (num)
     {
         case 1:
@@ -1302,12 +1302,12 @@
 -   Array: group of multiple elements of the same type. You must specify a size or initialize all its values in order to create and use it. Is not automatically resized in case of new or deleted elements. Is an object and thus is stored in the Heap (in continuous memory locations) and is accessed via a reference variable. Starts from 0. Example:
 
 ```cs
-    short[] myArrayReference = new short[4]; /// Set the exact size
+    short[] myArrayReference = new short[4]; // Set the exact size
     short[] myArrayReference2 = new short[]{
-        /// OR initialize its elements (size is implicitely 4)
+        // OR initialize its elements (size is implicitely 4)
         1, 2, 3, 4
     };
-    bool res = myArrayReference2[0] == 1; /// True
+    bool res = myArrayReference2[0] == 1; // True
 ```
 
 -   Iteration:
@@ -1332,24 +1332,24 @@
 
 ```cs
     int[] arr = new int[]{ 1, 2, 3, 4 };
-    System.Console.WriteLine(arr[0]);   /// 1
-    System.Console.WriteLine(arr[^0]);  /// 4
-    System.Console.WriteLine(arr[^3]);  /// 1
+    System.Console.WriteLine(arr[0]);   // 1
+    System.Console.WriteLine(arr[^0]);  // 4
+    System.Console.WriteLine(arr[^3]);  // 1
 ```
 
 -   Range operator `..`: returns a subset of the array. Example:
 
 ```cs
     int[] arr = new int[]{ 1, 2, 3, 4, 5, 6 };
-    int[] arr2 = arr[0..2];   /// [1, 2, 3]
-    int[] arr3 = arr[2..3];   /// [3, 4]
-    int[] arr4 = arr[4..4];   /// [5]
+    int[] arr2 = arr[0..2];   // [1, 2, 3]
+    int[] arr3 = arr[2..3];   // [3, 4]
+    int[] arr4 = arr[4..4];   // [5]
 ```
 
 -   Multi-dimentional:
 
 ```cs
-    /// 2 dimensions (ex. 3x4)
+    // 2 dimensions (ex. 3x4)
     int[,] arr2D = new int[]
     {
         {2, 4, 6, 8},
@@ -1357,15 +1357,15 @@
         {4, 8, 12, 16},
     };
 
-    System.Console.WriteLine(arr2D[1, 0]); /// 3
-    System.Console.WriteLine(arr2D[2, 3]); /// 16
+    System.Console.WriteLine(arr2D[1, 0]); // 3
+    System.Console.WriteLine(arr2D[2, 3]); // 16
 
-    /// 3 dimensions (ex. 2x5x8)
+    // 3 dimensions (ex. 2x5x8)
     int[,,] arr3D = new int[2, 5, 8];
 
-    System.Console.WriteLine(arr3D[1, 1, 1]); /// 0 (default value)
+    System.Console.WriteLine(arr3D[1, 1, 1]); // 0 (default value)
 
-    /// And so on for more than 3 dimensions
+    // And so on for more than 3 dimensions
 ```
 
 -   Jagged (the number of "columns" inside each "row" can vary):
@@ -1380,8 +1380,8 @@
         new int[] {6}
     };
 
-    System.Console.WriteLine(arr[0][1]); /// 4
-    System.Console.WriteLine(arr[3][2]); /// 15
+    System.Console.WriteLine(arr[0][1]); // 4
+    System.Console.WriteLine(arr[3][2]); // 15
 ```
 
 -   Mixing Jagged and Multi-dimensional:
@@ -1405,9 +1405,9 @@
         }
     };
 
-    System.Console.WriteLine(arr[0][0, 1]); /// 3
-    System.Console.WriteLine(arr[1][2, 1]); /// 10
-    System.Console.WriteLine(arr[2][1, 0]); /// 99
+    System.Console.WriteLine(arr[0][0, 1]); // 3
+    System.Console.WriteLine(arr[1][2, 1]); // 10
+    System.Console.WriteLine(arr[2][1, 0]); // 99
 ```
 
 -   Array of objects:
@@ -1421,7 +1421,7 @@
         new MyClass('C')
     };
 
-    char myLetter = myClassArray2[1].MyLetter; /// B
+    char myLetter = myClassArray2[1].MyLetter; // B
 ```
 
 -   Deep-copy: copy objects by creating new instances instead of by just copying their references over;
@@ -1441,7 +1441,7 @@
         Person p2 = p;
 
         p.Age = 999;
-        System.Console.WriteLine(p2.Age); /// 999 -> Changed! It was shallow-copied
+        System.Console.WriteLine(p2.Age); // 999 -> Changed! It was shallow-copied
 
         class CloneablePerson: System.ICloneable
         {
@@ -1461,10 +1461,10 @@
         {
             Name: "Lukas", Age: 25
         };
-        CloneablePerson cp2 = (CloneablePerson) cp.Clone(); /// Type-cast needed: the return type is System.Object
+        CloneablePerson cp2 = (CloneablePerson) cp.Clone(); // Type-cast needed: the return type is System.Object
 
         cp.Age = 999;
-        System.Console.WriteLine(cp2.Age); /// 25 -> Didn't change! It was deep-copied
+        System.Console.WriteLine(cp2.Age); // 25 -> Didn't change! It was deep-copied
     ```
 
 ## Collections
@@ -1487,13 +1487,13 @@
             List<Person> myPersonList = new List<Person>();
             List<int> myIntList = new List<int>()
             {
-                /// Initialize some values
+                // Initialize some values
                 10, 20, 30
             };
 
             for (int i = 0; i < myIntList.Count; i++)
             {
-                Console.WriteLine(myIntList[i]); /// 10 20 30
+                Console.WriteLine(myIntList[i]); // 10 20 30
             }
 
             myIntList.Add(40);
@@ -1501,11 +1501,11 @@
 
             foreach (int item in myIntList)
             {
-                Console.WriteLine(item); /// -10 10 20 30 40
+                Console.WriteLine(item); // -10 10 20 30 40
             }
 
             List<int> matches = myIntList.FindAll(x => x > 20);
-            matches.ForEach(match => { Console.WriteLine(match); }); /// 30 40
+            matches.ForEach(match => { Console.WriteLine(match); }); // 30 40
         ```
 
     -   Dictionary: contains a collection of key/value pairs stored at specific and fixed indexes (that are calculated hashing the key). The hash of a numeric type is the number itself. The hash of a custom class needs to be manually calculated by implementing the GetHashCode method of the System.Object class. The retrieval time is O(1). Keys can't be null or duplicated. Internally is an Hashtable. Needs to be imported from `System.Collections.Generic`;
@@ -1526,14 +1526,14 @@
 
             foreach (KeyValuePair<string, Person> item in peopleDic)
             {
-                Console.WriteLine(item.Key); /// Lukas Annette Yulia
+                Console.WriteLine(item.Key); // Lukas Annette Yulia
                 Person value = item.Value;
             }
 
             Person lukas = peopleDic["Lukas"];
 
-            /// Get keys
-            Dictionary<string, People>.KeyCollection peopleKeys = peopleDic.Keys; /// Lukas Annette Yulia
+            // Get keys
+            Dictionary<string, People>.KeyCollection peopleKeys = peopleDic.Keys; // Lukas Annette Yulia
         ```
 
     -   Hashtable: similar to a Dictionary, but can store different types of key/value pairs at the same time (ex. int, string, MyClass, etc.), thus it returns always a System.Object type that needs to be casted. Needs boxing/unboxing for value types (slower than Dictionary). Needs to be imported from `System.Collections`;
@@ -1559,11 +1559,11 @@
             {
                 if (item.Key is string)
                 {
-                    Console.WriteLine(item.Key); /// Lukas Anna
+                    Console.WriteLine(item.Key); // Lukas Anna
                 }
                 if (item.Value is string)
                 {
-                    Console.WriteLine(item.Value); /// valUpdated
+                    Console.WriteLine(item.Value); // valUpdated
                 }
             }
 
@@ -1591,11 +1591,11 @@
 
             foreach (string item in allPeople)
             {
-                /// It follows the insertion order
-                Console.WriteLine(item); /// Lukas Marco Julie
+                // It follows the insertion order
+                Console.WriteLine(item); // Lukas Marco Julie
             }
 
-            bool isLukasIn = allPeople.Contains("Lukas"); /// True
+            bool isLukasIn = allPeople.Contains("Lukas"); // True
 
             HashSet<string> newPeople = new HashSet<string>()
             {
@@ -1603,9 +1603,9 @@
                 "Maria"
             };
 
-            allPeople.UnionWith(newPeople); /// Lukas Marco Julie Annette Maria
-            allPeople.ExceptWith(newPeople); /// Lukas Marco Julie
-            allPeople.IntersectWith(newPeople); /// empty
+            allPeople.UnionWith(newPeople); // Lukas Marco Julie Annette Maria
+            allPeople.ExceptWith(newPeople); // Lukas Marco Julie
+            allPeople.IntersectWith(newPeople); // empty
         ```
 
     -   SortedList: contains a collection of key/value pairs, automatically sorted by their keys. Keys can't be null or duplicated. Needs to be imported from `System.Collections.Generic`;
@@ -1626,7 +1626,7 @@
 
             foreach (KeyValuePair<string, Person> item in people)
             {
-                Console.WriteLine(item.Key); /// Annette Lukas Yulia
+                Console.WriteLine(item.Key); // Annette Lukas Yulia
                 Person value = item.Value;
             }
 
@@ -1652,7 +1652,7 @@
             foreach (System.Object item in values)
             {
                 if (item is string) {
-                    Console.Write(item); /// Maria
+                    Console.Write(item); // Maria
                 }
             }
 
@@ -1677,13 +1677,13 @@
             myStack.Push(100);
             foreach (int item in myStack)
             {
-                Console.WriteLine(item); /// 100, 10, 10, 20
+                Console.WriteLine(item); // 100, 10, 10, 20
             }
 
-            int firstItem = myStack.Pop(); /// 100
+            int firstItem = myStack.Pop(); // 100
             foreach (int item in myStack)
             {
-                Console.WriteLine(item); /// 10, 10, 20
+                Console.WriteLine(item); // 10, 10, 20
             }
         ```
 
@@ -1704,13 +1704,13 @@
             myQueue.Enqueue(100);
             foreach (int item in myQueue)
             {
-                Console.WriteLine(item); /// 20, 10, 10, 100
+                Console.WriteLine(item); // 20, 10, 10, 100
             }
 
-            int firstItem = myQueue.Dequeue(); /// 20
+            int firstItem = myQueue.Dequeue(); // 20
             foreach (int item in myQueue)
             {
-                Console.WriteLine(item); /// 10, 10, 100
+                Console.WriteLine(item); // 10, 10, 100
             }
         ```
 
@@ -1764,23 +1764,23 @@
                 IEnumerable<int> enumerable = c.MyMethod();
                 IEnumerator<int> enumerator = enumerable.GetEnumerator();
 
-                enumerator.MoveNext();          /// Step 1
+                enumerator.MoveNext();          // Step 1
                 int a = enumerator.Current;
-                System.Console.WriteLine(a);    /// 1
-                enumerator.MoveNext();          /// Step 2
+                System.Console.WriteLine(a);    // 1
+                enumerator.MoveNext();          // Step 2
                 int b = enumerator.Current;
-                System.Console.WriteLine(b);    /// 2
-                enumerator.MoveNext();          /// Step 3
+                System.Console.WriteLine(b);    // 2
+                enumerator.MoveNext();          // Step 3
                 int c = enumerator.Current;
-                System.Console.WriteLine(c);    /// 3
+                System.Console.WriteLine(c);    // 3
                 enumerator.Reset();
-                enumerator.MoveNext();          /// Step 1
+                enumerator.MoveNext();          // Step 1
                 int d = enumerator.Current;
-                System.Console.WriteLine(d);    /// 1
+                System.Console.WriteLine(d);    // 1
 
                 foreach (int item in enumerable)
                 {
-                    System.Console.WriteLine(item); /// Step 1, 1, Step 2, 2, Step 3, 3
+                    System.Console.WriteLine(item); // Step 1, 1, Step 2, 2, Step 3, 3
                 }
             }
         }
@@ -1797,7 +1797,7 @@
         {
             private List<Customer> customers = new List<Customer>();
 
-            /// Explicit interface implementation: needed because IEnumerable<T> inherits from IEnumerable. So there must be implemented two methods with the same name and parameters: IEnumerator GetEnumerator() and IEnumerator<T> GetEnumerator(). Explicit interface implementation solves this.
+            // Explicit interface implementation: needed because IEnumerable<T> inherits from IEnumerable. So there must be implemented two methods with the same name and parameters: IEnumerator GetEnumerator() and IEnumerator<T> GetEnumerator(). Explicit interface implementation solves this.
             IEnumerator IEnumerable.GetEnumerator()
             {
                 return this.GetEnumerator();
@@ -1812,7 +1812,7 @@
 
             public void Add(Customer customer)
             {
-                /// Example: custom validation logic for the collection
+                // Example: custom validation logic for the collection
                 if (customer.ID.StartsWith("CU-"))
                 {
                     customers.Add(customer);
@@ -1824,7 +1824,7 @@
 
         CustomerList myCustomers = new CustomerList()
         {
-            /// Thanks to the "Add" method it can be directly initialized
+            // Thanks to the "Add" method it can be directly initialized
             new Customer() { ID = "CU-1001"},
             new Customer() { ID = "CU-1002"},
             new Customer() { ID = "CU-1003"},
@@ -1832,7 +1832,7 @@
         };
 
         foreach (Customer customer in MyCustomers) {
-            System.Console.WriteLine(customer.ID); /// CU-1001, CU-1002, CU-1003 (AA-0099 is excluded by the validation logic of the "Add" method)
+            System.Console.WriteLine(customer.ID); // CU-1001, CU-1002, CU-1003 (AA-0099 is excluded by the validation logic of the "Add" method)
         }
 
     ```
@@ -1844,7 +1844,7 @@
         {
             private List<Customer> customers = new List<Customer>();
 
-            /// All ICollection<T> properties and methods must be implemented (inherits from IEnumerable<T>)
+            // All ICollection<T> properties and methods must be implemented (inherits from IEnumerable<T>)
             IEnumerator IEnumerable.GetEnumerator(){};
             public IEnumerator<T> GetEnumerator(){};
 
@@ -1865,7 +1865,7 @@
         {
             private List<Customer> customers = new List<Customer>();
 
-            /// All IList<T> properties and methods must be implemented (inherits from ICollection<T>)
+            // All IList<T> properties and methods must be implemented (inherits from ICollection<T>)
             IEnumerator IEnumerable.GetEnumerator(){};
             public IEnumerator<T> GetEnumerator(){};
 
@@ -1913,8 +1913,8 @@
     IList<MyClass> myList = new IList<MyClass>();
     myList.Add(new MyClass(){ Value = 1 });
     MyClass c = new MyClass(){ Value = 1 };
-    System.Console.WriteLine(myList.Contains(c)); /// True - IList<T>.Contains uses IEquatable
-    System.Console.WriteLine(myList[0] == c); /// False - the == operator doesn't use IEquatable
+    System.Console.WriteLine(myList.Contains(c)); // True - IList<T>.Contains uses IEquatable
+    System.Console.WriteLine(myList[0] == c); // False - the == operator doesn't use IEquatable
 ```
 
 -   IComparable: interface that defines ordering. It must be implemented on a custom class in order to sort its instances. For consistency also the `CompareTo(Object other)` (for non-typed classes/collections) method should be implemented. Example:
@@ -1969,14 +1969,14 @@
     class B : A { public void F2(){} }
     class C : B { public void F3(){} }
 
-    B b1 = new A(); /// Error: myObj would miss the method F2 because it is not implement in the parent class A. It's not Ok to give less.
-    B b2 = new C(); /// Ok: myObj has the method F2 because it is a child class of B, which implements that method. It's Ok to give more.
+    B b1 = new A(); // Error: myObj would miss the method F2 because it is not implement in the parent class A. It's not Ok to give less.
+    B b2 = new C(); // Ok: myObj has the method F2 because it is a child class of B, which implements that method. It's Ok to give more.
 
-    /// Generics can be used both for parameter and return types
+    // Generics can be used both for parameter and return types
     interface IGeneric<T>
     {
-        T Output(); /// Return type
-        void Input(T input); /// Parameter type
+        T Output(); // Return type
+        void Input(T input); // Parameter type
     }
 
     class MyClass<T> : IGeneric<T>
@@ -1985,59 +1985,59 @@
         public void Input(T input){};
     }
 
-    MyClass<B> objbb = new MyClass<B>(); /// Ok: as expected
+    MyClass<B> objbb = new MyClass<B>(); // Ok: as expected
 
-    /////////////
-    ///Covariance
-    /////////////
+    /////////
+    //Covariance
+    /////////
 
-    MyClass<B> objbc = new MyClass<C>(); /// Error: Invariance violated
-    /// Let's suppose we could ignore the Invariance error
-    objbc.Input(new B()); /// Error: we are passing type B (less specific) (casted via MyClass<B> obj) instead of the expected type C (more specific) (created with new MyClass<C>()). It's not Ok to give less.
-    objbc.Output().F2(); /// Ok: obj.Output() is expected of type B (less specific) (casted via MyClass<B> obj), but type C (more specific) is returned (created with new MyClass<C>()). It's Ok to give more.
+    MyClass<B> objbc = new MyClass<C>(); // Error: Invariance violated
+    // Let's suppose we could ignore the Invariance error
+    objbc.Input(new B()); // Error: we are passing type B (less specific) (casted via MyClass<B> obj) instead of the expected type C (more specific) (created with new MyClass<C>()). It's not Ok to give less.
+    objbc.Output().F2(); // Ok: obj.Output() is expected of type B (less specific) (casted via MyClass<B> obj), but type C (more specific) is returned (created with new MyClass<C>()). It's Ok to give more.
 
-    /// How to fix this? Covariance
+    // How to fix this? Covariance
     interface IGenericCovariance<out T>
     {
         T Output();
-        /// void Input(T input); Removed because not allowed by "out T".
+        // void Input(T input); Removed because not allowed by "out T".
     }
 
     class MyClassCovariance<T> : IGenericCovariance<T>
     {
         public T Output();
-        /// public void Input(T input){}; Removed because not allowed by "out T".
+        // public void Input(T input){}; Removed because not allowed by "out T".
     }
 
-    MyClassCovariance<B> objbc2 = new MyClassCovariance<C>(); /// Ok: contravariance
-    /// objbc2.Input(new B()); /// Buggy method not allowed anymore.
-    objbc2.Output().F2(); /// Ok
+    MyClassCovariance<B> objbc2 = new MyClassCovariance<C>(); // Ok: contravariance
+    // objbc2.Input(new B()); // Buggy method not allowed anymore.
+    objbc2.Output().F2(); // Ok
 
-    /////////////////
-    ///Contravariance
-    /////////////////
+    ////////////
+    //Contravariance
+    ////////////
 
-    MyClass<B> objba = new MyClass<A>(); /// Error: Invariance violated
-    /// Let's suppose we could ignore the Invariance error
-    objba.Input(new B()); /// Ok: we are passing type B (more specific) (casted via MyClass<B> obj) instead of the expected type A (less specific) (created with new MyClass<A>()). It's Ok to give more.
-    objba.Output().F2(); /// Error: obj.Output() is expected of type B (more specific) (casted via MyClass<B> obj), but type A (less specific) is returned (created with new MyClass<A>()). Type A has not implemented the method F2, and thus it will result in an error. It's not Ok to give less.
+    MyClass<B> objba = new MyClass<A>(); // Error: Invariance violated
+    // Let's suppose we could ignore the Invariance error
+    objba.Input(new B()); // Ok: we are passing type B (more specific) (casted via MyClass<B> obj) instead of the expected type A (less specific) (created with new MyClass<A>()). It's Ok to give more.
+    objba.Output().F2(); // Error: obj.Output() is expected of type B (more specific) (casted via MyClass<B> obj), but type A (less specific) is returned (created with new MyClass<A>()). Type A has not implemented the method F2, and thus it will result in an error. It's not Ok to give less.
 
-    /// How to fix this? Contravariance
+    // How to fix this? Contravariance
     interface IGenericContravariance<in T>
     {
-        /// T Output(); Removed because not allowed by "in T".
+        // T Output(); Removed because not allowed by "in T".
         void Input(T input);
     }
 
     class MyClassContravariance<T> : IGenericContravariance<T>
     {
-        /// public T Output(); Removed because not allowed by "in T".
+        // public T Output(); Removed because not allowed by "in T".
         public void Input(T input){};
     }
 
-    MyClassContravariance<B> objba2 = new MyClassContravariance<A>(); /// Ok: contravariance
-    objba2.Input(new B()); /// Ok
-    /// objba2.Output().F2(); Buggy method not allowed anymore.
+    MyClassContravariance<B> objba2 = new MyClassContravariance<A>(); // Ok: contravariance
+    objba2.Input(new B()); // Ok
+    // objba2.Output().F2(); Buggy method not allowed anymore.
 ```
 
 ## Anonymous Types
@@ -2046,7 +2046,7 @@
 
 ```cs
     var myAnonType = new { Name = "AnonType", Subject = "C#", Level = 3};
-    myAnonType.Name = "Changed"; /// Error! Anonymous properties are readonly.
+    myAnonType.Name = "Changed"; // Error! Anonymous properties are readonly.
 ```
 
 -   Nested: it is possible to create anonymous types/objects inside other anonymous types/objects. Example:
@@ -2087,9 +2087,9 @@
         "eleven"
     };
 
-    int a = myTuple.Item1; /// 10
-    int b = myTuple.Item2; /// 11
-    string c = myTuple.Item3; /// eleven
+    int a = myTuple.Item1; // 10
+    int b = myTuple.Item2; // 11
+    string c = myTuple.Item3; // eleven
 ```
 
 -   Value tuple: syntax-sugar to create a tuple. Supports property names and an unlimited number of items. Example:
@@ -2097,9 +2097,9 @@
 ```cs
     (int a, int b, string c) myValueTuple = (10, 11, "eleven");
 
-    int a = myTuple.a; /// 10
-    int b = myTuple.b; /// 11
-    string c = myTuple.c; /// eleven
+    int a = myTuple.a; // 10
+    int b = myTuple.b; // 11
+    string c = myTuple.c; // eleven
 
     [...]
 
@@ -2109,8 +2109,8 @@
     }
 
     var result = MyMethod();
-    System.Console.WriteLine(result.success); /// true
-    System.Console.WriteLine(result.value);   /// 12
+    System.Console.WriteLine(result.success); // true
+    System.Console.WriteLine(result.value);   // 12
 ```
 
 -   Deconstruction: syntax-sugar to copy the elements of a value tuple into local variables. It follows the tuple value order (the naming doesn't count). Example:
@@ -2122,8 +2122,8 @@
     }
 
     (bool isSuccess, int resultValue) = MyMethod();
-    System.Console.WriteLine(isSuccess);    /// true
-    System.Console.WriteLine(resultValue);  /// 12
+    System.Console.WriteLine(isSuccess);    // true
+    System.Console.WriteLine(resultValue);  // 12
 ```
 
 -   Discards: skipping elements during the deconstruction using the underscore keyword (`_`). Example:
@@ -2135,9 +2135,9 @@
     }
 
     (bool isSuccess, int v1, _, _, int v4) = MyMethod();
-    System.Console.WriteLine(isSuccess); /// true
-    System.Console.WriteLine(v1);        /// 1
-    System.Console.WriteLine(v4);        /// 4
+    System.Console.WriteLine(isSuccess); // true
+    System.Console.WriteLine(v1);        // 1
+    System.Console.WriteLine(v4);        // 4
 ```
 
 ## Comments and Regions
@@ -2148,12 +2148,12 @@
    int number = 4; // This is a comment
 ```
 
--   XML comments: created with a triple slash (///). The comment information is automatically provided when that class/variable/type/... is hovered with the mouse in Visual Studio. Example:
+-   XML comments: created with a triple slash (//). The comment information is automatically provided when that class/variable/type/... is hovered with the mouse in Visual Studio. Example:
 
 ```cs
-   /// <summary>
-   /// Represents the choice of the customer. This text is visible hovering with the mouse on the property Choice.
-   /// </summary>
+   // <summary>
+   // Represents the choice of the customer. This text is visible hovering with the mouse on the property Choice.
+   // </summary>
    public int Choice = 4;
 ```
 
@@ -2253,9 +2253,9 @@
     int age = 24;
 
     string formatted1 = $"{name} is {age} years old.";
-    /// Equivalent to:
+    // Equivalent to:
     string formatted2 = string.Format("{0} is {1} years old.", name, age);
-    /// Equivalent to:
+    // Equivalent to:
     string formatted3 = name + " is " + age + " years old.";
 ```
 
@@ -3047,7 +3047,7 @@
     int y = 15;
     System.Console.WriteLine(x); // 25
 
-    // is then compiled to this:
+    // is then compiled to this
     static class Program
     {
         static async Task Main(string[] args)
@@ -3089,46 +3089,107 @@
 
 -   More on records:
 
-    -   Nested records: . Example:
+    -   Nested records: records can contain other records. Example:
 
     ```cs
+        public record Person(string Name, int Age);
+        public record Employee(Person PersonData, int Level, int Salary);
 
+        Employee Lukas = new Employee(new Person("Lukas", 34), 3, 46000);
     ```
 
-    -   Immutability: . Example:
+    -   Mutability: records support the declaration of regular mutable properties. Example:
 
     ```cs
+        public record Person(string Name, int Age)
+        {
+            // Declaring a mutable property on a record.
+            public int FavoriteNumber { get; set; }
+        }
 
+        Person Marie = new Person("Marie", 14);
+        Marie.Name = "Anna"; // Error! Can't set an init-only property.
+        Marie.FavoriteNumber = 7; // Ok!
     ```
 
-    -   Equality: . Example:
+    -   Equality: records use by default a value-based equality (classes and structs instead use a reference-based equality). Example:
 
     ```cs
+        public record Person(string Name);
+        public record Employee(Person PersonData, int Salary);
 
+        Employee e1 = new Employee(new Person("Anna"), 46000);
+        Employee e2 = new Employee(new Person("Anna"), 46000);
+
+        p1 == p2; // True
+        p1.Equals(p2); // True
     ```
 
-    -   `with` expression: . Example:
+    -   `with` expression: performs a shallow copy of a record (with the possibility to overwrite values like in an object initializer). Example:
 
     ```cs
+        public record Person(string Name);
+        public record Employee(Person PersonData)
+        {
+            int Salary { get; set; }
+        }
 
+        // Reference copy
+        Employee e1 = new Employee(new Person("Anna"), 46000);
+        Employee e2 = e1;
+        Console.WriteLine(e2.Salary); // 46000
+        e1.Salary = 50000;
+        Console.WriteLine(e2.Salary); // 50000
+
+        // Shallow copy
+        Employee e3 = new Employee(new Person("Anna"), 46000);
+        Employee e4 = e3 with {};
+        Console.WriteLine(e4.Salary); // 46000
+        e3.Salary = 50000;
+        Console.WriteLine(e4.Salary); // 46000
+
+        // Shallow copy with properties overwrite
+        Employee e5 = new Employee(new Person("Anna"), 46000);
+        Employee e6 = e5 with {PersonData = new Person("Anastasia")};
+        Console.WriteLine(e6.Salary); // 46000
+        e5.Salary = 50000;
+        Console.WriteLine(e6.Salary); // 46000
+
+        // Deep copy: not supported, must be implemented manually.
     ```
 
-    -   Deconstructor: . Example:
+    -   Deconstruction: a `Deconstruct` method is automatically generated when using records (no need to write it manually). Example:
 
     ```cs
+        public record Address(string City, string Country);
+        public record Person(string Name, Address PersonAddress, int Age);
 
+        Person p = new Person("Amanda", new Address("New York", "USA"), 55);
+        var (pName, (pCity, pCountry), pAge) = p;
     ```
 
-    -   `ToString`: . Example:
+    -   `ToString`: a `ToString` method that lists all the properties of the record is automatically generated by the compiler when using records. Example:
 
     ```cs
-
+        public record Point(int X, int Y);
+        Point p = new Point(100, 240);
+        Console.WriteLine(p); // Point { X = 100, Y = 240 }
     ```
 
-    -   Constructor: . Example:
+    -   Constructor: it is possible to create a user-defined constructor for records (ex. to validate and/or calculate some data before creating the record). In this case you must invoke the compiler-generated constructor of the record (`: this(...)`). Example:
 
     ```cs
+        public record Person(string Name, DateTime? DateOfBirth, int? Age) {
+            public Point(string name, DateTime? dateOfBirth) : this(name, dateOfBirth, null)
+            {
+                if (dateOfBirth is not null)
+                {
+                    Age = Convert.ToInt32(DateTime.Now.Subtract(dateOfBirth.Value).TotalDays / 365.25);
+                }
+            }
+        }
 
+        Person p = new Person("Markus", DateTime.Parse("2003-06-05"));
     ```
 
     -   Inheritance: . Example:
@@ -3206,7 +3267,7 @@
 
 ```cs
     // TYPE PATTERN
-    ///////////////
+    //////////
 
     // Old way:
     if (myVar.GetType() == typeof(MyClass) || myVar.GetType().IsSubClassOf(typeof(MyClass)))
@@ -3224,7 +3285,7 @@
 
 ```cs
     // SWITCH-CASE PATTERN
-    //////////////////////
+    ///////////////
 
     // Old way:
     switch (myVar.GetType().Name)
@@ -3256,7 +3317,7 @@
 
 ```cs
     // SWITCH-EXPRESSION PATTERN
-    ////////////////////////////
+    ///////////////////
 
     // Old way:
     int x;
@@ -3288,7 +3349,7 @@
 
 ```cs
     // RELATIONAL AND LOGICAL PATTERN
-    /////////////////////////////////
+    //////////////////////
 
     // Useful to reduce the repetition of variable-access code when checking multiple conditions againts the same variable or property.
 
@@ -3317,7 +3378,7 @@
 
 ```cs
     // PROPERTY PATTERN
-    ///////////////////
+    /////////////
 
     // Old way:
     int x;
@@ -3357,7 +3418,7 @@
 
 ```cs
     // TUPLE PATTERN
-    ////////////////
+    ///////////
 
     // Old way:
     int x;
@@ -3397,7 +3458,7 @@
 
 ```cs
     // POSITIONAL PATTERN (DECONSTRUCT)
-    ///////////////////////////////////
+    ////////////////////////
 
     // Automatically returns some properties/values in some given order (a tuple) when trying to deconstruct a class using a switch-expression.
 
@@ -3454,7 +3515,7 @@
 
 ```cs
     // EXTENDED PROPERTY PATTERN
-    ////////////////////////////
+    ///////////////////
 
     // The "usual" property pattern, but able to access nested properties via a dot-notation.
 
