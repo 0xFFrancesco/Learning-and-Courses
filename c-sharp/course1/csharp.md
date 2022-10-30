@@ -3180,7 +3180,7 @@
 
     ```cs
         public record Person(string Name, DateTime? DateOfBirth, int? Age) {
-            public Point(string name, DateTime? dateOfBirth) : this(name, dateOfBirth, null)
+            public Person(string name, DateTime? dateOfBirth) : this(name, dateOfBirth, null)
             {
                 if (dateOfBirth is not null)
                 {
