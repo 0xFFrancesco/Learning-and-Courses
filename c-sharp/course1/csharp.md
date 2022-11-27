@@ -3037,6 +3037,47 @@
     }
 ```
 
+## Command Line Arguments
+
+-   Command line arguments: supply arguments to the program via the command line. All the arguments are passed as strings, the other values (ex. numbers) must be converted from the string type. Example:
+
+```cs
+    class Program
+    {
+        static void Main(string[] args)
+        {
+            // Use the supplied arguments.
+            if (int.TryParse(args[0], out int mode))
+            {
+                Console.WriteLine(mode); // 3
+            }
+
+            for (int i = 1; i < args.Length; i++ )
+            {
+                Console.WriteLine(args[i]); // Lukas, Anna, Markus
+            }
+        }
+    }
+
+    // Pass the arguments.
+    > program.exe 3 "Lukas" "Anna" "Markus"
+```
+
+-   Top level statements: it is possible to receive command line arguments also when using top level statements. By default all top level statements contain a defult variable called args, that contains all the command line arguments provided (as an array of strings) Example:
+
+```cs
+// Use the supplied arguments from the args variable in a top level statement.
+if (int.TryParse(args[0], out int mode))
+{
+    Console.WriteLine(mode); // 3
+}
+
+for (int i = 1; i < args.Length; i++ )
+{
+    Console.WriteLine(args[i]); // Lukas, Anna, Markus
+}
+```
+
 ## C# 9 Features
 
 -   Top-level statements: allow you to write statements outside of classes and namespaces. Those statements are automatically compiled to the "usual" `static void Main` (using a `Task` though) starting method of the program. They must be placed at the top of the file, after the `using` imports, but before any `namespace` or `class` declaration. Only one file in the project can have top-level statements (as there must be only one starting method for the program to use). Variables or local functions created as top-level statements are not accessible inside other namespaces or classes. Example:
@@ -3192,22 +3233,39 @@
         Person p = new Person("Markus", DateTime.Parse("2003-06-05"));
     ```
 
-    -   Inheritance: . Example:
+    -   Inheritance: a record supports inheritance from other records or interfaces. Example:
 
     ```cs
+        public record Parent(string Name);
+        public record Child(string Name, string Address): Parent(Name);
 
+        public interface IPerson
+        {
+            string Name {get; init;}
+        }
+        public record Person(string Name, int Age):IPerson
     ```
 
-    -   `sealed ToString`: . Example:
+    -   Abstract and sealed: records can also be abstract (can't be directly instantiated) or sealed (can't be inherited). Example:
 
     ```cs
+        public abstract record Person(string Name);
+        Person p = new Person("Anna"); // Error!
 
+        public sealed record Final(string Message);
+        public record Child(int Code, string Message);:Final(Message); // Error!
     ```
 
-    -   Record Structs: . Example:
+    -   `sealed ToString`: the user defined `override ToString()` method can be sealed to prevent further overriding. Example:
 
     ```cs
-
+        public record Category(string Name)
+        {
+            public override sealed string ToString()
+            {
+                return "Category: " + name + ".";
+            }
+        }
     ```
 
 -   Non-nullable reference types: from C#9 it is enforced that by default (with a warning) all reference-type variables (ex. for objects) can't be null (as they were by default before). This tries to prevent errors like `NullReferenceException`. To make a reference-type variable nullable again, it has to be postfixed with a `?`. Example:
@@ -3596,10 +3654,16 @@
 
 ## C# 10 Features
 
--   Record structs: . Example:
+-   `readonly record struct`: internally it is a `struct` (meanwhile a "normal record" is internally a `class`). All its properties are init-only by default (can also be writable by default omitting the `readonly` keyword). Being it a `struct` means that when assigned to another variable all its properties will be shallow-copied into a new memory location (in the Stack) instead of just copying the main reference (of the Heap). Example:
 
 ```cs
+    public readonly record struct Person(string Name, int Age);
+    Person p = new Person("Lukas", 22);
+    Person pcopy = p; // pcopy is a new memory location in the Stack where all the properties of p have been shallow-copied into.
 
+    public record Person2(string Name, int Age);
+    Person2 p2 = new Person2("Lukas", 22);
+    Person2 p2copy = p2; // p2copy is a reference pointing to the same Heap location of p2.
 ```
 
 -   User-defined custom parameter-less constructor in structs. The condition to use it is to initialize all the fields and properties inside that constructor. Example:
