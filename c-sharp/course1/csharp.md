@@ -3652,6 +3652,27 @@ for (int i = 1; i < args.Length; i++ )
     }
 ```
 
+-   Partial Methods improvements: they can now have a return type different than `void`, can have any access modifier (and not only `private`) and can have `out` parameters. In order to use this new features, the partial method must have an implementation;
+
+-   Static Anonymous functions: anonymous methods or anonymous lambda expressions can now be `static` (it means that they can't access the instance data, it's a limitation useful to better "secure" the code). Example:
+
+```cs
+    // Static anonymous method
+    static delegate (Parameters)
+    {
+        // Can't access locals, parameters, instance members
+        // Can access static members and constants
+    }
+
+    // Static anonymous lambda expression
+    static (Parameters) =>
+    {
+        // Can't access locals, parameters, instance members
+        // Can access static members and constants
+    }
+
+```
+
 ## C# 10 Features
 
 -   `readonly record struct`: internally it is a `struct` (meanwhile a "normal record" is internally a `class`). All its properties are init-only by default (can also be writable by default omitting the `readonly` keyword). Being it a `struct` means that when assigned to another variable all its properties will be shallow-copied into a new memory location (in the Stack) instead of just copying the main reference (of the Heap). Example:
@@ -3716,16 +3737,20 @@ for (int i = 1; i < args.Length; i++ )
     }
 ```
 
--   Extended property pattern: . Example:
+-   Lambda expression return type: lambda expressions can now specify a return type. Example:
 
 ```cs
-
-```
-
--   Sealed `ToString` method in records: . Example:
-
-```cs
-
+    Func<int, object> delegate = object (int value) =>
+    {
+        if (value > 1)
+        {
+            return "OK";
+        }
+        else
+        {
+            return 500;
+        }
+    }
 ```
 
 ## C# 11 Features
