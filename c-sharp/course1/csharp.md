@@ -3670,7 +3670,27 @@ for (int i = 1; i < args.Length; i++ )
         // Can't access locals, parameters, instance members
         // Can access static members and constants
     }
+```
 
+-   Interface default methods: interfaces can now have default method implementations. These methods can only be called from reference variables of that interface type (and not child types). Example:
+
+```cs
+    interface IPerson
+    {
+        public void Greet(string Name)
+        {
+            Console.WriteLine($"Hello {Name}!");
+        }
+    }
+
+    class Manager: IPerson
+    {
+    }
+
+    Manager m = new Manager();
+    m.Greet("Lukas"); // Error! The reference variable must be of type IPerson to use its default method implementation.
+    IPerson p = m; // Casting Manager to the parent interface IPerson.
+    p.Greet("Lukas"); // Hello Lukas!
 ```
 
 ## C# 10 Features
@@ -3751,78 +3771,4 @@ for (int i = 1; i < args.Length; i++ )
             return 500;
         }
     }
-```
-
-## C# 11 Features
-
--   Generic attributes: . Example:
-
-```cs
-
-```
-
--   Generic math support: . Example:
-
-```cs
-
-```
-
--   Numeric `IntPtr` and `UIntPtr`: . Example:
-
-```cs
-
-```
-
--   Newlines in string interpolations: . Example:
-
-```cs
-
-```
-
--   List patterns: . Example:
-
-```cs
-
-```
-
--   Improved method group conversion to delegate: . Example:
-
-```cs
-
-```
-
--   Raw string literals: . Example:
-
-```cs
-
-```
-
--   Auto-default struct: . Example:
-
-```cs
-
-```
-
--   Pattern match `Span<char>` or `ReadOnlySpan<char>` on a constant string: . Example:
-
-```cs
-
-```
-
--   Extended `nameof` scope: . Example:
-
-```cs
-
-```
-
--   UTF-8 string literals: . Example:
-
-```cs
-
-```
-
--   Required members: . Example:
-
-```cs
-
 ```
