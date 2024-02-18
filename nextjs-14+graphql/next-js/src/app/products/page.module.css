@@ -1,0 +1,39 @@
+.products {
+	display: grid;
+	grid-template-columns: 1fr 1fr 1fr 1fr;
+	column-gap: 16px;
+	row-gap: 16px;
+}
+
+.product {
+	padding: 32px;
+	background: rgb(226, 226, 226);
+	border-radius: 12px;
+	color: black;
+	text-decoration: none;
+}
+
+.title {
+	font-size: 32px;
+	margin: 16px 0;
+	text-align: center;
+}
+
+.pages {
+	display: flex;
+	gap: 8px;
+	margin: 16px 0;
+}
+
+.pages a {
+	border-radius: 100%;
+	background-color: rgb(226, 226, 226);
+	padding: 2px 7px;
+	text-decoration: none;
+	display: inline-block;
+	color: black;
+}
+
+.pages a.active {
+	background-color: rgb(185, 185, 185);
+}

@@ -1,0 +1,22 @@
+.navbar {
+	display: flex;
+	gap: 18px;
+	padding: 18px;
+	background-color: black;
+	border-radius: 4px;
+}
+
+.navbar a {
+	color: white;
+}
+
+.title {
+	font-size: 32px;
+	margin: 16px;
+	text-align: center;
+}
+
+.content {
+	max-width: 1024px;
+	margin: 0 auto;
+}

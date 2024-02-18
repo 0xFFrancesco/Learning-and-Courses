@@ -8,30 +8,32 @@ This is a **BIGGG** repo with all the code related to the courses I attended, th
 
 Now techy stuff 👾. The code is related to courses mainly about:
 
-- Front-end
-    - React ⚛️
-    - Redux
-    - GraphQL
-    - Angular 2+ (7)
-    - VueJS 2
-    - Vuex
-    - TypeScript
-    - WebAssembly/Emscripten 🏎
-    - Webpack 📦
-    - WebComponents/Stencil.js
-    - D3
-    - Canvas
-    - Micro-frontends/Webpack Module Federation
+-   Front-end
 
-- Back-end:
-    - Go (Golang)
-    - PHP 🐘
-    - Symfony 🎼
-    - Express
-    - C#/.NET
+    -   React ⚛️
+    -   Redux
+    -   GraphQL
+    -   Angular 2+ (7)
+    -   VueJS 2
+    -   Vuex
+    -   TypeScript
+    -   WebAssembly/Emscripten 🏎
+    -   Webpack 📦
+    -   WebComponents/Stencil.js
+    -   D3
+    -   Canvas
+    -   Micro-frontends/Webpack Module Federation
+    -   NextJS (v14 w/ React Server Components) + GraphQL
 
-- Mixed:
-    - NodeJS
-    - Shell scripting
-    - Docker/Kubernetes 🐳
+-   Back-end:
 
+    -   Go (Golang)
+    -   PHP 🐘
+    -   Symfony 🎼
+    -   Express
+    -   C#/.NET
+
+-   Mixed:
+    -   NodeJS
+    -   Shell scripting
+    -   Docker/Kubernetes 🐳
