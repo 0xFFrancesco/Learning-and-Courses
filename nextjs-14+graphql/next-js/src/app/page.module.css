@@ -16,6 +16,10 @@
 	text-align: center;
 }
 
+.text {
+	text-align: justify;
+}
+
 .content {
 	max-width: 1024px;
 	margin: 0 auto;

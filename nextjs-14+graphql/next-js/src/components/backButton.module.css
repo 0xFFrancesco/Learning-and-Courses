@@ -1,0 +1,10 @@
+.backButton {
+	all: unset;
+	outline: revert;
+	padding: 4px 8px;
+	background: black;
+	color: white;
+	border-radius: 4px;
+	outline: none;
+	display: inline-block;
+}

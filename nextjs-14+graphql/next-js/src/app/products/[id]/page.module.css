@@ -1,9 +1,21 @@
 .title {
 	font-size: 32px;
 	margin: 16px 0;
-	text-align: center;
+	align-items: center;
+	justify-content: center;
+	display: flex;
+	gap: 16px;
 }
 
 .price {
-	margin: 16px 0;
+	background-color: darkblue;
+	color: white;
+	border-radius: 4px;
+	padding: 2px 8px;
+	display: inline-block;
+}
+
+.text {
+	text-align: justify;
+	margin-bottom: 16px;
 }

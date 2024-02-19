@@ -59,7 +59,8 @@ async function PageContent({ page }: { page: number }) {
 					href={"/products/" + p.id}
 					className={styles.product}
 				>
-					{p.name} - {p.price}
+					{p.name}
+					<span className={styles.price}>${p.price.toFixed(2)}</span>
 				</Link>
 			))}
 		</div>
