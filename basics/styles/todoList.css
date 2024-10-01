@@ -1,0 +1,75 @@
+.todo-list-input {
+	border-radius: var(--border-radius);
+	border: 1px solid var(--font-color);
+	padding: var(--spacing-sm);
+	width: 100%;
+	margin: 0;
+}
+
+.todo-list-form {
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-sm);
+	flex-wrap: nowrap;
+}
+
+.todo-list-items {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+}
+
+.todo-list-item {
+	list-style: none;
+	padding: 0;
+	margin: 0;
+	padding: var(--spacing-sm) 0;
+	display: flex;
+	align-items: center;
+	gap: var(--spacing-sm);
+	width: 100%;
+	font-style: italic;
+}
+
+.todo-list-item.isCompleted .todo-checkbox-label {
+	text-decoration: line-through;
+}
+
+.todo-add {
+	background: var(--accent-color);
+	border: none;
+	height: 100%;
+	padding: var(--spacing-sm);
+	border-radius: var(--border-radius);
+	border: 1px solid var(--font-color);
+}
+
+.todo-action {
+	padding: 2px 8px;
+	border: none;
+	border: 1px solid var(--font-color);
+}
+
+.todo-edit,
+.todo-save {
+	background: var(--edit-color);
+	border-radius: var(--border-radius);
+	margin-left: auto;
+}
+
+.todo-delete {
+	background: var(--delete-color);
+	border-radius: var(--border-radius);
+}
+
+.todo-checkbox-label {
+	gap: var(--spacing-sm);
+	align-items: center;
+	display: flex;
+}
+
+.todo-edit-input {
+	border-radius: var(--border-radius);
+	border: 1px solid var(--font-color);
+	width: 100%;
+}
